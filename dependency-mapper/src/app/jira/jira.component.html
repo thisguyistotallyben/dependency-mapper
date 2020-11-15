@@ -5,17 +5,17 @@
     </div>
     <div class="body bds-padding-1">
       <div class="bds-field-label">
-        Email
+        Base Url
       </div>
-      <input class="bds-input-field">
-      <div class="bds-field-label bds-t-padding-1">
-        API Key
+      <input class="bds-input-field" placeholder="https://myorganization.atlassian.com" [(ngModel)]="baseUrl">
+      <div class="bds-field-label bds-t-margin-1">
+        Default Project Prefix
       </div>
-      <input type="password" class="bds-input-field">
+      <input class="bds-input-field " [(ngModel)]="project">
     </div>
     <div class="bds-container-footer bds-padding-1 bds-x-right">
       <button class="bds-button bds-button-flat bds-r-margin-1" (click)="closeJiraModal()">Cancel</button>
-      <button class="bds-button bds-button-success">Save</button>
+      <button class="bds-button bds-button-success" (click)="saveAndClose()">Save</button>
     </div>
   </div>
 </div>

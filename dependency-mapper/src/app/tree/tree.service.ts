@@ -1,3 +1,4 @@
+import { JiraService } from './../jira/jira.service';
 import { Injectable } from '@angular/core';
 import { DataService, Ticket } from '../data.service';
 
@@ -40,8 +41,9 @@ export class TreeService {
     // format: id[<b>id - title</b><br/><br/>description]
     const title = `${ticket.id}[<b>${ticket.title}</b><hr>`;
     const description = `${ticket.description}]`;
+    // TODO: Check for more things, eg. url even exists and whatnot
     const link = ticket.jiraId
-      ? `\nclick ${ticket.id} "${this.dataService.baseUrl + this.dataService.defaultProject}-${ticket.jiraId}" _blank`
+      ? `\nclick ${ticket.id} "${this.dataService.generateUrl(ticket.jiraId)}" _blank`
       : '';
 
     return title + description + link;

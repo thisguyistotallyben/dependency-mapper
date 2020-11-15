@@ -9,14 +9,27 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 export class JiraComponent implements OnInit {
   @Output() close = new EventEmitter<void>();
 
-  constructor(jiraService: JiraService) { }
+  // state shenanigans
+  baseUrl: string;
+  project: string;
+
+  constructor(private jiraService: JiraService) { }
 
   ngOnInit(): void {
+    console.log('yee haw');
+    this.baseUrl = this.jiraService.getBaseUrl();
+    this.project = this.jiraService.getProject();
   }
 
   closeJiraModal(): void {
-    console.log('help yo');
     this.close.emit();
+  }
+
+  saveAndClose(): void {
+    this.jiraService.setBaseUrl(this.baseUrl);
+    this.jiraService.setProject(this.project);
+
+    this.closeJiraModal();
   }
 
 }

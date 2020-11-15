@@ -66,7 +66,7 @@ export class SidebarComponent implements OnInit {
   removeTicket(id: string): void {
     console.log('removing: ', id);
     this.dataService.removeTicket(id);
-    this.treeService.renderTree();
+    this.refreshTree();
   }
 
   createQuickDependency() {
@@ -98,7 +98,7 @@ export class SidebarComponent implements OnInit {
     }
 
     this.dataService.addDependency(parentTicket.id, childTicket.id);
-    this.treeService.renderTree();
+    this.refreshTree();
   }
 
   toggleSelection(id: string): void {
@@ -132,7 +132,7 @@ export class SidebarComponent implements OnInit {
   addTicket(event: Ticket, editing: boolean): void {
     console.log('BIG YEE HAW', event);
     this.dataService.addTicket(event);
-    this.treeService.renderTree();
+    this.refreshTree();
     this.isMakingNewTicket = false;
     this.ticketBeingEdited = '';
     if (!editing) {
@@ -151,6 +151,10 @@ export class SidebarComponent implements OnInit {
     }
   }
 
+  refreshTree(): void {
+    this.treeService.renderTree();
+  }
+
   // THESE FUNCTIONS NEED BETTER NAMES
   // I'M CURRENTLY ALSO USING THEM FOR CHECKING IF STUFF IS OPEN
   shouldHaveControlBg(id: string): boolean {
@@ -158,7 +162,6 @@ export class SidebarComponent implements OnInit {
   }
 
   shouldHaveDeleteBg(id: string): boolean {
-    console.log('delete', this.ticketBeingDeleted);
     return id == this.ticketBeingDeleted;
   }
 

@@ -20,19 +20,14 @@ class Dependency {
   providedIn: 'root'
 })
 class DataService {
-  baseUrl = '';
-  defaultProject = '';
   ticketLookup: Map<string, Ticket>;
   links: Array<Dependency>;
 
   constructor(private configService: ConfigService) {
     console.log('Initializing Data Service');
-    this.baseUrl = this.configService.getRawConfig()['base-url'];
-    this.defaultProject = this.configService.getRawConfig()['default-project'];
+
     this.ticketLookup = new Map<string, any>();
     this.links = new Array<Dependency>();
-
-    console.log('base url: ', this.baseUrl);
   }
 
   /* TICKET LAND */
@@ -129,16 +124,11 @@ class DataService {
   }
 
 
-  /* OTHER UTILITIES LAND */
+  /* OTHER THINGS LAND */
 
 
-  generateUrl(id: string) {
-    let ticket = this.ticketLookup.get(id);
-
-    if (!ticket || !ticket.jiraId) {
-      return '';
-    }
-    return `${this.baseUrl}${this.defaultProject}-${ticket.jiraId}`;
+  generateUrl(jiraId: string): string {
+    return `${this.configService.getCookie('jira-base-url')}/${this.configService.getCookie('jira-project')}-${jiraId}`
   }
 
 }

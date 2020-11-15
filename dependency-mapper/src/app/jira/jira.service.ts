@@ -8,41 +8,44 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class JiraService {
+  baseUrlCookie = 'jira-base-url';
+  projectCookie = 'jira-project';
+
   serverInfoPath = '/3/serverInfo';
   fieldInfoPath = '/3/field';
   projectInfoPath = '/3/project';
   obs: Observable<any>;
 
+  // state shenanigans
+  baseUrl: string;
+  project: string;
+
   constructor(
     private configService: ConfigService,
     private http: HttpClient
   ) {
-    console.log('Initializing Jira Service');
-    // let headers = new HttpHeaders();
-    // this.getFields();
-    // this.getProjects();
+    console.log('Jira Service: Initializing');
+    console.log('Jira Service: getting cookies');
+    this.baseUrl = this.configService.getCookie(this.baseUrlCookie);
+    this.project = this.configService.getCookie(this.projectCookie);
+  }
 
-    const projectsUrl = `${this.configService.getRawConfig()['base-url']}/rest/api${this.serverInfoPath}`;
-    const jiraApiKey = this.configService.getRawConfig()['jira-api-key'];
+  setBaseUrl(url: string): void {
+    this.configService.setCookie(this.baseUrlCookie, url)
+    this.baseUrl = url;
+  }
 
-    /*
-     ... has been blocked by CORS policy: Response to preflight request doesn't
-     pass access control check: No 'Access-Control-Allow-Origin' header is
-     present on the requested resource.
-    */
+  setProject(project: string): void {
+    this.configService.setCookie(this.projectCookie, project)
+    this.project = project;
+  }
 
-    // this.http.get<any>(
-    //   projectsUrl,
-    //   {
-    //     headers: {
-    //       Authorization: 'Basic ' + btoa(`email:${jiraApiKey}`),
-    //       Accept: 'application/json'
-    //     },
-    //     observe: 'response'
-    //   }
-    // ).subscribe(resp => {
-    //   console.log(resp);
-    // });
+  getBaseUrl(): string {
+    return this.baseUrl;
+  }
+
+  getProject(): string {
+    return this.project;
   }
 
   getFields(): void {

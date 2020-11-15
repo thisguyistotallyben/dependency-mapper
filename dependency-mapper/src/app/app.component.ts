@@ -1,6 +1,6 @@
+import { Component } from '@angular/core';
 import { ConfigService } from './config.service';
 import { JiraService } from './jira/jira.service';
-import { Component } from '@angular/core';
 import { DataService } from './data.service';
 
 @Component({

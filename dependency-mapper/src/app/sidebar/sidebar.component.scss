@@ -235,3 +235,14 @@
   display: flex;
   flex-direction: column;
 }
+
+.tree-refresh {
+  opacity: 0.4;
+  transition: 0.2s;
+}
+
+.tree-refresh:hover {
+  opacity: 1;
+  transition: opacity 0.2s;
+  cursor: pointer;
+}
