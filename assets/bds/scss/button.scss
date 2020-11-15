@@ -1,0 +1,119 @@
+/*
+    Ben Design System
+
+    Button Formatting
+*/
+
+
+.bds-button {
+    padding: 0.5em;
+    width: 7em;
+    color: black;
+    background: white;
+    border-style: solid;
+    border-color: #dedede;
+    border-width: 1px;
+    border-radius: 0.2em;
+}
+
+.bds-button:hover {
+    border-color: #afafaf;
+    cursor: pointer;
+}
+
+.bds-button:active {
+    background: #d0d0d0;
+    border-color: #afafaf;
+    cursor: pointer;
+}
+
+.bds-button:disabled {
+    color: #969696;
+    background: whitesmoke;
+    border-color: #dedede;
+    cursor: not-allowed;
+}
+
+.bds-button:active {
+    outline: none;
+}
+
+.bds-button-flat {
+    border-color: rgba(0, 0, 0, 0);
+    background: rgba(0, 0, 0, 0);
+}
+
+.bds-button-flat:hover {
+    border-color: rgba(0, 0, 0, 0);
+}
+
+.bds-button-flat:disabled {
+    background: none;
+    border-style: none;
+}
+
+.bds-button-success {
+    color: white;
+    background: #4eb33c;
+    border-color: #2f921e;
+}
+
+.bds-button-success:hover {
+    background: #5aca45;
+    border-color: #179800;
+}
+
+.bds-button-success:active {
+    background: #137102;
+    border-color: #179800;
+}
+
+.bds-button-success:disabled {
+    color: white;
+    background: #add4a6;
+    border-color: #83b38a;
+}
+
+.bds-button-warn {
+    color: white;
+    background: #e6aa29;
+    border-color: #b1872e;
+}
+
+.bds-button-warn:hover {
+    background: #ecb94a;
+    border-color: #b1872e;
+}
+
+.bds-button-warn:active {
+    background: #b57c01;
+    border-color: #7d5c18;
+}
+
+.bds-button-warn:disabled {
+    color: white;
+    background: #ffd987;
+    border-color: #e0b966;
+}
+
+.bds-button-danger {
+    color: white;
+    background: #e04949;
+    border-color: #b93e3e;
+}
+
+.bds-button-danger:hover {
+    background: #f35252;
+    border-color: #b93e3e;
+}
+
+.bds-button-danger:active {
+    background: #791d1d;
+    border-color: #b93e3e;
+}
+
+.bds-button-danger:disabled {
+    color: white;
+    background: #e8a3a3;
+    border-color: #da827b;
+}

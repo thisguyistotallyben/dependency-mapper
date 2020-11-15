@@ -1,0 +1,58 @@
+/*
+    Ben Design System
+
+    All Formatting
+*/
+
+
+@import "./container.scss";
+@import "./button.scss";
+@import "./color.scss";
+@import "./layout.scss";
+@import "./spacing.scss";
+@import "./sugar.scss";
+
+
+/* EXTRA FORMATTING --------------------------------- */
+
+.bds-x-scrollable {
+    overflow-x: auto;
+}
+
+.bds-y-scrollable {
+    overflow-y: auto;
+}
+
+.bds-header-container {
+    display: flex;
+    align-items: center;
+    padding: 0.5em;
+    background-color: #eaeaea;
+    border-bottom-style: solid;
+    border-bottom-color: #afafaf;
+    border-bottom-width: 0.05em;
+}
+
+.bds-input-field {
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+  background-color: white;
+  border-style: solid;
+  border-color: #afafaf;
+  border-width: 1px;
+  border-radius: 0.2em;
+  height: 2em;
+}
+
+.bds-input-field-large {
+  padding-top: 0.5em;
+  height: 5em;
+  font-family: 'Roboto';
+}
+
+.bds-field-label {
+  margin-left: 0.2em;
+  margin-bottom: 0.2em;
+  font-size: small;
+  color: #696969;
+}

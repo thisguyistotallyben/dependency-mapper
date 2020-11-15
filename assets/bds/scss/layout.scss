@@ -1,0 +1,53 @@
+/*
+    Ben Design System
+
+    Layout Formatting
+    - Alignment
+*/
+
+
+/* ALIGNMENT ---------------------------------------- */
+
+.bds-x-left {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.bds-x-center {
+    display: flex;
+    justify-content: center;
+}
+
+.bds-x-right {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.bds-x-even_space {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.bds-x-even_spread {
+    display: flex;
+    justify-content: space-between;
+}
+
+.bds-y-top {
+    display: flex;
+    align-items: flex-start;
+}
+
+.bds-y-center {
+    display: flex;
+    align-items: center;
+}
+
+.bds-y-bottom {
+    display: flex;
+    align-items: flex-end   ;
+}
+
+.bds-text-center {
+    text-align: center;
+}

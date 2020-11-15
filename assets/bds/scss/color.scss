@@ -1,0 +1,91 @@
+/*
+    Ben Design System
+
+    Button Formatting
+*/
+
+
+/* Light Mode Colors -------------------------------- */
+
+$primary-light: white;
+$secondary-light: #eaeaea;
+
+
+$success-primary-light: #4eb33c;
+$success-secondary-light: #2f921e;
+
+$success-primary-hover-light: #5aca45;
+$success-secondary-hover-light: #179800;
+
+$success-primary-disable-light: #add4a6;
+$success-secondary-disable-light: #83b38a;
+
+$success-primary-click-light: #137102;
+$success-secondary-click-light: #179800;
+
+
+$warn-primary-light: #e6aa29;
+$warn-secondary-light: #b1872e;
+
+$warn-primary-hover-light: #ecb94a;
+$warn-secondary-hover-light: #b1872e;
+
+$warn-primary-disable-light: #ffd987;
+$warn-secondary-disable-light: #e0b966;
+
+$warn-primary-click-light: #b57c01;
+$warn-secondary-click-light: #7d5c18;
+
+
+$danger-primary-light: #e04949;
+$danger-secondary-light: #b93e3e;
+
+$danger-primary-hover-light: #f35252;
+$danger-secondary-hover-light: #b93e3e;
+
+$danger-primary-disable-light: #e8a3a3;
+$danger-secondary-disable-light: #da827b;
+
+$danger-primary-click-light: #791d1d;
+$danger-secondary-click-light: #b93e3e;
+
+
+/* Dark Mode Colors --------------------------------- */
+
+
+
+/* SOLID BACKGROUNDS -------------------------------- */
+
+.bds-bg-alternate {
+    background-color: #d4d4d4;
+}
+
+
+/* TRANSLUCENT BACKGROUNDS -------------------------- */
+
+.bds-bg-trans-light {
+    background: rgba(255, 255, 255, 0.6);
+}
+
+.bds-bg-trans-dark {
+    background: rgba(0, 0, 0, 0.8);
+}
+
+.bds-bg-trans-warn {
+    background: rgba(49, 11, 11, 0.8);
+}
+
+.bds-bg-trans-success {
+    background: rgba(8, 21, 5, 0.8);
+}
+
+
+/* STANDARDIZED COLORS  ----------------------------- */
+
+.bds-color-grey {
+    color: gray;
+}
+
+.bds-color-success {
+    color: green;
+}
