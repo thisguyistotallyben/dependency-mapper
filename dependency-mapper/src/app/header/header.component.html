@@ -1,0 +1,63 @@
+<div class="bds-header-container bds-x-even_spread bds-shadow-2">
+  <div class="title bds-x-left bds-y-center">
+    <div class="icon bds-r-margin-1 bds-shadow-2">
+      <i class="fas fa-sitemap"></i>
+    </div>
+    Dependency Mapper. Designed by BenCorp in California.
+  </div>
+  <div class="icons bds-y-center">
+    <!-- <i class="fas fa-plus bds-r-margin-2"></i>
+    <i class="fas fa-folder-open bds-r-margin-2"></i> -->
+
+    <!-- <i class="fas fa-check bds-r-margin-1"></i> -->
+    <div class="jira bds-shadow-2">
+      <div
+        class="jira-icon bds-l-padding-2 bds-r-padding-2 bds-x-center bds-y-center"
+        (click)="showJiraModal = true"
+      >
+        <i class="fab fa-jira"></i>
+      </div>
+      <div class="jira-data">
+        <div class="jira-data-icon">
+          <i class="fas fa-download"></i>
+        </div>
+        <div class="jira-data-icon">
+          <i class="fas fa-upload"></i>
+        </div>
+      </div>
+    </div>
+    <i class="fas fa-ellipsis-v bds-l-padding-2 bds-r-padding-1"></i>
+  </div>
+</div>
+<!-- <div class="sub-header bds-shadow-1 bds-x-right bds-y-center">
+  <div class="controls bds-y-center">
+    <div class="subheader-button bds-padding-1">
+      <i class="fas fa-code"></i>
+      <div class="bds-l-margin-1 control-text">
+        Tickets
+      </div>
+    </div>
+    <div class="bds-v-separator bds-l-margin-1 bds-r-margin-1"></div>
+    <div class="subheader-button bds-padding-1">
+      <i class="fas fa-project-diagram"></i>
+      <div class="bds-l-margin-1 control-text">
+        Quick Dependency
+      </div>
+    </div>
+    <div class="bds-v-separator bds-l-margin-1 bds-r-margin-1"></div>
+    <div class="subheader-button bds-padding-1">
+      <i class="fab fa-jira"></i>
+      <div class="bds-l-margin-1 control-text">
+        Jira
+      </div>
+    </div>
+  </div> -->
+  <!-- <button class="bds-button bds-button neutral">
+    <i class="fas fa-upload"></i>
+    Export
+  </button>
+</div> -->
+<app-jira
+  *ngIf="showJiraModal"
+  (close)="showJiraModal = false"
+></app-jira>

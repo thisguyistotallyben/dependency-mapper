@@ -1,0 +1,20 @@
+.container {
+  background-color: #dedede;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.body {
+  display: flex;
+  height: inherit;
+}
+
+.tree {
+  width: 100%;
+}
+
+.sidebar {
+  width: 35em;
+  height: 100%;
+}

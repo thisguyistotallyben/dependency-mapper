@@ -1,4 +1,4 @@
 
-[submodule "dependency-mapper\\src\\assets\\bds"]
-	path = dependency-mapper\\src\\assets\\bds
+[submodule ".\\dependency-mapper\\src\\assets\\bds"]
+	path = .\\dependency-mapper\\src\\assets\\bds
 	url = https://github.com/thisguyistotallyben/bds.git

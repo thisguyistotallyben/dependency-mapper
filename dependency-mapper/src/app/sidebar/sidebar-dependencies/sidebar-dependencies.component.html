@@ -1,0 +1,56 @@
+<div class="container">
+  <div class="ticket-deps bds-container bds-l-margin-1 bds-r-margin-1 bds-b-margin-1 bds-shadow-2">
+    <div class="dep-title bds-x-even_spread bds-y-center bds-padding-1">
+      <b>Parent Dependencies</b>
+      <button class="bds-button bds-button-neutral" (click)="toggleSettingParentDependencies()" *ngIf="!selectingParentDependencies">
+        Set
+      </button>
+      <button class="bds-button bds-button-success" (click)="toggleSettingParentDependencies()" *ngIf="selectingParentDependencies">
+        Done
+      </button>
+    </div>
+    <!-- PARENT DISPLAY -->
+    <div *ngIf="!selectingParentDependencies">
+      <div class="deps bds-padding-1" *ngFor="let dep of dataService.getParentDependencies(ticketId); first as isFirst" [ngClass]="{'border-top': isFirst}">
+        {{ getTicketTitle(dep.parentId) }}
+      </div>
+    </div>
+    <!-- PARENT SELECT -->
+    <div class="border-top" *ngIf="selectingParentDependencies">
+      <div *ngFor="let ticket of getTicketsForDependencies()">
+        <div class="dep-entry bds-padding-1" (click)="toggleParentDependency(ticket.id)">
+          <i class="far fa-square bds-r-margin-1" *ngIf="!parentDependencies.has(ticket.id)"></i>
+          <i class="check fas fa-check-square bds-r-margin-1" *ngIf="parentDependencies.has(ticket.id)"></i>
+          {{ ticket.title }}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="ticket-deps bds-container bds-margin-1 bds-shadow-2">
+    <div class="dep-title bds-x-even_spread bds-y-center bds-padding-1">
+      <b>Child Dependencies</b>
+      <button class="bds-button bds-button-neutral" (click)="toggleSettingChildDependencies()" *ngIf="!selectingChildDependencies">
+        Set
+      </button>
+      <button class="bds-button bds-button-success" (click)="toggleSettingChildDependencies()" *ngIf="selectingChildDependencies">
+        Done
+      </button>
+    </div>
+    <!-- CHILD DISPLAY -->
+    <div *ngIf="!selectingChildDependencies" >
+      <div class="bds-padding-1" *ngFor="let dep of dataService.getChildDependencies(ticketId); first as isFirst" [ngClass]="{'border-top': isFirst}">
+        {{ getTicketTitle(dep.childId) }}
+      </div>
+    </div>
+    <!-- CHILD SELECT -->
+    <div class="border-top" *ngIf="selectingChildDependencies">
+      <div *ngFor="let ticket of getTicketsForDependencies()">
+        <div class="dep-entry bds-padding-1" (click)="toggleChildDependency(ticket.id)">
+          <i class="far fa-square bds-r-margin-1" *ngIf="!childDependencies.has(ticket.id)"></i>
+          <i class="check fas fa-check-square bds-r-margin-1" *ngIf="childDependencies.has(ticket.id)"></i>
+          {{ ticket.title }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

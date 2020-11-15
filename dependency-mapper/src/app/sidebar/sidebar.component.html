@@ -1,0 +1,138 @@
+<div class="container">
+  <!-- TICKETS SECTION -->
+  <div class="section bds-container bds-shadow-2">
+    <div class="bds-container-header bds-padding-1 bds-x-even_spread bds-y-center">
+      <div class="bds-y-center bds-x-even_spread">
+        <div>
+          <i class="fas fa-code bds-r-margin-1"></i>
+          Tickets
+        </div>
+        <!-- <input class="bds-input-field"> -->
+      </div>
+    </div>
+
+    <div class="section-container">
+      <div class="section-content bds-y-scrollable" *ngIf="!creatingTicket && !addingDependencies">
+        <!-- NEW -->
+        <div class="new-entry-container" *ngIf="isMakingNewTicket">
+          <!-- TITLE -->
+          <div class="bds-padding-1 bds-y-center bds-x-even_spread">
+            <div class="bds-x-left">
+              <b>Add Ticket</b>
+            </div>
+          </div>
+          <div class="bds-container bds-l-margin-1 bds-r-margin-1 bds-b-margin-1 bds-padding-1 bds-shadow-2">
+            <app-sidebar-ticket-fields
+              (submit)="addTicket($event, false)"
+              (cancel)="closeNewTicket()"
+            ></app-sidebar-ticket-fields>
+          </div>
+        </div>
+        <div class="ticket-entry bds-hover-pointer" *ngIf="!isMakingNewTicket">
+          <div class="new-entry bds-x-center bds-padding-1" (click)="openNewTicket()">
+            <i class="fas fa-plus bds-r-margin-1"></i>
+            Add Ticket
+          </div>
+        </div>
+
+        <!-- FOR EACH TICKET -->
+        <div *ngFor="let ticket of dataService.tickets">
+          <!-- ENTRY -->
+          <div
+            class="ticket-entry"
+            [ngClass]="{
+              'expanded-entry': ticketIsExpanded(ticket.id),
+              'control-bg': shouldHaveControlBg(ticket.id),
+              'delete-bg': shouldHaveDeleteBg(ticket.id)
+            }"
+          >
+
+            <!-- TITLE -->
+            <div class=" bds-padding-1 bds-y-center bds-x-even_spread">
+              <div class="bds-x-left">
+                {{ ticket.title }}
+              </div>
+              <div class="bds-x-right">
+                <i
+                  class="fas fa-trash-alt bds-r-margin-1 delete-icon"
+                  [ngClass]="{'keep-opacity delete-icon-is-open': shouldHaveDeleteBg(ticket.id) && ticketIsExpanded(ticket.id)}"
+                  (click)="toggleConfirmRemoveTicket(ticket.id)"
+                ></i>
+                <div
+                  class="vertical-sep bds-r-margin-1"
+                  [ngClass]="{'keep-opacity': ticketIsExpanded(ticket.id)}"
+                ></div>
+                <i
+                  class="fas fa-project-diagram bds-r-margin-1 control-icon"
+                  [ngClass]="{'keep-opacity control-icon-is-open': ticketShowingDependencies != '' && ticketIsExpanded(ticket.id)}"
+                  (click)="toggleDependencies(ticket.id)"
+                ></i>
+                <i
+                  class="fas fa-pen control-icon"
+                  [ngClass]="{'keep-opacity control-icon-is-open': ticketBeingEdited != '' && ticketIsExpanded(ticket.id)}"
+                  (click)="toggleEditTicket(ticket.id)"
+                ></i>
+              </div>
+            </div>
+
+            <!-- DELETE -->
+            <div class="bds-padding-1 bds-x-center bds-y-center" *ngIf="ticket.id == ticketBeingDeleted">
+              <button class="bds-button bds-button-danger" (click)="removeTicket(ticket.id)">Delete</button>
+            </div>
+
+            <!-- DEPENDENCIES -->
+            <div *ngIf="ticket.id == ticketShowingDependencies">
+              <app-sidebar-dependencies
+                [ticketId]="ticket.id"
+              ></app-sidebar-dependencies>
+            </div>
+
+            <!-- EDIT -->
+            <div
+              class="bds-container bds-l-margin-1 bds-r-margin-1 bds-b-margin-1 bds-padding-1 bds-shadow-2"
+              *ngIf="ticket.id == ticketBeingEdited"
+            >
+              <app-sidebar-ticket-fields
+                [ticketId]="ticket.id"
+                (submit)="addTicket($event, true)"
+                (cancel)="toggleEditTicket(ticket.id)"
+              ></app-sidebar-ticket-fields>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-content bds-y-scrollable" *ngIf="addingDependencies">
+        <div class="empty-tickets bds-y-center bds-x-center" *ngIf="!dataService.tickets.length">
+          No tickets to display
+        </div>
+        <div *ngFor=" let ticket of dataService.tickets">
+          <div class="ticket-entry ticket-selection bds-y-center bds-x-even_spread" (click)="toggleSelection(ticket.id)">
+            <div class="bds-x-left">
+              <i
+                [ngClass]="{'fas fa-check-square checked': isSelected(ticket.id), 'far fa-square': !isSelected(ticket.id)}"
+                class="bds-y-center bds-x-center bds-r-margin-1"></i>
+              {{ ticket.id }} {{ ticket.title }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUICK DEPENDENCY -->
+  <div class="bds-container bds-l-margin-1 bds-r-margin-1 bds-b-margin-1 bds-shadow-2">
+    <div class="bds-container-header bds-padding-1">
+      <i class="fas fa-project-diagram bds-r-margin-1"></i>
+      Quick Dependency
+    </div>
+    <div class="bds-padding-1 bds-y-center bds-x-even_spread">
+      <div>
+        <input class="bds-input-field quick-dep bds-shadow-1 bds-r-margin-1" [(ngModel)]="quickDepParentTitle">
+        <i class="fas fa-arrow-right"></i>
+        <input class="bds-input-field quick-dep bds-shadow-1 bds-l-margin-1 bds-r-margin-1" [(ngModel)]="quickDepChildTitle">
+      </div>
+      <button class="bds-button bds-button-success" (click)="createQuickDependency()">Save</button>
+    </div>
+  </div>
+</div>
