@@ -52,24 +52,25 @@
               </div>
               <div class="bds-x-right">
                 <i
-                  class="fas fa-trash-alt bds-r-margin-1 delete-icon"
-                  [ngClass]="{'keep-opacity delete-icon-is-open': shouldHaveDeleteBg(ticket.id) && ticketIsExpanded(ticket.id)}"
-                  (click)="toggleConfirmRemoveTicket(ticket.id)"
+                  class="fas fa-project-diagram bds-r-margin-1 control-icon"
+                  [ngClass]="{'keep-opacity control-icon-is-open': ticketShowingDependencies != '' && ticketIsExpanded(ticket.id)}"
+                  (click)="toggleDependencies(ticket.id)"
+                ></i>
+                <i
+                  class="fas fa-pen control-icon bds-r-margin-1"
+                  [ngClass]="{'keep-opacity control-icon-is-open': ticketBeingEdited != '' && ticketIsExpanded(ticket.id)}"
+                  (click)="toggleEditTicket(ticket.id)"
                 ></i>
                 <div
                   class="vertical-sep bds-r-margin-1"
                   [ngClass]="{'keep-opacity': ticketIsExpanded(ticket.id)}"
                 ></div>
                 <i
-                  class="fas fa-project-diagram bds-r-margin-1 control-icon"
-                  [ngClass]="{'keep-opacity control-icon-is-open': ticketShowingDependencies != '' && ticketIsExpanded(ticket.id)}"
-                  (click)="toggleDependencies(ticket.id)"
-                ></i>
-                <i
-                  class="fas fa-pen control-icon"
-                  [ngClass]="{'keep-opacity control-icon-is-open': ticketBeingEdited != '' && ticketIsExpanded(ticket.id)}"
-                  (click)="toggleEditTicket(ticket.id)"
-                ></i>
+                class="fas fa-trash-alt delete-icon"
+                [ngClass]="{'keep-opacity delete-icon-is-open': shouldHaveDeleteBg(ticket.id) && ticketIsExpanded(ticket.id)}"
+                (click)="toggleConfirmRemoveTicket(ticket.id)"
+              ></i>
+
               </div>
             </div>
 
