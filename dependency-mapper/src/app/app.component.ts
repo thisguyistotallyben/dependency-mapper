@@ -1,3 +1,4 @@
+import { TreeService } from 'src/app/tree/tree.service';
 import { Component, OnInit } from '@angular/core';
 import { ConfigService } from './config.service';
 import { JiraService } from './jira/jira.service';
@@ -14,15 +15,15 @@ export class AppComponent implements OnInit{
 
   constructor(
     private route: ActivatedRoute,
-    private configService: ConfigService,
     private dataService: DataService,
-    private jiraService: JiraService
+    private treeService: TreeService
   ) { }
 
   ngOnInit() {
     this.route.queryParams.subscribe( params => {
       if (params.data) {
         this.dataService.importURL(params.data);
+        this.treeService.renderTree();
       }
   });
   }

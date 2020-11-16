@@ -33,6 +33,7 @@ export class HeaderComponent implements OnInit {
 
   copyToClipboard(): void {
     this.clipboard.copy('http://thisguyistotallyben.github.io/dependency-mapper/?data=' + this.dataService.exportURL());
+    // this.clipboard.copy('http://localhost:4200/?data=' + this.dataService.exportURL());
   }
 
 }

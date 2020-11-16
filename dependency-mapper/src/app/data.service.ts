@@ -137,19 +137,27 @@ class DataService {
     let exportObj = {};
 
     exportObj['tickets'] = this.tickets;
+    exportObj['dependencies'] = this.links;
 
     return exportObj;
   }
 
-  exportURL(): string {
+  exportURL(): string { // change name later
     let exportedData = this.export();
 
     return btoa(JSON.stringify(exportedData));
   }
 
   importURL(encodedData: string): void {
-    const dataString = atob(encodedData);
-    console.log(JSON.parse(dataString));
+    const data = JSON.parse(atob(encodedData));
+
+    data.tickets.forEach((ticket: Ticket) => {
+      this.addTicket(ticket);
+    });
+
+    data.dependencies.forEach((dep: Dependency) => {
+      this.addDependency(dep.parentId, dep.childId);
+    });
   }
 
 }
