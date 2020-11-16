@@ -23,7 +23,9 @@ class DataService {
   ticketLookup: Map<string, Ticket>;
   links: Array<Dependency>;
 
-  constructor(private configService: ConfigService) {
+  constructor(
+    private configService: ConfigService
+  ) {
     console.log('Initializing Data Service');
 
     this.ticketLookup = new Map<string, any>();
@@ -129,6 +131,25 @@ class DataService {
 
   generateUrl(jiraId: string): string {
     return `${this.configService.getCookie('jira-base-url')}/${this.configService.getCookie('jira-project')}-${jiraId}`
+  }
+
+  export(): any {
+    let exportObj = {};
+
+    exportObj['tickets'] = this.tickets;
+
+    return exportObj;
+  }
+
+  exportURL(): string {
+    let exportedData = this.export();
+
+    return btoa(JSON.stringify(exportedData));
+  }
+
+  importURL(encodedData: string): void {
+    const dataString = atob(encodedData);
+    console.log(JSON.parse(dataString));
   }
 
 }

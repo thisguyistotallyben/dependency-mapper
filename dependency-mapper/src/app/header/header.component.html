@@ -6,11 +6,7 @@
     Dependency Mapper. Designed by BenCorp in California.
   </div>
   <div class="icons bds-y-center">
-    <!-- <i class="fas fa-plus bds-r-margin-2"></i>
-    <i class="fas fa-folder-open bds-r-margin-2"></i> -->
-
-    <!-- <i class="fas fa-check bds-r-margin-1"></i> -->
-    <div class="jira bds-shadow-2">
+    <!-- <div class="jira bds-shadow-2">
       <div
         class="jira-icon bds-l-padding-2 bds-r-padding-2 bds-x-center bds-y-center"
         (click)="showJiraModal = true"
@@ -25,8 +21,11 @@
           <i class="fas fa-upload"></i>
         </div>
       </div>
-    </div>
-    <i class="fas fa-ellipsis-v bds-l-padding-2 bds-r-padding-1"></i>
+    </div> -->
+    <button class="copy-button bds-button bds-button-success bds-l-margin-2 bds-r-margin-1" (click)="copyToClipboard()">
+      <i class="far fa-copy"></i>
+      Copy URL to clipboard
+    </button>
   </div>
 </div>
 <!-- <div class="sub-header bds-shadow-1 bds-x-right bds-y-center">
