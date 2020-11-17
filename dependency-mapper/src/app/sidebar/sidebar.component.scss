@@ -15,8 +15,10 @@
   display: flex;
   flex-direction: column;
   flex-grow: 1;
-  // flex-shrink: 0;
   margin: 0.5em;
+  // margin-top: 0.5em;
+  // margin-bottom: 0.5em;
+  // margin-right: 0.5em;
 }
 
 .section-overlay {
@@ -112,6 +114,7 @@
 .ticket-entry:hover {
   background-color:#dfebf1;
   transition: background-color 0.2s;
+  // cursor: pointer;
 }
 
 .ticket-entry:hover > * > * > .control-icon:hover {

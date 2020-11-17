@@ -147,6 +147,8 @@ class DataService {
   export(): any {
     let exportObj = {};
 
+    exportObj['jiraBaseUrl'] = this.configService.getCookie('jira-base-url');
+    exportObj['jiraProject'] = this.configService.getCookie('jira-project');
     exportObj['tickets'] = this.tickets;
     exportObj['dependencies'] = this.links;
 
@@ -162,6 +164,14 @@ class DataService {
   importURL(encodedData: string): void {
     const compressedData = atob(encodedData);
     const data = JSON.parse(pako.ungzip(compressedData, { to: 'string' }));
+
+    if (data.jiraBaseUrl) {
+      this.configService.setCookie('jira-base-url', data.jiraBaseUrl);
+    }
+
+    if (data.jiraProject) {
+      this.configService.setCookie('jira-project', data.jiraProject);
+    }
 
     if (data.tickets) {
       data.tickets.forEach((ticket: Ticket) => {

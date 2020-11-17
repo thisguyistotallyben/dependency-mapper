@@ -16,6 +16,11 @@ export class TreeComponent implements AfterViewInit {
 
   public ngAfterViewInit(): void {
     mermaid.initialize({
+      flowchart:{
+        useMaxWidth:false,
+        curve:'basis',
+      },
+      theme: 'forest',
       securityLevel: 'loose'
     });
     mermaid.init();
