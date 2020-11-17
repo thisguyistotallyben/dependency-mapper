@@ -141,7 +141,7 @@ class DataService {
 
 
   generateUrl(jiraId: string): string {
-    return `${this.configService.getCookie('jira-base-url')}/${this.configService.getCookie('jira-project')}-${jiraId}`
+    return `${this.configService.getCookie('jira-base-url')}/browse/${this.configService.getCookie('jira-project')}-${jiraId}`
   }
 
   export(): any {
