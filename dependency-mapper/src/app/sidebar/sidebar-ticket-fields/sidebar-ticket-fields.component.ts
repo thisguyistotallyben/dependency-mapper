@@ -27,7 +27,7 @@ export class SidebarTicketFieldsComponent implements OnInit {
       this.id = this.currentTicket.id;
       this.jiraId = this.currentTicket.jiraId;
       this.title = this.currentTicket.title;
-      this.description = this.currentTicket.description;
+      this.description = this.dataService.formatFromData(this.currentTicket.description);
     }
   }
 

@@ -1,6 +1,7 @@
 import { ConfigService } from './config.service';
 import { Injectable } from '@angular/core';
 import { Guid } from "guid-typescript";
+import * as pako from 'pako';
 
 
 class Ticket {
@@ -43,11 +44,21 @@ class DataService {
     // empty out any undefines
     ticket.jiraId = ticket.jiraId ? ticket.jiraId : '';
     ticket.title = ticket.title ? ticket.title : '';
-    ticket.description = ticket.description ? ticket.description : '';
+    ticket.description = ticket.description
+      ? this.formatToData(ticket.description)
+      : '';
 
     console.log('addTicket', ticket);
     this.ticketLookup.set(ticket.id, ticket);
     return ticket;
+  }
+
+  formatToData(text: string): string {
+    return text.replace('\n', '<br>');
+  }
+
+  formatFromData(text: string): string {
+    return text.replace('<br>', '\n');
   }
 
   removeTicket(id: string): void {
@@ -144,20 +155,25 @@ class DataService {
 
   exportURL(): string { // change name later
     let exportedData = this.export();
-
-    return btoa(JSON.stringify(exportedData));
+    const compressedData = pako.gzip(JSON.stringify(exportedData), { to: 'string' });
+    return encodeURIComponent(btoa(compressedData));
   }
 
   importURL(encodedData: string): void {
-    const data = JSON.parse(atob(encodedData));
+    const compressedData = atob(encodedData);
+    const data = JSON.parse(pako.ungzip(compressedData, { to: 'string' }));
 
-    data.tickets.forEach((ticket: Ticket) => {
-      this.addTicket(ticket);
-    });
+    if (data.tickets) {
+      data.tickets.forEach((ticket: Ticket) => {
+        this.addTicket(ticket);
+      });
+    }
 
-    data.dependencies.forEach((dep: Dependency) => {
-      this.addDependency(dep.parentId, dep.childId);
-    });
+    if (data.dependencies) {
+      data.dependencies.forEach((dep: Dependency) => {
+        this.addDependency(dep.parentId, dep.childId);
+      });
+    }
   }
 
 }

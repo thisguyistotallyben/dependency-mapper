@@ -1,7 +1,5 @@
 import { TreeService } from 'src/app/tree/tree.service';
 import { Component, OnInit } from '@angular/core';
-import { ConfigService } from './config.service';
-import { JiraService } from './jira/jira.service';
 import { DataService } from './data.service';
 import { ActivatedRoute } from '@angular/router';
 
