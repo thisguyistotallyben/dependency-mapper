@@ -1,0 +1,37 @@
+.control-panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  color: black;
+  background-color: #efefef;
+  border-bottom-style: solid;
+  border-bottom-color: #9a9a9a;
+  border-bottom-width: 1px;
+}
+
+.panel-buttons {
+  display: flex;
+}
+
+.control-button {
+  position: relative;
+  border-radius: 0.2em;
+  font-size: small;
+}
+
+.active {
+  color: white;
+  background-color: #007bab;
+}
+
+.control-button:hover {
+  color: black;
+  background-color: #007bab30;
+  cursor: pointer;
+}
+
+.control-button:active {
+  color: white;
+  background-color: #005679;
+  cursor: pointer;
+}

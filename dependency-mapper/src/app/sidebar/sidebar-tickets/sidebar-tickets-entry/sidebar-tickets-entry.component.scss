@@ -1,0 +1,88 @@
+.entry-container {
+  display: flex;
+  flex-direction: column;
+  border-bottom-style: solid;
+  border-bottom-color: #9a9a9a;
+  border-bottom-width: 1px;
+  background-color: white;
+  transition: background-color 0.2s;
+}
+
+.ticket-display {
+  width: 100%;
+  display: flex;
+
+}
+
+.ticket-display:hover > * > .icon,
+.ticket-display:hover > .icon {
+  opacity: 0.4;
+  transition: color 0.2s, opacity 0.2s;
+}
+
+.ticket-display > * > .icon,
+.ticket-display > .icon {
+  opacity: 0;
+}
+
+.dependencies {
+  display: flex;
+  flex-grow: 1;
+}
+
+.dependencies:hover {
+  cursor: pointer;
+}
+
+.dependencies:hover > .icon {
+  opacity: 1 !important;
+  color: #007bab;
+  transition: color 0.2s, opacity 0.2s;
+}
+
+.vertical-sep {
+  width: 1px;
+  height: 1em;
+  background-color:  #afafaf;
+}
+
+.edit:hover {
+  cursor: pointer;
+}
+
+.edit:hover > .icon {
+  opacity: 1 !important;
+  color: #007bab;
+  transition: color 0.2s, opacity 0.2s;
+}
+
+.edit-container {
+  width: 100%;
+}
+
+.delete:hover {
+  cursor: pointer;
+}
+
+.delete:hover > .icon {
+  opacity: 1 !important;
+  color: #b43535;
+  transition: color 0.2s, opacity 0.2s;
+}
+
+/* BACKGROUNDS */
+
+.dep-bg {
+  background-color: #def1ff;
+  transition: background-color 0.2s;
+}
+
+.edit-bg {
+  background-color: #ecffea;
+  transition: background-color 0.2s;
+}
+
+.delete-bg {
+  background-color: #ffcece;
+  transition: background-color 0.2s;
+}

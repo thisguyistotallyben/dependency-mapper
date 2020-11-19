@@ -1,0 +1,47 @@
+<div
+  class="entry-container"
+  [ngClass]="{
+    'dep-bg': isSettingDependencies(),
+    'edit-bg': isEditing(),
+    'delete-bg': isDeleting()
+  }"
+>
+  <div class="ticket-display bds-y-center">
+    <div
+      class="dependencies bds-l-padding-1 bds-t-padding-1 bds-b-padding-1 bds-x-even_spread bds-y-center"
+      (click)="toggleDependencies()"
+    >
+      {{ title }}
+      <i class="icon fas fa-project-diagram"></i>
+    </div>
+    <div class="edit bds-padding-1" (click)="toggleEdit()">
+      <i class="icon fas fa-pen"></i>
+    </div>
+    <div
+    class="icon vertical-sep"
+    ></div>
+    <div class="delete bds-padding-1" (click)="toggleDelete()">
+      <i class="icon fas fa-trash-alt"></i>
+    </div>
+  </div>
+  <div
+    class="edit-container bds-padding-1"
+    *ngIf="isEditing()"
+  >
+    <app-sidebar-tickets-fields
+      [ticket]="ticket"
+    ></app-sidebar-tickets-fields>
+  </div>
+  <div
+    class="dep-container bds-padding-1"
+    *ngIf="isSettingDependencies()"
+  >
+    DEPENDENCY THINGS GO HERE
+  </div>
+  <div
+    class="dep-container bds-padding-1"
+    *ngIf="isDeleting()"
+  >
+    DELETE THINGS GO HERE
+  </div>
+</div>
