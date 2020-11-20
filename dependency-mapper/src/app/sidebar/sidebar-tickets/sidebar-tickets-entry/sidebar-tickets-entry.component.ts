@@ -74,4 +74,9 @@ export class SidebarTicketsEntryComponent implements OnInit {
     return this.settingDependencies || this.editingTicket || this.deletingTicket;
   }
 
+  update(event: Ticket): void {
+    this.dataService.addTicket(event);
+    this.treeService.renderTree();
+  }
+
 }

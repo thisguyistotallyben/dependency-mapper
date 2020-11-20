@@ -33,6 +33,8 @@
   >
     <app-sidebar-tickets-fields
       [ticket]="ticket"
+      (submit)="update($event)"
+      (cancel)="toggleEdit()"
     ></app-sidebar-tickets-fields>
   </div>
   <div
