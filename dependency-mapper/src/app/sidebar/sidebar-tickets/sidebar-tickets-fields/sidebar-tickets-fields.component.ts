@@ -2,18 +2,17 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { DataService, Ticket } from 'src/app/data.service';
 
 @Component({
-  selector: 'app-sidebar-ticket-fields',
-  templateUrl: './sidebar-ticket-fields.component.html',
-  styleUrls: ['./sidebar-ticket-fields.component.scss']
+  selector: 'app-sidebar-tickets-fields',
+  templateUrl: './sidebar-tickets-fields.component.html',
+  styleUrls: ['./sidebar-tickets-fields.component.scss']
 })
-export class SidebarTicketFieldsComponent implements OnInit {
+export class SidebarTicketsFieldsComponent implements OnInit {
   id: string;
   jiraId: string;
   title: string;
   description: string;
-  currentTicket: Ticket;
 
-  @Input() ticketId: string;
+  @Input() ticket: Ticket;
 
   @Output() submit = new EventEmitter<Ticket>();
   @Output() cancel = new EventEmitter<void>();
@@ -22,12 +21,11 @@ export class SidebarTicketFieldsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (this.ticketId) {
-      this.currentTicket = this.dataService.getTicket(this.ticketId);
-      this.id = this.currentTicket.id;
-      this.jiraId = this.currentTicket.jiraId;
-      this.title = this.currentTicket.title;
-      this.description = this.dataService.formatFromData(this.currentTicket.description);
+    if (this.ticket) {
+      this.id = this.ticket.id;
+      this.jiraId = this.ticket.jiraId;
+      this.title = this.ticket.title;
+      this.description = this.ticket.description;
     }
   }
 
@@ -52,5 +50,4 @@ export class SidebarTicketFieldsComponent implements OnInit {
   validInputs(): boolean {
     return true;
   }
-
 }

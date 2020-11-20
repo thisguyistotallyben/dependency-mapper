@@ -3,11 +3,11 @@ import { DataService, Dependency, Ticket } from 'src/app/data.service';
 import { TreeService } from 'src/app/tree/tree.service';
 
 @Component({
-  selector: 'app-sidebar-dependencies',
-  templateUrl: './sidebar-dependencies.component.html',
-  styleUrls: ['./sidebar-dependencies.component.scss']
+  selector: 'app-sidebar-tickets-dependencies',
+  templateUrl: './sidebar-tickets-dependencies.component.html',
+  styleUrls: ['./sidebar-tickets-dependencies.component.scss']
 })
-export class SidebarDependenciesComponent implements OnInit {
+export class SidebarTicketsDependenciesComponent implements OnInit {
   @Input() ticketId: string;
 
   ticket: Ticket;

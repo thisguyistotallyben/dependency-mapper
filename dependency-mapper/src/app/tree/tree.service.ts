@@ -32,8 +32,8 @@ export class TreeService {
     outputString += '\n';
     links.forEach((val) => outputString += val + '\n');
 
-    console.log('Current Tree Syntax:');
-    console.log(outputString);
+    // console.log('Current Tree Syntax:');
+    // console.log(outputString);
     return outputString;
   }
 
@@ -54,7 +54,6 @@ export class TreeService {
   }
 
   renderTree(): void {
-    console.log('tree service calling renderTree()');
     this.component.renderTree();
   }
 }
