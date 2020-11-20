@@ -1,3 +1,10 @@
+.container {
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
 .control-panel {
   position: relative;
   display: flex;
@@ -7,6 +14,7 @@
   border-bottom-style: solid;
   border-bottom-color: #9a9a9a;
   border-bottom-width: 1px;
+  z-index: 1; // for showing the drop shadow
 }
 
 .panel-buttons {
@@ -19,11 +27,6 @@
   font-size: small;
 }
 
-.active {
-  color: white;
-  background-color: #007bab;
-}
-
 .control-button:hover {
   color: black;
   background-color: #007bab30;
@@ -34,4 +37,23 @@
   color: white;
   background-color: #005679;
   cursor: pointer;
+}
+
+.active {
+  color: white;
+  background-color: #007bab;
+}
+
+.tickets-container {
+  position: relative;
+  height: 100%;
+}
+
+.tickets {
+  position: absolute;
+  height: 100%;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
 }

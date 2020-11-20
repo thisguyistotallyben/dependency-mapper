@@ -1,4 +1,5 @@
-import { Ticket } from 'src/app/data.service';
+import { TreeService } from 'src/app/tree/tree.service';
+import { Ticket, DataService } from 'src/app/data.service';
 import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
@@ -14,7 +15,10 @@ export class SidebarTicketsEntryComponent implements OnInit {
   settingDependencies = false;
   deletingTicket = false;
 
-  constructor() { }
+  constructor(
+    private dataService: DataService,
+    private treeService: TreeService
+  ) { }
 
   ngOnInit(): void {
     console.log('ticket', this.ticket);
@@ -61,6 +65,15 @@ export class SidebarTicketsEntryComponent implements OnInit {
 
   isDeleting(): boolean {
     return this.deletingTicket;
+  }
+
+  delete(): void {
+    this.dataService.removeTicket(this.ticket.id);
+    this.treeService.renderTree();
+  }
+
+  isEntryOpen(): boolean {
+    return this.settingDependencies || this.editingTicket || this.deletingTicket;
   }
 
 }

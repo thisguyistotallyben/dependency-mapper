@@ -1,4 +1,5 @@
 .entry-container {
+  width: 100%;
   display: flex;
   flex-direction: column;
   border-bottom-style: solid;
@@ -6,6 +7,15 @@
   border-bottom-width: 1px;
   background-color: white;
   transition: background-color 0.2s;
+}
+
+.entry-open > * > .icon,
+.entry-open > * > * > .icon {
+  opacity: 0.4;
+}
+
+.entry-open > * > * > .title {
+  font-weight: bold;
 }
 
 .ticket-display {
@@ -52,12 +62,8 @@
 
 .edit:hover > .icon {
   opacity: 1 !important;
-  color: #007bab;
+  color:#009612;
   transition: color 0.2s, opacity 0.2s;
-}
-
-.edit-container {
-  width: 100%;
 }
 
 .delete:hover {
@@ -70,19 +76,32 @@
   transition: color 0.2s, opacity 0.2s;
 }
 
-/* BACKGROUNDS */
-
-.dep-bg {
+.dep-open {
   background-color: #def1ff;
   transition: background-color 0.2s;
 }
 
-.edit-bg {
+.edit-open {
   background-color: #ecffea;
   transition: background-color 0.2s;
 }
 
-.delete-bg {
+.delete-open {
   background-color: #ffcece;
   transition: background-color 0.2s;
+}
+
+.dep-open > * > .dependencies > .icon {
+  opacity: 1;
+  color: #007bab;
+}
+
+.edit-open > * > .edit > .icon {
+  opacity: 1;
+  color: #009612;
+}
+
+.delete-open > * > .delete > .icon {
+  opacity: 1;
+  color: #b43535;
 }

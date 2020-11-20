@@ -37,11 +37,11 @@ export class SidebarComponent implements OnInit {
     return this.displayedMenu == 'tickets';
   }
 
-  selectQuickDependencies() {
+  selectTags() {
     this.displayedMenu = 'quickdeps';
   }
 
-  isDisplayingQuickDependencies(): boolean {
+  isDisplayingTags(): boolean {
     return this.displayedMenu == 'quickdeps';
   }
 

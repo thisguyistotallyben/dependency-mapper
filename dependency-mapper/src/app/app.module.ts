@@ -14,6 +14,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { SidebarTicketsComponent } from './sidebar/sidebar-tickets/sidebar-tickets.component';
 import { SidebarTicketsFieldsComponent } from './sidebar/sidebar-tickets/sidebar-tickets-fields/sidebar-tickets-fields.component';
 import { SidebarTicketsEntryComponent } from './sidebar/sidebar-tickets/sidebar-tickets-entry/sidebar-tickets-entry.component';
+import { SidebarSettingsComponent } from './sidebar/sidebar-settings/sidebar-settings.component';
 
 const routes: Routes = [
   {
@@ -37,6 +38,7 @@ const routes: Routes = [
     SidebarTicketsComponent,
     SidebarTicketsFieldsComponent,
     SidebarTicketsEntryComponent,
+    SidebarSettingsComponent,
   ],
   imports: [
     BrowserModule,

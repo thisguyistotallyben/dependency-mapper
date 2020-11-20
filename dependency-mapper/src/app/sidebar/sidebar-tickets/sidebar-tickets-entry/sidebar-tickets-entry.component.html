@@ -1,9 +1,10 @@
 <div
   class="entry-container"
   [ngClass]="{
-    'dep-bg': isSettingDependencies(),
-    'edit-bg': isEditing(),
-    'delete-bg': isDeleting()
+    'dep-open': isSettingDependencies(),
+    'edit-open': isEditing(),
+    'delete-open': isDeleting(),
+    'entry-open': isEntryOpen()
   }"
 >
   <div class="ticket-display bds-y-center">
@@ -11,7 +12,9 @@
       class="dependencies bds-l-padding-1 bds-t-padding-1 bds-b-padding-1 bds-x-even_spread bds-y-center"
       (click)="toggleDependencies()"
     >
-      {{ title }}
+      <div class="title">
+        {{ title }}
+      </div>
       <i class="icon fas fa-project-diagram"></i>
     </div>
     <div class="edit bds-padding-1" (click)="toggleEdit()">
@@ -25,7 +28,7 @@
     </div>
   </div>
   <div
-    class="edit-container bds-padding-1"
+    class="bds-container bds-padding-1 bds-margin-1 bds-shadow-1"
     *ngIf="isEditing()"
   >
     <app-sidebar-tickets-fields
@@ -39,9 +42,9 @@
     DEPENDENCY THINGS GO HERE
   </div>
   <div
-    class="dep-container bds-padding-1"
+    class="dep-container bds-padding-1 bds-x-center"
     *ngIf="isDeleting()"
   >
-    DELETE THINGS GO HERE
+    <button class="bds-button bds-button-danger" (click)="delete()">Delete</button>
   </div>
 </div>
