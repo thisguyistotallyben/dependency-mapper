@@ -21,11 +21,9 @@ export class SidebarTicketsEntryComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    console.log('ticket', this.ticket);
   }
 
   get title(): string {
-    console.log('getting title:', this.ticket);
     return this.ticket.title;
   }
 

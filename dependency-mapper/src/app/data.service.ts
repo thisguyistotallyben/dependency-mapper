@@ -48,7 +48,6 @@ class DataService {
       ? this.formatToData(ticket.description)
       : '';
 
-    console.log('addTicket', ticket);
     this.ticketLookup.set(ticket.id, ticket);
     return ticket;
   }
@@ -65,7 +64,6 @@ class DataService {
     let ticket: Ticket = this.getTicket(id);
     this.removeRelatedDependencies(id);
     this.ticketLookup.delete(id);
-    console.log(this.links);
   }
 
   getTicketByTitle(title: string): Ticket {
@@ -86,7 +84,6 @@ class DataService {
   /* DEPENDENCY LAND */
 
   addDependency(parentId: string, childId: string): void {
-    console.log('adding dependency', parentId, childId);
     let dep = new Dependency();
 
     dep.parentId = parentId;
