@@ -28,6 +28,14 @@
     </div>
   </div>
   <div
+    class="dep-container bds-padding-1"
+    *ngIf="isSettingDependencies()"
+  >
+    <app-sidebar-tickets-dependencies
+      [ticketId]="id"
+    ></app-sidebar-tickets-dependencies>
+  </div>
+  <div
     class="bds-container bds-padding-1 bds-margin-1 bds-shadow-1"
     *ngIf="isEditing()"
   >
@@ -36,12 +44,6 @@
       (submit)="update($event)"
       (cancel)="toggleEdit()"
     ></app-sidebar-tickets-fields>
-  </div>
-  <div
-    class="dep-container bds-padding-1"
-    *ngIf="isSettingDependencies()"
-  >
-    DEPENDENCY THINGS GO HERE
   </div>
   <div
     class="dep-container bds-padding-1 bds-x-center"

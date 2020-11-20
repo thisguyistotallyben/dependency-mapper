@@ -35,13 +35,23 @@
 
 .control-button:active {
   color: white;
-  background-color: #005679;
+  background-color: #00293a;
   cursor: pointer;
 }
 
 .active {
   color: white;
   background-color: #007bab;
+}
+
+.active:hover {
+  color: white;
+  background-color: #005e83;
+}
+
+.active:active {
+  color: white;
+  background-color: #00293a;
 }
 
 .tickets-container {

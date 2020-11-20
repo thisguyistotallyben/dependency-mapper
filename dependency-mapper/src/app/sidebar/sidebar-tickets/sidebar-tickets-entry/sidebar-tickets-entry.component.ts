@@ -27,6 +27,10 @@ export class SidebarTicketsEntryComponent implements OnInit {
     return this.ticket.title;
   }
 
+  get id(): string {
+    return this.ticket.id;
+  }
+
   /* state setting/checking */
 
   toggleDependencies(): void {
