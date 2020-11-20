@@ -1,6 +1,7 @@
 import { TreeService } from 'src/app/tree/tree.service';
 import { DataService, Ticket } from 'src/app/data.service';
 import { Component, OnInit } from '@angular/core';
+import { Clipboard } from '@angular/cdk/clipboard';
 
 @Component({
   selector: 'app-sidebar-tickets',
@@ -12,6 +13,7 @@ export class SidebarTicketsComponent implements OnInit {
   makingNewTicket = false;
 
   constructor(
+    private clipboard: Clipboard,
     private dataService: DataService,
     private treeService: TreeService
   ) { }
@@ -41,8 +43,11 @@ export class SidebarTicketsComponent implements OnInit {
     this.treeService.renderTree();
   }
 
+  // TODO: Figure out how to adjust the url automatically
+  // REASONING: I want this to be a 'save' where it just automatically updates the url
   copyUrl(): void {
-    console.log(this.dataService.exportURL());
+    this.clipboard.copy('http://thisguyistotallyben.github.io/dependency-mapper/?data=' + this.dataService.exportURL());
+    // this.clipboard.copy('http://localhost:4200/?data=' + this.dataService.exportURL());
   }
 
 }
