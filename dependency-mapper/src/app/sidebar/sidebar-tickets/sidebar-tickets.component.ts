@@ -20,7 +20,7 @@ export class SidebarTicketsComponent implements OnInit {
   }
 
   get tickets(): Array<Ticket> {
-    return this.dataService.tickets;
+    return this.dataService.tickets.sort((a, b) => (a.title > b.title) ? 1 : -1)
   }
 
   toggleNewTicket(): void {
