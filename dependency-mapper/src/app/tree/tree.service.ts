@@ -6,18 +6,21 @@ class TagStyle {
   tag: Tag;
   bgColor: string;
   borderColor: string;
-  borderWidth: string;
+  borderWidth: number;
+  borderStyle: string;
 }
 
 
 @Injectable({
   providedIn: 'root'
 })
-export class TreeService {
+class TreeService {
   component; // this is the unethical way to do this. I should probably do a pub-sub thing
-  tagStyles: Array<TagStyle>;
+  tagStyles: Map<string, TagStyle>;
 
-  constructor(private dataService: DataService) { }
+  constructor(private dataService: DataService) {
+    this.tagStyles = new Map<string, TagStyle>();
+  }
 
   generateSyntax(): string {
     let outputString = '';
@@ -65,4 +68,21 @@ export class TreeService {
   renderTree(): void {
     this.component.renderTree();
   }
+
+
+  /* TAG STYLES LAND */
+
+
+  addTagStyle(tagStyle: TagStyle): void {
+    this.tagStyles.set(tagStyle.tag.id, tagStyle);
+  }
+
+  getTagStyles(): Array<TagStyle> {
+    let arr = Array<TagStyle>();
+    this.tagStyles.forEach((value, key) => arr.push(value));
+    return arr;
+  }
+
 }
+
+export { TreeService, TagStyle };

@@ -1,0 +1,78 @@
+.tags-entry-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  border-bottom-style: solid;
+  border-bottom-color: #9a9a9a;
+  border-bottom-width: 1px;
+  background-color: white;
+  transition: background-color 0.2s;
+}
+
+.tag-display {
+  width: 100%;
+  display: flex;
+}
+
+.tag-display > * > .icon,
+.tag-display > .icon {
+  opacity: 0;
+}
+
+.tag-display:hover > * > .icon,
+.tag-display:hover > .icon {
+  opacity: 0.4;
+  transition: color 0.2s, opacity 0.2s;
+}
+
+.vertical-sep {
+  width: 1px;
+  height: 1em;
+  background-color:  #afafaf;
+}
+
+.title-edit {
+  display: flex;
+  flex-grow: 1;
+}
+
+.edit-open {
+  background-color: #ecffea;
+  transition: background-color 0.2s;
+}
+
+.delete-open {
+  background-color: #ffcece;
+  transition: background-color 0.2s;
+}
+
+.edit-open > * > .edit > .icon {
+  opacity: 1;
+  color: #009612;
+}
+
+.delete-open > * > .delete > .icon {
+  opacity: 1;
+  color: #b43535;
+}
+
+.edit:hover > .icon {
+  opacity: 1 !important;
+  color:#009612;
+  transition: color 0.2s, opacity 0.2s;
+}
+
+.delete:hover > .icon {
+  opacity: 1 !important;
+  color: #b43535;
+  transition: color 0.2s, opacity 0.2s;
+}
+
+.entry-open > * > .icon,
+.entry-open > * > * > .icon {
+  opacity: 0.4;
+}
+
+.entry-open > * > * > .title {
+  font-weight: bold;
+}

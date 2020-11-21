@@ -1,1 +1,42 @@
-<p>sidebar-tags-entry works!</p>
+<div
+  class="tags-entry-container"
+  [ngClass]="{
+    'edit-open': isEditing,
+    'delete-open': isDeleting,
+    'entry-open': isEditing || isDeleting
+  }"
+>
+  <div class="tag-display bds-y-center">
+    <div
+      class="edit title-edit bds-padding-1 bds-x-even_spread bds-y-center"
+      (click)="toggleEdit()"
+    >
+      <div class="title">
+        {{ title }}
+      </div>
+      <i class="icon fas fa-pen"></i>
+    </div>
+    <div
+    class="icon vertical-sep"
+    ></div>
+    <div class="delete bds-padding-1" (click)="toggleDelete()">
+      <i class="icon fas fa-trash-alt"></i>
+    </div>
+  </div>
+  <div
+    class="bds-container bds-l-margin-1 bds-r-margin-1 bds-b-margin-1 bds-padding-1 bds-shadow-2"
+    *ngIf="isEditing"
+  >
+    <app-sidebar-tags-fields
+      [tagStyle]="tagStyle"
+      (submit)="updateTagStyle($event)"
+      (cancel)="toggleEdit()"
+    ></app-sidebar-tags-fields>
+  </div>
+  <div
+    class="bds-x-center bds-padding-1"
+    *ngIf="isDeleting"
+  >
+    <button class="bds-button bds-button-danger">Delete</button>
+  </div>
+</div>

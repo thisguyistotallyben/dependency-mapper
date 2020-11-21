@@ -1,4 +1,7 @@
+import { TreeService, TagStyle } from 'src/app/tree/tree.service';
+import { DataService, Tag } from 'src/app/data.service';
 import { Component, OnInit } from '@angular/core';
+import { TagFieldsResponse } from './sidebar-tags-fields/sidebar-tags-fields.component';
 
 @Component({
   selector: 'app-sidebar-tags',
@@ -9,7 +12,10 @@ export class SidebarTagsComponent implements OnInit {
   // state
   _newTagIsOpen = false;
 
-  constructor() { }
+  constructor(
+    private dataService: DataService,
+    private treeService: TreeService
+  ) { }
 
   ngOnInit(): void {
   }
@@ -20,6 +26,24 @@ export class SidebarTagsComponent implements OnInit {
 
   newTagIsOpen(): boolean {
     return this._newTagIsOpen;
+  }
+
+  addNewTag(event: TagFieldsResponse): void {
+    const tagStyle = new TagStyle();
+
+    tagStyle.tag = this.dataService.addTag(event.name);
+    tagStyle.bgColor = event.bgColor;
+    tagStyle.borderColor = event.borderColor;
+    tagStyle.borderWidth = event.borderWidth;
+    tagStyle.borderStyle = event.borderStyle;
+
+    this.treeService.addTagStyle(tagStyle);
+
+    this._newTagIsOpen = false;
+  }
+
+  get tagStyles(): Array<TagStyle> {
+    return this.treeService.getTagStyles()
   }
 
 }

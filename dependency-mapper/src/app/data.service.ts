@@ -29,7 +29,7 @@ class Tag {
 class DataService {
   ticketLookup: Map<string, Ticket>;
   dependencyLookup: Array<Dependency>;
-  tagLookup: Set<Tag>;
+  tagLookup: Map<string, Tag>;
   title: string;
 
   constructor(
@@ -39,6 +39,7 @@ class DataService {
 
     this.ticketLookup = new Map<string, any>();
     this.dependencyLookup = new Array<Dependency>();
+    this.tagLookup = new Map<string, Tag>();
   }
 
   /* TICKET LAND */
@@ -161,16 +162,24 @@ class DataService {
   /* TAG LAND */
 
 
-  addTag(value: string): void {
+  addTag(value: string): Tag {
     const tag = new Tag();
     tag.id = Guid.raw();
     tag.value = value;
 
-    this.tagLookup.add(tag);
+    this.tagLookup.set(tag.id, tag);
+    return tag;
   }
 
-  getTags(): Array<Tag> {
-    return Array.from(this.tagLookup);
+  insertOrUpdateTag(tag: Tag): Tag {
+    this.tagLookup.set(tag.id, tag);
+    return tag;
+  }
+
+  get tags(): Array<Tag> {
+    let arr = Array<Tag>();
+    this.tagLookup.forEach((value, key) => arr.push(value));
+    return arr;
   }
 
   getTag(id: string): Tag {
