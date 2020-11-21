@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
 import { DataService } from '../data.service';
 
 /*
@@ -15,14 +15,30 @@ import { DataService } from '../data.service';
   styleUrls: ['./sidebar.component.scss']
 })
 export class SidebarComponent implements OnInit {
+  @ViewChild("titleField") titleField: ElementRef;
+
   // state shenanigans
   displayedMenu = 'tickets';
   isHidden = false;
+  _title: string;
+  _isEditingTitle: boolean;
 
-  constructor(public dataService: DataService) { }
+  constructor(
+    private changeDetector: ChangeDetectorRef,
+    public dataService: DataService) { }
 
   ngOnInit(): void {
+    this._title = this.dataService.getTitle();
+  }
 
+  get title(): string {
+    this._title = this.dataService.getTitle();
+    return this._title;
+  }
+
+  set title(title: string) {
+    this.dataService.setTitle(title);
+    this._title = title;
   }
 
   selectTickets(): void {
@@ -56,6 +72,24 @@ export class SidebarComponent implements OnInit {
 
   sidebarIsHidden(): boolean {
     return this.isHidden;
+  }
+
+  editTitle(): void {
+    if (!this.dataService.getTitle()) {
+      this._title = '';
+    }
+    this._isEditingTitle = true;
+
+    this.changeDetector.detectChanges();
+    this.titleField.nativeElement.focus();
+  }
+
+  stopEditingTicket(): void {
+    this._isEditingTitle = false;
+  }
+
+  isEditingTitle(): boolean {
+    return this._isEditingTitle;
   }
 
 }

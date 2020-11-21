@@ -1,11 +1,23 @@
 <div class="container bds-shadow-3">
   <div class="sidebar" *ngIf="!sidebarIsHidden()">
-    <div class="header-header bds-y-center">
-      <i class="main-icon fas fa-project-diagram bds-margin-1 bds-x-center bds-y-center bds-shadow-2"></i>
-      <div>
-        <b>Dependency Mapper</b>
+    <div class="header-header bds-margin-1 bds-y-center">
+      <i class="main-icon fas fa-project-diagram bds-r-margin-1 bds-padding-1 bds-x-center bds-y-center bds-shadow-2"></i>
+      <div class="header-title">
         <div class="header-subtext">
-          Designed by BenCorp in California
+          Dependency Mapper
+        </div>
+        <div class="title" *ngIf="!isEditingTitle()" (click)="editTitle()">
+          <b>{{ title ? title : 'Untitled' }}</b>
+          <i class="title-edit-icon fas fa-pen bds-l-margin-1"></i>
+        </div>
+        <div class="edit-title" *ngIf="isEditingTitle()">
+          <input
+            #titleField
+            class="edit-title-field bds-input-field"
+            [(ngModel)]="title"
+            (blur)="stopEditingTicket()"
+            (keyup.enter)="stopEditingTicket()"
+            ngDefaultControl>
         </div>
       </div>
     </div>

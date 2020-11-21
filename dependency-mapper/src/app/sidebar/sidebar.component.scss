@@ -98,3 +98,33 @@
   flex-grow: 1;
   height: 100%;
 }
+
+.title {
+  width: fit-content;
+  border-radius: 0.2em;
+}
+
+.title:hover {
+  cursor: pointer;
+  color: #007bab;
+}
+
+.title:hover > .title-edit-icon {
+  opacity: 1;
+}
+
+.title-edit-icon {
+  opacity: 0;
+}
+
+.edit-title {
+  width: 100%;
+}
+
+.edit-title-field {
+  width: 100%;
+}
+
+.header-title {
+  width: 100%;
+}

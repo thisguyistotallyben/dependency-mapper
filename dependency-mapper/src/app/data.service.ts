@@ -23,6 +23,7 @@ class Dependency {
 class DataService {
   ticketLookup: Map<string, Ticket>;
   links: Array<Dependency>;
+  title: string;
 
   constructor(
     private configService: ConfigService
@@ -134,6 +135,18 @@ class DataService {
   }
 
 
+  /* TITLE LAND */
+
+
+  setTitle(title: string): void {
+    this.title = title;
+  }
+
+  getTitle(): string {
+    return this.title;
+  }
+
+
   /* OTHER THINGS LAND */
 
 
@@ -146,6 +159,7 @@ class DataService {
 
     exportObj['jiraBaseUrl'] = this.configService.getCookie('jira-base-url');
     exportObj['jiraProject'] = this.configService.getCookie('jira-project');
+    exportObj['title'] = this.title;
     exportObj['tickets'] = this.tickets;
     exportObj['dependencies'] = this.links;
 
@@ -168,6 +182,10 @@ class DataService {
 
     if (data.jiraProject) {
       this.configService.setCookie('jira-project', data.jiraProject);
+    }
+
+    if(data.title) {
+      this.setTitle(data.title);
     }
 
     if (data.tickets) {
