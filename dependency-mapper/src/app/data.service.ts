@@ -9,7 +9,7 @@ class Ticket {
   jiraId: string;
   title: string;
   description: string;
-  state: string;
+  tags: Array<string>;
 }
 
 class Dependency {
@@ -17,7 +17,7 @@ class Dependency {
   childId: string;
 }
 
-class State {
+class Tag {
   id: string;
   value: string;
 }
@@ -29,7 +29,7 @@ class State {
 class DataService {
   ticketLookup: Map<string, Ticket>;
   dependencyLookup: Array<Dependency>;
-  stateLookup: Set<State>;
+  tagLookup: Set<Tag>;
   title: string;
 
   constructor(
@@ -158,23 +158,23 @@ class DataService {
   }
 
 
-  /* STATE LAND */
+  /* TAG LAND */
 
 
-  addState(value: string): void {
-    const state = new State();
-    state.id = Guid.raw();
-    state.value = value;
+  addTag(value: string): void {
+    const tag = new Tag();
+    tag.id = Guid.raw();
+    tag.value = value;
 
-    this.stateLookup.add(state);
+    this.tagLookup.add(tag);
   }
 
-  getStates(): Array<State> {
-    return Array.from(this.stateLookup);
+  getTags(): Array<Tag> {
+    return Array.from(this.tagLookup);
   }
 
-  getState(id: string): State {
-    return this.stateLookup[id];
+  getTag(id: string): Tag {
+    return this.tagLookup[id];
   }
 
 
@@ -234,4 +234,4 @@ class DataService {
 
 }
 
-export { DataService, Ticket, Dependency, State };
+export { DataService, Ticket, Dependency, Tag };

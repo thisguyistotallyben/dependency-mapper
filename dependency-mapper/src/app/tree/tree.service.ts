@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { DataService, Ticket, State } from '../data.service';
+import { DataService, Ticket, Tag } from '../data.service';
 
 
-class StateStyle {
-  state: State;
+class TagStyle {
+  tag: Tag;
   bgColor: string;
   borderColor: string;
   borderWidth: string;
@@ -15,7 +15,7 @@ class StateStyle {
 })
 export class TreeService {
   component; // this is the unethical way to do this. I should probably do a pub-sub thing
-  stateStyles: Array<StateStyle>;
+  tagStyles: Array<TagStyle>;
 
   constructor(private dataService: DataService) { }
 
