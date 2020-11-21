@@ -57,9 +57,11 @@
     </div>
     <div class="content">
       <app-sidebar-tickets
-        class="ticket"
         *ngIf="isDisplayingTickets()"
       ></app-sidebar-tickets>
+      <app-sidebar-tags
+        *ngIf="isDisplayingTags()"
+      ></app-sidebar-tags>
       <app-sidebar-settings
         *ngIf="isDisplayingSettings()"
       ></app-sidebar-settings>

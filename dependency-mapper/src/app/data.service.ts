@@ -9,11 +9,17 @@ class Ticket {
   jiraId: string;
   title: string;
   description: string;
+  state: string;
 }
 
 class Dependency {
   parentId: string;
   childId: string;
+}
+
+class State {
+  id: string;
+  value: string;
 }
 
 
@@ -22,7 +28,8 @@ class Dependency {
 })
 class DataService {
   ticketLookup: Map<string, Ticket>;
-  links: Array<Dependency>;
+  dependencyLookup: Array<Dependency>;
+  stateLookup: Set<State>;
   title: string;
 
   constructor(
@@ -31,7 +38,7 @@ class DataService {
     console.log('Initializing Data Service');
 
     this.ticketLookup = new Map<string, any>();
-    this.links = new Array<Dependency>();
+    this.dependencyLookup = new Array<Dependency>();
   }
 
   /* TICKET LAND */
@@ -89,35 +96,39 @@ class DataService {
 
     dep.parentId = parentId;
     dep.childId = childId;
-    this.links.push(dep);
+    this.dependencyLookup.push(dep);
+  }
+
+  getDependencies(): Array<Dependency> {
+    return this.dependencyLookup;
   }
 
   removeDependency(parentId: string, childId: string): void {
-    this.links = this.links.filter((dep) => dep.parentId != parentId || dep.childId != childId);
+    this.dependencyLookup = this.dependencyLookup.filter((dep) => dep.parentId != parentId || dep.childId != childId);
   }
 
   removeRelatedDependencies(id: string): void {
-    this.links = this.links.filter((dep) => dep.parentId !== id && dep.childId !== id);
+    this.dependencyLookup = this.dependencyLookup.filter((dep) => dep.parentId !== id && dep.childId !== id);
   }
 
   removeChildDependencies(id: string): void {
-    this.links = this.links.filter((dep) => dep.parentId !== id);
+    this.dependencyLookup = this.dependencyLookup.filter((dep) => dep.parentId !== id);
   }
 
   removeParentDependencies(id: string): void {
-    this.links = this.links.filter((dep) => dep.childId !== id);
+    this.dependencyLookup = this.dependencyLookup.filter((dep) => dep.childId !== id);
   }
 
   getRelatedDependencies(id: string): Array<Dependency> {
-    return this.links.filter((dep) => dep.parentId === id || dep.childId == id);
+    return this.dependencyLookup.filter((dep) => dep.parentId === id || dep.childId == id);
   }
 
   getParentDependencies(id: string): Array<Dependency> {
-    return this.links.filter((dep) => dep.childId === id);
+    return this.dependencyLookup.filter((dep) => dep.childId === id);
   }
 
   getChildDependencies(id: string): Array<Dependency> {
-    return this.links.filter((dep) => dep.parentId === id);
+    return this.dependencyLookup.filter((dep) => dep.parentId === id);
   }
 
   resetParentDependencies(id: string, newDeps: Array<string>): void {
@@ -131,7 +142,7 @@ class DataService {
   }
 
   dependencyExists(parentId: string, childId: string): boolean {
-    return !!this.links.find((link) => link.parentId == parentId && link.childId == childId);
+    return !!this.dependencyLookup.find((link) => link.parentId == parentId && link.childId == childId);
   }
 
 
@@ -144,6 +155,26 @@ class DataService {
 
   getTitle(): string {
     return this.title;
+  }
+
+
+  /* STATE LAND */
+
+
+  addState(value: string): void {
+    const state = new State();
+    state.id = Guid.raw();
+    state.value = value;
+
+    this.stateLookup.add(state);
+  }
+
+  getStates(): Array<State> {
+    return Array.from(this.stateLookup);
+  }
+
+  getState(id: string): State {
+    return this.stateLookup[id];
   }
 
 
@@ -161,7 +192,7 @@ class DataService {
     exportObj['jiraProject'] = this.configService.getCookie('jira-project');
     exportObj['title'] = this.title;
     exportObj['tickets'] = this.tickets;
-    exportObj['dependencies'] = this.links;
+    exportObj['dependencies'] = this.dependencyLookup;
 
     return exportObj;
   }
@@ -203,4 +234,4 @@ class DataService {
 
 }
 
-export {DataService, Ticket, Dependency};
+export { DataService, Ticket, Dependency, State };

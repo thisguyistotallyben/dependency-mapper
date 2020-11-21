@@ -1,12 +1,21 @@
-import { JiraService } from './../jira/jira.service';
 import { Injectable } from '@angular/core';
-import { DataService, Ticket } from '../data.service';
+import { DataService, Ticket, State } from '../data.service';
+
+
+class StateStyle {
+  state: State;
+  bgColor: string;
+  borderColor: string;
+  borderWidth: string;
+}
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class TreeService {
   component; // this is the unethical way to do this. I should probably do a pub-sub thing
+  stateStyles: Array<StateStyle>;
 
   constructor(private dataService: DataService) { }
 
@@ -21,7 +30,7 @@ export class TreeService {
     });
 
     // generate formatted dependencies
-    this.dataService.links.forEach((dep) => {
+    this.dataService.getDependencies().forEach((dep) => {
       if (dep.parentId && dep.childId) {
         links.push(`${dep.parentId} --> ${dep.childId}`);
       }

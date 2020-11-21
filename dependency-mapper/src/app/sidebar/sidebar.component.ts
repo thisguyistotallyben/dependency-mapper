@@ -11,7 +11,7 @@ export class SidebarComponent implements OnInit {
   @ViewChild("titleField") titleField: ElementRef;
 
   // state shenanigans
-  displayedMenu = 'tickets';
+  displayedMenu = 'tags';
   isHidden = false;
   _title: string;
   _isEditingTitle: boolean;
@@ -43,11 +43,11 @@ export class SidebarComponent implements OnInit {
   }
 
   selectTags() {
-    this.displayedMenu = 'quickdeps';
+    this.displayedMenu = 'tags';
   }
 
   isDisplayingTags(): boolean {
-    return this.displayedMenu == 'quickdeps';
+    return this.displayedMenu == 'tags';
   }
 
   selectSettings() {
