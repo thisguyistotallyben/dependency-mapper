@@ -1,15 +1,19 @@
 <div class="container">
   <div class="control-panel bds-padding-1 bds-shadow-2">
-    <div class="panel-buttons bds-x-even_spread">
+    <div class="panel-buttons bds-x-left">
       <div class="bds-x-left">
         <div
-          class="control-button"
-          [ngClass]="{'active': false}"
+          class="control-button bds-padding-1"
+          [ngClass]="{'active': newTagIsOpen()}"
+          (click)="toggleNewTag()"
         >
           <i class="fas fa-plus"></i>
           New
         </div>
       </div>
+    </div>
+    <div class="bds-t-margin-1" *ngIf="newTagIsOpen()">
+      <app-sidebar-tags-fields></app-sidebar-tags-fields>
     </div>
   </div>
   <div class="tickets-container bds-margin-1">

@@ -186,27 +186,16 @@ class DataService {
   }
 
   export(): any {
-    let exportObj = {};
-
-    exportObj['jiraBaseUrl'] = this.configService.getCookie('jira-base-url');
-    exportObj['jiraProject'] = this.configService.getCookie('jira-project');
-    exportObj['title'] = this.title;
-    exportObj['tickets'] = this.tickets;
-    exportObj['dependencies'] = this.dependencyLookup;
-
-    return exportObj;
+    return {
+      jiraBaseUrl: this.configService.getCookie('jira-base-url'),
+      jiraProject: this.configService.getCookie('jira-project'),
+      title: this.title,
+      tickets: this.tickets,
+      dependencies: this.dependencyLookup
+    };
   }
 
-  exportURL(): string { // change name later
-    let exportedData = this.export();
-    const compressedData = pako.gzip(JSON.stringify(exportedData), { to: 'string' });
-    return encodeURIComponent(btoa(compressedData));
-  }
-
-  importURL(encodedData: string): void {
-    const compressedData = atob(encodedData);
-    const data = JSON.parse(pako.ungzip(compressedData, { to: 'string' }));
-
+  import(data: any): void {
     if (data.jiraBaseUrl) {
       this.configService.setCookie('jira-base-url', data.jiraBaseUrl);
     }

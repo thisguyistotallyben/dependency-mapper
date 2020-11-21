@@ -26,3 +26,30 @@
   border-radius: 0.2em;
   font-size: small;
 }
+
+.control-button:hover {
+  color: black;
+  background-color: #007bab30;
+  cursor: pointer;
+}
+
+.control-button:active {
+  color: white;
+  background-color: #00293a;
+  cursor: pointer;
+}
+
+.active {
+  color: white;
+  background-color: #007bab;
+}
+
+.active:hover {
+  color: white;
+  background-color: #005e83;
+}
+
+.active:active {
+  color: white;
+  background-color: #00293a;
+}

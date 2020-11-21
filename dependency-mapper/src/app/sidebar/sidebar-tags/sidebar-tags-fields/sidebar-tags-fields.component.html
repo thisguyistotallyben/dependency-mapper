@@ -1,0 +1,55 @@
+<div class="container">
+  <div class="bds-field-label">Name</div>
+  <input
+    class="bds-input-field bds-shadow-1 bds-b-margin-1"
+  >
+  <div class="style-select">
+    <div class="style-section bds-container bds-padding-1">
+      <b>Background</b>
+      <button
+        class="set-select bds-button bds-button-neutral bds-t-margin-1"
+        [(colorPicker)]="bgColor"
+        [cpPosition]="'bottom'"
+      >Color</button>
+    </div>
+    <div class="style-section bds-container bds-padding-1 bds-t-margin-1">
+      <b>Border</b>
+      <button
+        class="set-select bds-button bds-button-neutral bds-t-margin-1"
+        [(colorPicker)]="borderColor"
+        [cpPosition]="'bottom'"
+      >Color</button>
+      <div class="border-styles-select bds-x-even_space">
+        <div class="border-section">
+          <div class="bds-field-label bds-t-margin-1">Style</div>
+          <div>
+            <input id="solidbordertype" type="radio" name="bordertype" [(ngModel)]="borderType" [value]="'solid'">
+            <label for="solidbordertype">Solid</label>
+          </div>
+          <div>
+            <input id="dashedbordertype" type="radio" name="bordertype" [(ngModel)]="borderType" [value]="'dashed'">
+            <label for="dashedbordertype">Dashed</label>
+          </div>
+        </div>
+        <div class="border-section">
+          <div class="bds-field-label bds-t-margin-1">Style</div>
+          <input type="number" class="border-width-select bds-input-field bds-padding-1" [(ngModel)]="borderWidth"/>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="bds-field-label bds-t-margin-1">Preview</div>
+  <div class="bds-x-center">
+    <div
+      class="display bds-b-margin-1 bds-shadow-2"
+      [style.background]="bgColor"
+      [style.border-color]="borderColor"
+      [style.border-width]="borderWidth + 'px'"
+      [style.border-style]="borderType"
+    ></div>
+  </div>
+  <div class="buttons bds-x-right">
+    <button class="bds-button bds-button-flat bds-r-margin-1">Cancel</button>
+    <button class="bds-button bds-button-success">Save</button>
+  </div>
+</div>

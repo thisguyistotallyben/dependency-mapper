@@ -1,10 +1,8 @@
 import { Injectable } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import ConfigJson from '../assets/config.json';
+import * as pako from 'pako';
 
-/*
-  This service is now here because circular dependencies. I'm also tired, so there might be a better way...
-*/
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +12,23 @@ export class ConfigService {
 
   constructor(private cookieService: CookieService) {
     this.config = new Map<string, any>();
+  }
+
+  encodeData(data: any, tags: any): string {
+    const exportedData = {
+      ...data,
+      tagStyles: { ...tags }
+    };
+
+    console.log('exported data', exportedData);
+
+    const compressedData = pako.gzip(JSON.stringify(exportedData), { to: 'string' });
+    return btoa(compressedData);
+  }
+
+  decodeAndLoadData(encodedConfig: string): void {
+    const compressedConfig = atob(encodedConfig);
+    return JSON.parse(pako.ungzip(compressedConfig, { to: 'string' }));
   }
 
   // probably deprecated

@@ -1,3 +1,4 @@
+import { ConfigService } from './config.service';
 import { TreeService } from 'src/app/tree/tree.service';
 import { Component, OnInit } from '@angular/core';
 import { DataService } from './data.service';
@@ -13,6 +14,7 @@ export class AppComponent implements OnInit{
 
   constructor(
     private route: ActivatedRoute,
+    private configService: ConfigService,
     private dataService: DataService,
     private treeService: TreeService
   ) { }
@@ -25,7 +27,9 @@ export class AppComponent implements OnInit{
       console.log('params', params);
       if (params.data) {
         console.log('hitting here', params);
-        this.dataService.importURL(params.data);
+        const data = this.configService.decodeAndLoadData(params.data); // Should this live in ConfigService?
+        console.log('data in app', data);
+        this.dataService.import(data);
         this.treeService.renderTree();
       }
   });
