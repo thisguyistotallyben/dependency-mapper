@@ -1,13 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
 import { DataService } from '../data.service';
 
-/*
-  TODO:
-    - Figure out what validation rules are necessary and consolidate them down in one spot
-      - Whether that one spot is here or another service, idk yet
-    - Also, in general, clean this file up. It's getting a little hairy already
-    - Figure out how to go to the next text box on hitting enter
-*/
 
 @Component({
   selector: 'app-sidebar',

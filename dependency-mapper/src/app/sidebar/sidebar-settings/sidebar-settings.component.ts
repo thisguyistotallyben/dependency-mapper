@@ -17,6 +17,10 @@ export class SidebarSettingsComponent implements OnInit {
     this.jiraProject = this.jiraService.getProject();
   }
 
+  setBaseUrl() {
+    this.jiraService.setBaseUrl(this.jiraBaseUrl);
+  }
+
   setProject() {
     this.jiraService.setProject(this.jiraProject);
   }
