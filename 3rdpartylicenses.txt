@@ -1420,6 +1420,9 @@ SOFTWARE.
 moment-mini
 MIT
 
+ngx-color-picker
+MIT
+
 ngx-cookie-service
 MIT
 
