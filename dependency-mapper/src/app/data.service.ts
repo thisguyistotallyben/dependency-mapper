@@ -1,7 +1,6 @@
 import { ConfigService } from './config.service';
 import { Injectable } from '@angular/core';
 import { Guid } from "guid-typescript";
-import * as pako from 'pako';
 
 
 class Ticket {
@@ -9,7 +8,7 @@ class Ticket {
   jiraId: string;
   title: string;
   description: string;
-  tags: Array<string>;
+  tagId: string;
 }
 
 class Dependency {
@@ -177,13 +176,14 @@ class DataService {
   }
 
   get tags(): Array<Tag> {
-    let arr = Array<Tag>();
-    this.tagLookup.forEach((value, key) => arr.push(value));
-    return arr;
+    // let arr = Array<Tag>();
+    // this.tagLookup.forEach((value, key) => arr.push(value));
+    // return arr;
+    return Array.from(this.tagLookup.values());
   }
 
   getTag(id: string): Tag {
-    return this.tagLookup[id];
+    return this.tagLookup.get(id);
   }
 
 
@@ -200,7 +200,8 @@ class DataService {
       jiraProject: this.configService.getCookie('jira-project'),
       title: this.title,
       tickets: this.tickets,
-      dependencies: this.dependencyLookup
+      dependencies: this.dependencyLookup,
+      tags: this.tags
     };
   }
 
@@ -227,6 +228,11 @@ class DataService {
       data.dependencies.forEach((dep: Dependency) => {
         this.addDependency(dep.parentId, dep.childId);
       });
+    }
+
+    if (data.tags) {
+      console.log('tags', data.tags);
+      data.tags.forEach((tag: Tag) => this.tagLookup.set(tag.id, tag));
     }
   }
 

@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
-import { Tag } from 'src/app/data.service';
+import { Tag, DataService } from 'src/app/data.service';
 import { TagStyle } from 'src/app/tree/tree.service';
 
 
@@ -33,11 +33,14 @@ class SidebarTagsFieldsComponent implements OnInit {
   _backgroundIsSelected = true;
   _borderIsSelected = false;
 
-  constructor() { }
+  constructor(
+    private dataService: DataService
+  ) { }
 
   ngOnInit(): void {
     if (this.tagStyle) {
-      this.name = this.tagStyle.tag.value;
+      // this.name = this.tagStyle.tag.value;
+      this.name = this.dataService.getTag(this.tagStyle.tagId).value;
       this.bgColor = this.tagStyle.bgColor;
       this.borderColor = this.tagStyle.borderColor;
       this.borderWidth = this.tagStyle.borderWidth;
@@ -56,7 +59,7 @@ class SidebarTagsFieldsComponent implements OnInit {
     }
 
     const tagResponse = new TagFieldsResponse();
-    tagResponse.tagId = this.tagStyle ? this.tagStyle.tag.id : undefined;
+    tagResponse.tagId = this.tagStyle ? this.tagStyle.tagId : undefined;
     tagResponse.name = this.name;
     tagResponse.bgColor = this.bgColor;
     tagResponse.borderColor = this.borderColor;

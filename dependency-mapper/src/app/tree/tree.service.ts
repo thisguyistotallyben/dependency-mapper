@@ -3,7 +3,7 @@ import { DataService, Ticket, Tag } from '../data.service';
 
 
 class TagStyle {
-  tag: Tag;
+  tagId: string;
   bgColor: string;
   borderColor: string;
   borderWidth: number;
@@ -17,6 +17,11 @@ class TagStyle {
 class TreeService {
   component; // this is the unethical way to do this. I should probably do a pub-sub thing
   tagStyles: Map<string, TagStyle>;
+  /*
+    INFO FOR ME (ds) => data service
+
+    tagStyles is a map of (ds)tag to the corresponding tag style
+  */
 
   constructor(private dataService: DataService) {
     this.tagStyles = new Map<string, TagStyle>();
@@ -69,12 +74,25 @@ class TreeService {
     this.component.renderTree();
   }
 
+  export(): any {
+    const tagStyles = Array.from(this.tagStyles.values());
+    console.log('exporting tag styles', tagStyles);
+    return {tagStyles};
+  }
+
 
   /* TAG STYLES LAND */
 
 
+  loadTagStyles(data: any): void {
+    if (data.tagStyles) {
+      console.log('yeet');
+      data.tagStyles.forEach((ts: TagStyle) => this.tagStyles.set(ts.tagId, ts));
+    }
+  }
+
   addTagStyle(tagStyle: TagStyle): void {
-    this.tagStyles.set(tagStyle.tag.id, tagStyle);
+    this.tagStyles.set(tagStyle.tagId, tagStyle);
   }
 
   getTagStyles(): Array<TagStyle> {

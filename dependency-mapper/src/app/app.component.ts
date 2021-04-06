@@ -30,6 +30,7 @@ export class AppComponent implements OnInit{
         const data = this.configService.decodeAndLoadData(params.data); // Should this live in ConfigService?
         console.log('data in app', data);
         this.dataService.import(data);
+        this.treeService.loadTagStyles(data);
         this.treeService.renderTree();
       }
   });

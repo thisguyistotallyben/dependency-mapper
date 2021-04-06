@@ -14,15 +14,8 @@ export class ConfigService {
     this.config = new Map<string, any>();
   }
 
-  encodeData(data: any, tags: any): string {
-    const exportedData = {
-      ...data,
-      tagStyles: { ...tags }
-    };
-
-    console.log('exported data', exportedData);
-
-    const compressedData = pako.gzip(JSON.stringify(exportedData), { to: 'string' });
+  encodeData(data: any): string {
+    const compressedData = pako.gzip(JSON.stringify(data), { to: 'string' });
     return btoa(compressedData);
   }
 

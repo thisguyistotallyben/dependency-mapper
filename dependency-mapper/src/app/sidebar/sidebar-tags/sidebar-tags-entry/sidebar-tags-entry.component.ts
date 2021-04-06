@@ -10,6 +10,7 @@ import { TagFieldsResponse } from '../sidebar-tags-fields/sidebar-tags-fields.co
 })
 export class SidebarTagsEntryComponent implements OnInit {
   @Input() tagStyle: TagStyle;
+  tag: Tag;
 
   _isEditing = false;
   _isDeleting = false;
@@ -20,11 +21,13 @@ export class SidebarTagsEntryComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    console.log('tag', this.tagStyle);
+    console.log('tag', this.tagStyle, this.dataService.tags);
+    this.tag = this.dataService.getTag(this.tagStyle.tagId);
+    console.log('this.tag', this.tag);
   }
 
   get title(): string {
-    return this.tagStyle.tag.value;
+    return this.tag.value;
   }
 
   get isEditing(): boolean {
@@ -52,10 +55,10 @@ export class SidebarTagsEntryComponent implements OnInit {
   updateTagStyle(event: TagFieldsResponse): void {
     console.log(event);
 
-    if (event.name !== this.tagStyle.tag.value) {
+    if (event.name !== this.tag.value) {
       console.log('uh oh sisters! You renamed it');
-      this.tagStyle.tag.value = event.name;
-      this.dataService.insertOrUpdateTag(this.tagStyle.tag);
+      this.tag.value = event.name;
+      this.dataService.insertOrUpdateTag(this.tag);
     }
 
     this.tagStyle.bgColor = event.bgColor;

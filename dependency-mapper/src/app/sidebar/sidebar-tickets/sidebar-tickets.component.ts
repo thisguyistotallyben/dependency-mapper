@@ -48,9 +48,12 @@ export class SidebarTicketsComponent implements OnInit {
   // TODO: Figure out how to adjust the url automatically
   // REASONING: I want this to be a 'save' where it just automatically updates the url
   copyUrl(): void {
-    const data = this.dataService.export();
-    const tags = undefined;
-    const urlParam = encodeURIComponent(this.configService.encodeData(data, tags));
+    const data = {
+      ...this.dataService.export(),
+      ...this.treeService.export()
+    };
+    console.log('data', data);
+    const urlParam = encodeURIComponent(this.configService.encodeData(data));
 
     // this.clipboard.copy('http://thisguyistotallyben.github.io/dependency-mapper/?data=' + urlParam);
     this.clipboard.copy('http://localhost:4200/?data=' + urlParam);
