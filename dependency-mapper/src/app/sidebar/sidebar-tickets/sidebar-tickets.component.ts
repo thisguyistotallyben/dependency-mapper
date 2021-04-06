@@ -54,8 +54,8 @@ export class SidebarTicketsComponent implements OnInit {
     };
     const urlParam = encodeURIComponent(this.configService.encodeData(data));
 
-    // this.clipboard.copy('http://thisguyistotallyben.github.io/dependency-mapper/?data=' + urlParam);
-    this.clipboard.copy('http://localhost:4200/?data=' + urlParam);
+    this.clipboard.copy('http://thisguyistotallyben.github.io/dependency-mapper/?data=' + urlParam);
+    // this.clipboard.copy('http://localhost:4200/?data=' + urlParam);
   }
 
 }
