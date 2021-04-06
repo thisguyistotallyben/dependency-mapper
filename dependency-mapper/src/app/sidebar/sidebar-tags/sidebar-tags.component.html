@@ -1,0 +1,31 @@
+<div class="container">
+  <div class="control-panel bds-padding-1 bds-shadow-2">
+    <div class="panel-buttons bds-x-left">
+      <div class="bds-x-left">
+        <div
+          class="control-button bds-padding-1 bds-no-highlight"
+          [ngClass]="{'active': newTagIsOpen()}"
+          (click)="toggleNewTag()"
+        >
+          <i class="fas fa-plus"></i>
+          New
+        </div>
+      </div>
+    </div>
+    <div class="bds-t-margin-1" *ngIf="newTagIsOpen()">
+      <app-sidebar-tags-fields
+        (submit)="addNewTag($event)"
+        (cancel)="toggleNewTag()"
+      ></app-sidebar-tags-fields>
+    </div>
+  </div>
+  <div class="tags-container">
+    <div class="tags bds-y-scrollable">
+      <div *ngFor="let tagStyle of tagStyles">
+        <app-sidebar-tags-entry
+          [tagStyle]="tagStyle"
+        ></app-sidebar-tags-entry>
+      </div>
+    </div>
+  </div>
+</div>

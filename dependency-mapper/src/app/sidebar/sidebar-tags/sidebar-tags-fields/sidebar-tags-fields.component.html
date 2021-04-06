@@ -1,0 +1,80 @@
+<div class="container">
+  <div class="bds-field-label">Name</div>
+  <input
+    class="bds-input-field bds-shadow-1"
+    [(ngModel)]="name"
+  >
+  <div class="bds-field-label bds-t-margin-1">Customize</div>
+  <div class="style-select bds-container bds-shadow-1">
+    <div class="tab-container bds-x-left bds-shadow-2">
+      <div
+        class="tab bds-padding-1 bds-no-highlight"
+        [ngClass]="{'tab-selected': backgroundIsSelected()}"
+        (click)="selectBackground()"
+      >
+        Background
+        <div class="selected-bar"></div>
+      </div>
+      <div
+        class="tab bds-l-margin-1 bds-padding-1 bds-no-highlight"
+        [ngClass]="{'tab-selected': borderIsSelected()}"
+        (click)="selectBorder()"
+      >
+        Border
+        <div class="selected-bar"></div>
+      </div>
+    </div>
+    <div class="bds-padding-1">
+      <!-- THIS IS SEPARATE BECAUSE IT CAUSES THE INTERFACE TO FLICKER IF IT'S IN A TAB -->
+      <div class="bds-x-center" [hidden]="!isBackgroundSelected">
+        <div
+          [(colorPicker)]="bgColor"
+          [cpOutputFormat]="'hex'"
+          [cpDialogDisplay]="'inline'"
+          [cpToggle]="true"
+        ></div>
+      </div>
+      <div class="bds-x-center" [hidden]="isBackgroundSelected">
+        <div
+          [(colorPicker)]="borderColor"
+          [cpOutputFormat]="'hex'"
+          [cpDialogDisplay]="'inline'"
+          [cpToggle]="true"
+        ></div>
+      </div>
+      <div *ngIf="borderIsSelected()">
+        <div class="bds-x-even_space">
+          <div>
+            <div class="bds-field-label bds-t-margin-1">Style</div>
+            <div>
+              <input id="solidborderstyle" type="radio" name="borderStyle" [(ngModel)]="borderStyle" [value]="'solid'">
+              <label for="solidborderstyle">Solid</label>
+            </div>
+            <div>
+              <input id="dashedborderstyle" type="radio" name="borderStyle" [(ngModel)]="borderStyle" [value]="'dashed'">
+              <label for="dashedborderstyle">Dashed</label>
+            </div>
+          </div>
+          <div>
+            <div class="bds-field-label bds-t-margin-1">Width (px)</div>
+            <input type="number" class="border-width-select bds-input-field bds-l-margin-1" [(ngModel)]="borderWidth"/>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="bds-field-label bds-t-margin-1">Preview</div>
+  <div class="bds-container bds-padding-1 bds-x-center bds-shadow-1">
+    <div
+      class="display"
+      [style.background]="bgColor"
+      [style.border-color]="borderColor"
+      [style.border-width]="borderWidth + 'px'"
+      [style.border-style]="borderStyle"
+    ></div>
+  </div>
+  <div class="buttons bds-t-margin-1 bds-x-right">
+    <button class="bds-button bds-button-flat bds-r-margin-1" (click)="cancelTag()">Cancel</button>
+    <button class="bds-button bds-button-success" (click)="submitTag()">Save</button>
+  </div>
+</div>

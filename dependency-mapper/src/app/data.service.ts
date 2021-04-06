@@ -1,7 +1,6 @@
 import { ConfigService } from './config.service';
 import { Injectable } from '@angular/core';
 import { Guid } from "guid-typescript";
-import * as pako from 'pako';
 
 
 class Ticket {
@@ -9,11 +8,17 @@ class Ticket {
   jiraId: string;
   title: string;
   description: string;
+  tagId: string;
 }
 
 class Dependency {
   parentId: string;
   childId: string;
+}
+
+class Tag {
+  id: string;
+  value: string;
 }
 
 
@@ -22,7 +27,8 @@ class Dependency {
 })
 class DataService {
   ticketLookup: Map<string, Ticket>;
-  links: Array<Dependency>;
+  dependencyLookup: Array<Dependency>;
+  tagLookup: Map<string, Tag>;
   title: string;
 
   constructor(
@@ -31,7 +37,8 @@ class DataService {
     console.log('Initializing Data Service');
 
     this.ticketLookup = new Map<string, any>();
-    this.links = new Array<Dependency>();
+    this.dependencyLookup = new Array<Dependency>();
+    this.tagLookup = new Map<string, Tag>();
   }
 
   /* TICKET LAND */
@@ -89,35 +96,39 @@ class DataService {
 
     dep.parentId = parentId;
     dep.childId = childId;
-    this.links.push(dep);
+    this.dependencyLookup.push(dep);
+  }
+
+  getDependencies(): Array<Dependency> {
+    return this.dependencyLookup;
   }
 
   removeDependency(parentId: string, childId: string): void {
-    this.links = this.links.filter((dep) => dep.parentId != parentId || dep.childId != childId);
+    this.dependencyLookup = this.dependencyLookup.filter((dep) => dep.parentId != parentId || dep.childId != childId);
   }
 
   removeRelatedDependencies(id: string): void {
-    this.links = this.links.filter((dep) => dep.parentId !== id && dep.childId !== id);
+    this.dependencyLookup = this.dependencyLookup.filter((dep) => dep.parentId !== id && dep.childId !== id);
   }
 
   removeChildDependencies(id: string): void {
-    this.links = this.links.filter((dep) => dep.parentId !== id);
+    this.dependencyLookup = this.dependencyLookup.filter((dep) => dep.parentId !== id);
   }
 
   removeParentDependencies(id: string): void {
-    this.links = this.links.filter((dep) => dep.childId !== id);
+    this.dependencyLookup = this.dependencyLookup.filter((dep) => dep.childId !== id);
   }
 
   getRelatedDependencies(id: string): Array<Dependency> {
-    return this.links.filter((dep) => dep.parentId === id || dep.childId == id);
+    return this.dependencyLookup.filter((dep) => dep.parentId === id || dep.childId == id);
   }
 
   getParentDependencies(id: string): Array<Dependency> {
-    return this.links.filter((dep) => dep.childId === id);
+    return this.dependencyLookup.filter((dep) => dep.childId === id);
   }
 
   getChildDependencies(id: string): Array<Dependency> {
-    return this.links.filter((dep) => dep.parentId === id);
+    return this.dependencyLookup.filter((dep) => dep.parentId === id);
   }
 
   resetParentDependencies(id: string, newDeps: Array<string>): void {
@@ -131,7 +142,7 @@ class DataService {
   }
 
   dependencyExists(parentId: string, childId: string): boolean {
-    return !!this.links.find((link) => link.parentId == parentId && link.childId == childId);
+    return !!this.dependencyLookup.find((link) => link.parentId == parentId && link.childId == childId);
   }
 
 
@@ -147,6 +158,32 @@ class DataService {
   }
 
 
+  /* TAG LAND */
+
+
+  addTag(value: string): Tag {
+    const tag = new Tag();
+    tag.id = Guid.raw();
+    tag.value = value;
+
+    this.tagLookup.set(tag.id, tag);
+    return tag;
+  }
+
+  insertOrUpdateTag(tag: Tag): Tag {
+    this.tagLookup.set(tag.id, tag);
+    return tag;
+  }
+
+  get tags(): Array<Tag> {
+    return Array.from(this.tagLookup.values());
+  }
+
+  getTag(id: string): Tag {
+    return this.tagLookup.get(id);
+  }
+
+
   /* OTHER THINGS LAND */
 
 
@@ -155,27 +192,17 @@ class DataService {
   }
 
   export(): any {
-    let exportObj = {};
-
-    exportObj['jiraBaseUrl'] = this.configService.getCookie('jira-base-url');
-    exportObj['jiraProject'] = this.configService.getCookie('jira-project');
-    exportObj['title'] = this.title;
-    exportObj['tickets'] = this.tickets;
-    exportObj['dependencies'] = this.links;
-
-    return exportObj;
+    return {
+      jiraBaseUrl: this.configService.getCookie('jira-base-url'),
+      jiraProject: this.configService.getCookie('jira-project'),
+      title: this.title,
+      tickets: this.tickets,
+      dependencies: this.dependencyLookup,
+      tags: this.tags
+    };
   }
 
-  exportURL(): string { // change name later
-    let exportedData = this.export();
-    const compressedData = pako.gzip(JSON.stringify(exportedData), { to: 'string' });
-    return encodeURIComponent(btoa(compressedData));
-  }
-
-  importURL(encodedData: string): void {
-    const compressedData = atob(encodedData);
-    const data = JSON.parse(pako.ungzip(compressedData, { to: 'string' }));
-
+  import(data: any): void {
     if (data.jiraBaseUrl) {
       this.configService.setCookie('jira-base-url', data.jiraBaseUrl);
     }
@@ -199,8 +226,12 @@ class DataService {
         this.addDependency(dep.parentId, dep.childId);
       });
     }
+
+    if (data.tags) {
+      data.tags.forEach((tag: Tag) => this.tagLookup.set(tag.id, tag));
+    }
   }
 
 }
 
-export {DataService, Ticket, Dependency};
+export { DataService, Ticket, Dependency, Tag };

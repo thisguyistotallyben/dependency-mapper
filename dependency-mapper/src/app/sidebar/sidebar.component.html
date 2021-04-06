@@ -24,7 +24,7 @@
     <div class="header bds-y-center">
       <div class="menus bds-y-center bds-x-even_space">
         <div
-          class="menu-item bds-x-center bds-padding-1"
+          class="menu-item bds-x-center bds-padding-1 bds-no-highlight"
           [ngClass]="{'menu-active': isDisplayingTickets()}"
           (click)="selectTickets()"
         >
@@ -34,7 +34,7 @@
           </div>
         </div>
         <div
-          class="menu-item bds-x-center bds-padding-1"
+          class="menu-item bds-x-center bds-padding-1 bds-no-highlight"
           [ngClass]="{'menu-active': isDisplayingTags()}"
           (click)="selectTags()"
         >
@@ -44,7 +44,7 @@
           </div>
         </div>
         <div
-          class="menu-item bds-x-center bds-padding-1"
+          class="menu-item bds-x-center bds-padding-1 bds-no-highlight"
           [ngClass]="{'menu-active': isDisplayingSettings()}"
           (click)="selectSettings()"
         >
@@ -57,9 +57,11 @@
     </div>
     <div class="content">
       <app-sidebar-tickets
-        class="ticket"
         *ngIf="isDisplayingTickets()"
       ></app-sidebar-tickets>
+      <app-sidebar-tags
+        *ngIf="isDisplayingTags()"
+      ></app-sidebar-tags>
       <app-sidebar-settings
         *ngIf="isDisplayingSettings()"
       ></app-sidebar-settings>

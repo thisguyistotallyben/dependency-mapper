@@ -12,6 +12,7 @@ export class SidebarComponent implements OnInit {
 
   // state shenanigans
   displayedMenu = 'tickets';
+  // displayedMenu = 'tags';
   isHidden = false;
   _title: string;
   _isEditingTitle: boolean;
@@ -43,11 +44,11 @@ export class SidebarComponent implements OnInit {
   }
 
   selectTags() {
-    this.displayedMenu = 'quickdeps';
+    this.displayedMenu = 'tags';
   }
 
   isDisplayingTags(): boolean {
-    return this.displayedMenu == 'quickdeps';
+    return this.displayedMenu == 'tags';
   }
 
   selectSettings() {
@@ -60,7 +61,6 @@ export class SidebarComponent implements OnInit {
 
   toggleSidebar(): void {
     this.isHidden = !this.isHidden;
-    console.log(this.isHidden);
   }
 
   sidebarIsHidden(): boolean {
