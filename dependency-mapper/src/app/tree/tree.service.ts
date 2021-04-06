@@ -17,20 +17,36 @@ class TagStyle {
 class TreeService {
   component; // this is the unethical way to do this. I should probably do a pub-sub thing
   tagStyles: Map<string, TagStyle>;
+  defaultTagStyle: TagStyle;
+  classPrefix = 'class_'; // this is needed because the class needs to start with letters
   /*
     INFO FOR ME (ds) => data service
 
     tagStyles is a map of (ds)tag to the corresponding tag style
+
   */
 
   constructor(private dataService: DataService) {
     this.tagStyles = new Map<string, TagStyle>();
+
+    // TODO: expose the default so it can be changed
+    //   Problem: The fields component has the name field that cannot be changed for this.
+    this.defaultTagStyle = new TagStyle();
+    this.defaultTagStyle.bgColor = '#eae8e8';
+    this.defaultTagStyle.borderColor = '#000000';
   }
 
   generateSyntax(): string {
     let outputString = '';
+    const styleClasses = new Array<string>();
     const tickets = new Array<string>();
     const links = new Array<string>();
+
+    // generate formatted style classes
+    styleClasses.push(this.formatClass(this.defaultTagStyle));
+    Array.from(this.tagStyles.values()).forEach((ts: TagStyle) => {
+      styleClasses.push(this.formatClass(ts));
+    });
 
     // generate formatted tickets
     this.dataService.tickets.forEach((value, key) => {
@@ -45,25 +61,48 @@ class TreeService {
     });
 
     outputString = 'graph TD\n';
+    styleClasses.forEach((val) => outputString += val + '\n');
+    outputString += '\n';
     tickets.forEach((val) => outputString += val + '\n');
     outputString += '\n';
     links.forEach((val) => outputString += val + '\n');
 
     // console.log('Current Tree Syntax:');
-    // console.log(outputString);
+    console.log(outputString);
     return outputString;
   }
 
+  formatClass(ts: TagStyle): string {
+    let output = '';
+
+    output += ts.tagId
+      ? 'classDef ' + this.classPrefix + ts.tagId
+      : 'classDef default';
+    output += ' fill:' + ts.bgColor;
+    output += ',stroke:' + ts.borderColor;
+    output += ',stroke-width:' + ts.borderWidth;
+    output += ts.borderStyle === 'dashed'
+      ? ',stroke-dasharray:5 4'
+      : '';
+
+    return output;
+  }
+
   formatTicket(ticket: Ticket): string {
-    // format: id[<b>id - title</b><br/><br/>description]
+    /* FORMAT:
+      id[<b>id - title</b><br/><br/>description]:::className
+    */
     const title = `${ticket.id}[<b>${ticket.title}</b><hr>`;
     const description = `${ticket.description}]`;
     // TODO: Check for more things, eg. url even exists and whatnot
+    const styleClass = ticket.tagId
+      ? ':::' + this.classPrefix + ticket.tagId
+      : '';
     const link = ticket.jiraId
       ? `\nclick ${ticket.id} "${this.dataService.generateUrl(ticket.jiraId)}" _blank`
       : '';
 
-    return title + description + link;
+    return title + description + styleClass + link;
   }
 
   linkComponent(component: any): void {
@@ -77,7 +116,10 @@ class TreeService {
   export(): any {
     const tagStyles = Array.from(this.tagStyles.values());
     console.log('exporting tag styles', tagStyles);
-    return {tagStyles};
+    return {
+      tagStyles,
+      defaultTagStyle: this.defaultTagStyle
+    };
   }
 
 
@@ -85,9 +127,12 @@ class TreeService {
 
 
   loadTagStyles(data: any): void {
-    if (data.tagStyles) {
-      console.log('yeet');
+    if (data.tagStyles.length) {
       data.tagStyles.forEach((ts: TagStyle) => this.tagStyles.set(ts.tagId, ts));
+    }
+
+    if (data.defaultTagStyle) {
+      this.defaultTagStyle = data.defaultTagStyle;
     }
   }
 

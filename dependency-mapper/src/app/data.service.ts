@@ -176,9 +176,6 @@ class DataService {
   }
 
   get tags(): Array<Tag> {
-    // let arr = Array<Tag>();
-    // this.tagLookup.forEach((value, key) => arr.push(value));
-    // return arr;
     return Array.from(this.tagLookup.values());
   }
 

@@ -11,8 +11,8 @@ export class SidebarComponent implements OnInit {
   @ViewChild("titleField") titleField: ElementRef;
 
   // state shenanigans
-  // displayedMenu = 'tickets';
-  displayedMenu = 'tags';
+  displayedMenu = 'tickets';
+  // displayedMenu = 'tags';
   isHidden = false;
   _title: string;
   _isEditingTitle: boolean;

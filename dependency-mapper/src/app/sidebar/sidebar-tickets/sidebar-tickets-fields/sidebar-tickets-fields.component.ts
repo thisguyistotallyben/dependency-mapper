@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { DataService, Ticket } from 'src/app/data.service';
+import { DataService, Tag, Ticket } from 'src/app/data.service';
 
 @Component({
   selector: 'app-sidebar-tickets-fields',
@@ -11,6 +11,7 @@ export class SidebarTicketsFieldsComponent implements OnInit {
   jiraId: string;
   title: string;
   description: string;
+  tagId: string;
 
   @Input() ticket: Ticket;
 
@@ -22,11 +23,21 @@ export class SidebarTicketsFieldsComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.ticket) {
+      console.log('TICKET', this.ticket)
       this.id = this.ticket.id;
       this.jiraId = this.ticket.jiraId;
       this.title = this.ticket.title;
       this.description = this.ticket.description;
+      this.tagId = this.ticket.tagId;
     }
+  }
+
+  get tags(): Array<Tag> {
+    return [{id: undefined, value: '--None--'}].concat(this.dataService.tags);
+  }
+
+  updateTag(event: any) {
+    this.tagId = event;
   }
 
   submitTicket(): void {
@@ -38,6 +49,7 @@ export class SidebarTicketsFieldsComponent implements OnInit {
     ticket.jiraId = this.jiraId ? this.jiraId : '';
     ticket.title = this.title ? this.title : '';
     ticket.description = this.description ? this.description :  '';
+    ticket.tagId = this.tagId;
 
     this.submit.emit(ticket);
   }

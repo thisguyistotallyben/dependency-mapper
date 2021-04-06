@@ -68,6 +68,7 @@ export class SidebarTagsEntryComponent implements OnInit {
 
     this.treeService.addTagStyle(this.tagStyle);
     this.toggleEdit();
+    this.treeService.renderTree();
   }
 
 }
