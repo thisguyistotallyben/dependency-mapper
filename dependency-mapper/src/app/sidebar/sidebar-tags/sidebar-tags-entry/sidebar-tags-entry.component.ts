@@ -21,9 +21,7 @@ export class SidebarTagsEntryComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    console.log('tag', this.tagStyle, this.dataService.tags);
     this.tag = this.dataService.getTag(this.tagStyle.tagId);
-    console.log('this.tag', this.tag);
   }
 
   get title(): string {
@@ -52,11 +50,9 @@ export class SidebarTagsEntryComponent implements OnInit {
     }
   }
 
+  // DOES THIS NEED TO LIVE HERE? SEEMS KINDA WACK, PAST ME
   updateTagStyle(event: TagFieldsResponse): void {
-    console.log(event);
-
     if (event.name !== this.tag.value) {
-      console.log('uh oh sisters! You renamed it');
       this.tag.value = event.name;
       this.dataService.insertOrUpdateTag(this.tag);
     }

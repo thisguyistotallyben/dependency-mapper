@@ -39,9 +39,6 @@ export class SidebarTagsComponent implements OnInit {
 
     this.treeService.addTagStyle(tagStyle);
 
-    console.log(this.treeService.getTagStyles());
-    console.log(this.dataService.tagLookup);
-
     this._newTagIsOpen = false;
   }
 

@@ -61,7 +61,6 @@ export class SidebarComponent implements OnInit {
 
   toggleSidebar(): void {
     this.isHidden = !this.isHidden;
-    console.log(this.isHidden);
   }
 
   sidebarIsHidden(): boolean {

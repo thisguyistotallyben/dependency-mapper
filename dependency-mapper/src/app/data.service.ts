@@ -228,7 +228,6 @@ class DataService {
     }
 
     if (data.tags) {
-      console.log('tags', data.tags);
       data.tags.forEach((tag: Tag) => this.tagLookup.set(tag.id, tag));
     }
   }

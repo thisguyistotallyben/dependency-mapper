@@ -31,7 +31,6 @@ export class ConfigService {
 
   setConfig(key: string, value: string): void {
     this.config.set(key, value);
-    console.log(this.config);
   }
 
   getConfig(key: string): any {

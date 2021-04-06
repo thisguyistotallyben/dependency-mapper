@@ -23,7 +23,6 @@ export class SidebarTicketsFieldsComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.ticket) {
-      console.log('TICKET', this.ticket)
       this.id = this.ticket.id;
       this.jiraId = this.ticket.jiraId;
       this.title = this.ticket.title;

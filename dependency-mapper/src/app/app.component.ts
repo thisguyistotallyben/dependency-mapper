@@ -22,13 +22,9 @@ export class AppComponent implements OnInit{
   ngOnInit() {
     // Possible info on how this stuff even works
     // https://stackoverflow.com/questions/44864303/send-data-through-routing-paths-in-angular/44865817#44865817
-    console.log(this.route.snapshot)
     this.route.queryParams.subscribe( params => {
-      console.log('params', params);
       if (params.data) {
-        console.log('hitting here', params);
         const data = this.configService.decodeAndLoadData(params.data); // Should this live in ConfigService?
-        console.log('data in app', data);
         this.dataService.import(data);
         this.treeService.loadTagStyles(data);
         this.treeService.renderTree();

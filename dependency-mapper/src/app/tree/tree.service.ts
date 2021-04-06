@@ -67,8 +67,7 @@ class TreeService {
     outputString += '\n';
     links.forEach((val) => outputString += val + '\n');
 
-    // console.log('Current Tree Syntax:');
-    console.log(outputString);
+    // console.log(outputString);
     return outputString;
   }
 
@@ -115,7 +114,6 @@ class TreeService {
 
   export(): any {
     const tagStyles = Array.from(this.tagStyles.values());
-    console.log('exporting tag styles', tagStyles);
     return {
       tagStyles,
       defaultTagStyle: this.defaultTagStyle

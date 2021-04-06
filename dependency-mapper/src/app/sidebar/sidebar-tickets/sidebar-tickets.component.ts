@@ -52,7 +52,6 @@ export class SidebarTicketsComponent implements OnInit {
       ...this.dataService.export(),
       ...this.treeService.export()
     };
-    console.log('data', data);
     const urlParam = encodeURIComponent(this.configService.encodeData(data));
 
     // this.clipboard.copy('http://thisguyistotallyben.github.io/dependency-mapper/?data=' + urlParam);
