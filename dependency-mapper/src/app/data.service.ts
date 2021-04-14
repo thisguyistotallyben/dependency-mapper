@@ -92,6 +92,10 @@ class DataService {
   /* DEPENDENCY LAND */
 
   addDependency(parentId: string, childId: string): void {
+    if (parentId === childId) {
+      return;
+    }
+
     let dep = new Dependency();
 
     dep.parentId = parentId;

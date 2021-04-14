@@ -1,0 +1,38 @@
+.popover {
+  z-index: 1000;
+  position: absolute;
+  top: 0;
+}
+
+.done-button {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.gray {
+  background-color: #e6e6e6;
+}
+
+.popover-header {
+  background-color: white;
+  border-top-left-radius: 0.2em;
+  border-top-right-radius: 0.2em;
+  border-bottom-style: solid;
+  border-bottom-color: #afafaf;
+  border-bottom-width: 0.1em;
+}
+
+.close-button {
+  width: 1.5em;
+  height: 1.5em;
+  border-radius: 1em;
+}
+
+.close-button:hover {
+  background-color: #c9c9c9;
+}
+
+.no-width {
+  width: unset;
+}

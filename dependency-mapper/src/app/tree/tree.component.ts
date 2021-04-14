@@ -9,6 +9,7 @@ import { TreeService } from './tree.service';
 })
 export class TreeComponent implements AfterViewInit {
   @ViewChild('mermaidDiv') mermaidDiv: ElementRef;
+  color = 'blue';
 
   constructor(private treeService: TreeService) {
     this.treeService.component = this;
@@ -20,7 +21,6 @@ export class TreeComponent implements AfterViewInit {
         useMaxWidth:false,
         curve:'basis',
       },
-      theme: 'forest',
       securityLevel: 'loose'
     });
     mermaid.init();

@@ -18,6 +18,7 @@ import { SidebarTagsComponent } from './sidebar/sidebar-tags/sidebar-tags.compon
 import { SidebarTagsEntryComponent } from './sidebar/sidebar-tags/sidebar-tags-entry/sidebar-tags-entry.component';
 import { SidebarTagsFieldsComponent } from './sidebar/sidebar-tags/sidebar-tags-fields/sidebar-tags-fields.component';
 import { ColorPickerModule } from 'ngx-color-picker';
+import { TreeEditComponent } from './tree/tree-edit/tree-edit.component';
 
 const routes: Routes = [
   {
@@ -44,6 +45,7 @@ const routes: Routes = [
     SidebarTagsComponent,
     SidebarTagsEntryComponent,
     SidebarTagsFieldsComponent,
+    TreeEditComponent,
   ],
   imports: [
     BrowserModule,

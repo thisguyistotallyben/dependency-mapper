@@ -47,6 +47,7 @@ export class SidebarTicketsComponent implements OnInit {
 
   // TODO: Figure out how to adjust the url automatically
   // REASONING: I want this to be a 'save' where it just automatically updates the url
+  // TODO: Move this to a service
   copyUrl(): void {
     const data = {
       ...this.dataService.export(),

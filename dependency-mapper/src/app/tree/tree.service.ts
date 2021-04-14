@@ -27,6 +27,7 @@ class TreeService {
   */
 
   constructor(private dataService: DataService) {
+    window['treeService'] = this;
     this.tagStyles = new Map<string, TagStyle>();
 
     // TODO: expose the default so it can be changed
@@ -67,7 +68,7 @@ class TreeService {
     outputString += '\n';
     links.forEach((val) => outputString += val + '\n');
 
-    // console.log(outputString);
+    console.log(outputString);
     return outputString;
   }
 
@@ -76,7 +77,7 @@ class TreeService {
 
     output += ts.tagId
       ? 'classDef ' + this.classPrefix + ts.tagId
-      : 'classDef default';
+      : 'classDef node';
     output += ' fill:' + ts.bgColor;
     output += ',stroke:' + ts.borderColor;
     output += ',stroke-width:' + ts.borderWidth;
@@ -97,9 +98,10 @@ class TreeService {
     const styleClass = ticket.tagId
       ? ':::' + this.classPrefix + ticket.tagId
       : '';
-    const link = ticket.jiraId
-      ? `\nclick ${ticket.id} "${this.dataService.generateUrl(ticket.jiraId)}" _blank`
-      : '';
+    const link = `\nclick ${ticket.id} treeClick`;
+    // const link = ticket.jiraId
+    //   ? `\nclick ${ticket.id} "${this.dataService.generateUrl(ticket.jiraId)}" _blank`
+    //   : '';
 
     return title + description + styleClass + link;
   }
@@ -142,6 +144,11 @@ class TreeService {
     let arr = Array<TagStyle>();
     this.tagStyles.forEach((value, key) => arr.push(value));
     return arr;
+  }
+
+  doSomething() {
+    console.log('very yes much wow', window['mouse_x'], window['mouse_y']);
+    console.log('getTagStyles', this.getTagStyles());
   }
 
 }

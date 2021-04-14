@@ -1,0 +1,57 @@
+<div class="popover" [style.left]="posX" [style.top]="posY" *ngIf="isDisplayed">
+  <div class="gray bds-container bds-margin-1 bds-shadow-2">
+    <div class="popover-header bds-padding-1 bds-y-center">
+      <!-- <div class="close-button bds-x-center bds-y-center">
+        <i class="fas fa-times"></i>
+      </div> -->
+      <button
+        class="bds-button bds-button-success no-width"
+        [disabled]="!ticketHasJiraLink"
+        (click)="goToJira()">
+        <i class="fab fa-jira"></i> Jira
+      </button>
+      <button
+        class="bds-button bds-l-margin-3"
+        (click)="addChildren()">
+        Edit Children
+      </button>
+      <button
+        class="bds-button bds-l-margin-1"
+        (click)="addParents()">Edit Parents
+      </button>
+      <button
+        class="bds-button bds-button-danger bds-l-margin-1 no-width"
+        (click)="toggleDeleteTicket()">
+        <i class="far fa-trash-alt"></i>
+      </button>
+    </div>
+    <div class="edit-body bds-padding-1">
+      <div *ngIf="isDeleting" class="bds-x-center bds-y-center">
+        <button
+          class="bds-button bds-button-flat"
+          (click)="cancelEdit()">
+          Cancel
+        </button>
+        <button
+          class="bds-button bds-button-danger bds-l-margin-1"
+          (click)="deleteTicket()">
+          Delete
+        </button>
+      </div>
+      <app-sidebar-tickets-fields
+        *ngIf="!isDeleting"
+        [ticket]="ticketToEdit"
+        (cancel)="cancelEdit()"
+        (submit)="updateTicket($event)"
+      ></app-sidebar-tickets-fields>
+    </div>
+
+
+  </div>
+</div>
+<button
+  *ngIf="dependenciesAreBeingSet"
+  class="done-button bds-button bds-button-success bds-margin-1 bds-shadow-3"
+  (click)="endDependencyEdit()">
+  Done
+</button>
