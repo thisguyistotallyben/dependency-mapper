@@ -69,7 +69,7 @@ class TreeService {
     outputString += '\n';
     links.forEach((val) => outputString += val + '\n');
 
-    console.log(outputString);
+    // console.log(outputString);
     return outputString;
   }
 
@@ -94,7 +94,7 @@ class TreeService {
     /* FORMAT:
       id[<b>id - title</b><br/><br/>description]:::className
     */
-    const title = `${ticket.id}[\"<b>${ticket.title} ${ticket.jiraId ? 'fab:fa-jira' : ''}</b>`;
+    const title = `${ticket.id}[\"<b>${this.formatText(ticket.title)} ${ticket.jiraId ? 'fab:fa-jira' : ''}</b>`;
     this.formatText(ticket.description);
     const description = ticket.description !== '' ?
       `<hr>${this.formatText(ticket.description)}\"]`
