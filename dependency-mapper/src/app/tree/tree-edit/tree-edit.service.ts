@@ -70,9 +70,8 @@ export class TreeEditService {
     return this.state === 'parents' || this.state === 'children';
   }
 
-  get ticketHasJiraLink(): boolean {
-    // console.log(this.currentTicket.jiraId, this.currentTicket.jiraId !== '');
-    return this.currentTicket.jiraId !== '';
+  get currentTicketJiraId(): string {
+    return this.currentTicket.jiraId;
   }
 
   get popoverPosX() {

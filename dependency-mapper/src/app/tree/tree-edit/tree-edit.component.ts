@@ -61,7 +61,9 @@ export class TreeEditComponent implements OnInit {
   }
 
   goToJira() {
-    console.log('pretend I\'m going to Jira now', this.ticketHasJiraLink);
+    const jiraId = this.treeEditService.currentTicketJiraId;
+    console.log(this.dataService.generateUrl(jiraId));
+    window.open(this.dataService.generateUrl(jiraId), "_blank");
   }
 
   get posX():string {
@@ -87,6 +89,6 @@ export class TreeEditComponent implements OnInit {
   }
 
   get ticketHasJiraLink() {
-    return this.treeEditService.ticketHasJiraLink
+    return this.treeEditService.currentTicketJiraId !== '';
   }
 }

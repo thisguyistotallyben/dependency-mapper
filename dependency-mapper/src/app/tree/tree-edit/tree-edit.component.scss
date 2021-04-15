@@ -36,3 +36,21 @@
 .no-width {
   width: unset;
 }
+
+.jira-button {
+  background-color: #2684ff;
+  border-color: #2067c2;
+  color: white;
+}
+
+.jira-button:hover {
+  background-color: #4998ff;
+  border-color: #2067c2;
+  color: white;
+}
+
+.jira-button:disabled:hover {
+  color: #969696;
+  background: whitesmoke;
+  border-color: #dedede;
+}
