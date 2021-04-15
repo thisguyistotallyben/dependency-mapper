@@ -8,6 +8,7 @@ class TagStyle {
   borderColor: string;
   borderWidth: number;
   borderStyle: string;
+  textColor: string;
 }
 
 
@@ -84,6 +85,7 @@ class TreeService {
     output += ts.borderStyle === 'dashed'
       ? ',stroke-dasharray:5 4'
       : '';
+    output += ',color:' + ts.textColor;
 
     return output;
   }
@@ -92,8 +94,11 @@ class TreeService {
     /* FORMAT:
       id[<b>id - title</b><br/><br/>description]:::className
     */
-    const title = `${ticket.id}[<b>${ticket.title}</b><hr>`;
-    const description = `${ticket.description}]`;
+    const title = `${ticket.id}[\"<b>${ticket.title} ${ticket.jiraId ? 'fab:fa-jira' : ''}</b>`;
+    this.formatText(ticket.description);
+    const description = ticket.description !== '' ?
+      `<hr>${this.formatText(ticket.description)}\"]`
+      : '\"]';
     // TODO: Check for more things, eg. url even exists and whatnot
     const styleClass = ticket.tagId
       ? ':::' + this.classPrefix + ticket.tagId
@@ -104,6 +109,33 @@ class TreeService {
     //   : '';
 
     return title + description + styleClass + link;
+  }
+
+  formatText(text: string): string {
+    // sanitize characters
+    text = text.replace(/\n/g, '<br>');
+    text = text.replace(/\"/g, '#quot;');
+
+    const numChars = 50;
+
+    if (text.length < numChars) {
+      return text; // replace with sanitized text
+    }
+
+    // I'm 99% sure there's a better way to do this, but here we are right now...
+    let line = '';
+    let output = '';
+    const words = text.split(' ');
+    words.forEach(word => {
+      if ((line + ' ' + word).length > numChars) {
+        output += line + '<br>';
+        line = '';
+      }
+      line += word + ' ';
+    });
+    output += line;
+
+    return output;
   }
 
   linkComponent(component: any): void {
@@ -145,12 +177,6 @@ class TreeService {
     this.tagStyles.forEach((value, key) => arr.push(value));
     return arr;
   }
-
-  doSomething() {
-    console.log('very yes much wow', window['mouse_x'], window['mouse_y']);
-    console.log('getTagStyles', this.getTagStyles());
-  }
-
 }
 
 export { TreeService, TagStyle };
