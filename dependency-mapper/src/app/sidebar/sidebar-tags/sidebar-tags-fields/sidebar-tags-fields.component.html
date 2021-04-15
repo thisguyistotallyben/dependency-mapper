@@ -9,7 +9,7 @@
     <div class="tab-container bds-x-left bds-shadow-2">
       <div
         class="tab bds-padding-1 bds-no-highlight"
-        [ngClass]="{'tab-selected': backgroundIsSelected()}"
+        [ngClass]="{'tab-selected': backgroundIsSelected}"
         (click)="selectBackground()"
       >
         Background
@@ -17,16 +17,24 @@
       </div>
       <div
         class="tab bds-l-margin-1 bds-padding-1 bds-no-highlight"
-        [ngClass]="{'tab-selected': borderIsSelected()}"
+        [ngClass]="{'tab-selected': borderIsSelected}"
         (click)="selectBorder()"
       >
         Border
         <div class="selected-bar"></div>
       </div>
+      <div
+        class="tab bds-l-margin-1 bds-padding-1 bds-no-highlight"
+        [ngClass]="{'tab-selected': textIsSelected}"
+        (click)="selectText()"
+      >
+        Text
+        <div class="selected-bar"></div>
+      </div>
     </div>
     <div class="bds-padding-1">
       <!-- THIS IS SEPARATE BECAUSE IT CAUSES THE INTERFACE TO FLICKER IF IT'S IN A TAB -->
-      <div class="bds-x-center" [hidden]="!isBackgroundSelected">
+      <div class="bds-x-center" [hidden]="!backgroundIsSelected">
         <div
           [(colorPicker)]="bgColor"
           [cpOutputFormat]="'hex'"
@@ -34,7 +42,7 @@
           [cpToggle]="true"
         ></div>
       </div>
-      <div class="bds-x-center" [hidden]="isBackgroundSelected">
+      <div class="bds-x-center" [hidden]="!borderIsSelected">
         <div
           [(colorPicker)]="borderColor"
           [cpOutputFormat]="'hex'"
@@ -42,7 +50,15 @@
           [cpToggle]="true"
         ></div>
       </div>
-      <div *ngIf="borderIsSelected()">
+      <div class="bds-x-center" [hidden]="!textIsSelected">
+        <div
+          [(colorPicker)]="textColor"
+          [cpOutputFormat]="'hex'"
+          [cpDialogDisplay]="'inline'"
+          [cpToggle]="true"
+        ></div>
+      </div>
+      <div *ngIf="borderIsSelected">
         <div class="bds-x-even_space">
           <div>
             <div class="bds-field-label bds-t-margin-1">Style</div>
@@ -66,12 +82,13 @@
   <div class="bds-field-label bds-t-margin-1">Preview</div>
   <div class="bds-container bds-padding-1 bds-x-center bds-shadow-1">
     <div
-      class="display"
+      class="display bds-x-center bds-y-center"
       [style.background]="bgColor"
       [style.border-color]="borderColor"
       [style.border-width]="borderWidth + 'px'"
       [style.border-style]="borderStyle"
-    ></div>
+      [style.color]="textColor"
+    >Example Text</div>
   </div>
   <div class="buttons bds-t-margin-1 bds-x-right">
     <button class="bds-button bds-button-flat bds-r-margin-1" (click)="cancelTag()">Cancel</button>

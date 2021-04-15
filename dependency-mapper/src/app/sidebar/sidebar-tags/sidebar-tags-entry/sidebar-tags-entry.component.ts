@@ -61,6 +61,7 @@ export class SidebarTagsEntryComponent implements OnInit {
     this.tagStyle.borderColor = event.borderColor;
     this.tagStyle.borderStyle = event.borderStyle;
     this.tagStyle.borderWidth = event.borderWidth;
+    this.tagStyle.textColor = event.textColor;
 
     this.treeService.addTagStyle(this.tagStyle);
     this.toggleEdit();

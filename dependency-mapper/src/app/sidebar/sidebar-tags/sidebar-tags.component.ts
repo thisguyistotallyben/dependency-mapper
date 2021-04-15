@@ -36,6 +36,7 @@ export class SidebarTagsComponent implements OnInit {
     tagStyle.borderColor = event.borderColor;
     tagStyle.borderWidth = event.borderWidth;
     tagStyle.borderStyle = event.borderStyle;
+    tagStyle.textColor = event.textColor;
 
     this.treeService.addTagStyle(tagStyle);
 

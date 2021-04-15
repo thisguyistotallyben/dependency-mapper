@@ -53,19 +53,11 @@ class DataService {
     ticket.jiraId = ticket.jiraId ? ticket.jiraId : '';
     ticket.title = ticket.title ? ticket.title : '';
     ticket.description = ticket.description
-      ? this.formatToData(ticket.description)
+      ? ticket.description
       : '';
 
     this.ticketLookup.set(ticket.id, ticket);
     return ticket;
-  }
-
-  formatToData(text: string): string {
-    return text.replace('\n', '<br>');
-  }
-
-  formatFromData(text: string): string {
-    return text.replace('<br>', '\n');
   }
 
   removeTicket(id: string): void {

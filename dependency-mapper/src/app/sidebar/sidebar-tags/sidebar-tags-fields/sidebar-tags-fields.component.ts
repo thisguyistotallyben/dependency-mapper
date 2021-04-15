@@ -10,6 +10,7 @@ class TagFieldsResponse {
   borderColor: string;
   borderStyle: string;
   borderWidth: number;
+  textColor: string;
 }
 
 
@@ -29,9 +30,11 @@ class SidebarTagsFieldsComponent implements OnInit {
   borderColor = '#000000';
   borderWidth = 2;
   borderStyle = 'solid';
+  textColor = '#000000'
 
   _backgroundIsSelected = true;
   _borderIsSelected = false;
+  _textIsSelected = false;
 
   constructor(
     private dataService: DataService
@@ -39,12 +42,12 @@ class SidebarTagsFieldsComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.tagStyle) {
-      // this.name = this.tagStyle.tag.value;
       this.name = this.dataService.getTag(this.tagStyle.tagId).value;
       this.bgColor = this.tagStyle.bgColor;
       this.borderColor = this.tagStyle.borderColor;
       this.borderWidth = this.tagStyle.borderWidth;
       this.borderStyle = this.tagStyle.borderStyle;
+      this.textColor = this.tagStyle.textColor;
     }
   }
 
@@ -65,6 +68,7 @@ class SidebarTagsFieldsComponent implements OnInit {
     tagResponse.borderColor = this.borderColor;
     tagResponse.borderStyle = this.borderStyle;
     tagResponse.borderWidth = this.borderWidth;
+    tagResponse.textColor = this.textColor;
 
     this.submit.emit(tagResponse);
   }
@@ -74,27 +78,34 @@ class SidebarTagsFieldsComponent implements OnInit {
   }
 
   selectBackground(): void {
-    this._backgroundIsSelected = true;
     this._borderIsSelected = false;
+    this._backgroundIsSelected = true;
+    this._textIsSelected = false;
   }
 
-  backgroundIsSelected(): boolean {
-    return this._backgroundIsSelected;
-  }
-
-  get isBackgroundSelected(): boolean {
+  get backgroundIsSelected(): boolean {
     return this._backgroundIsSelected;
   }
 
   selectBorder(): void {
     this._borderIsSelected = true;
     this._backgroundIsSelected = false;
+    this._textIsSelected = false;
   }
 
-  borderIsSelected(): boolean {
+  get borderIsSelected(): boolean {
     return this._borderIsSelected;
   }
 
+  selectText(): void {
+    this._borderIsSelected = false;
+    this._backgroundIsSelected = false;
+    this._textIsSelected = true;
+  }
+
+  get textIsSelected(): boolean {
+    return this._textIsSelected;
+  }
 }
 
 export { SidebarTagsFieldsComponent, TagFieldsResponse }
