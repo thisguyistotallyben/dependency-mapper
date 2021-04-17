@@ -1,3 +1,4 @@
+import { JiraService } from './../jira/jira.service';
 import { Injectable } from '@angular/core';
 import { DataService, Ticket, Tag } from '../data.service';
 
@@ -27,7 +28,9 @@ class TreeService {
 
   */
 
-  constructor(private dataService: DataService) {
+  constructor(
+    private dataService: DataService,
+    private jiraService: JiraService) {
     window['treeService'] = this;
     this.tagStyles = new Map<string, TagStyle>();
 
@@ -94,7 +97,7 @@ class TreeService {
     /* FORMAT:
       id[<b>id - title</b><br/><br/>description]:::className
     */
-    const title = `${ticket.id}[\"<b>${this.formatText(ticket.title)} ${ticket.jiraId ? 'fab:fa-jira' : ''}</b>`;
+    const title = `${ticket.id}[\"<b>${this.formatText(ticket.title)} ${this.shouldShowJiraIcon(ticket) ? 'fab:fa-jira' : ''}</b>`;
     this.formatText(ticket.description);
     const description = ticket.description !== '' ?
       `<hr>${this.formatText(ticket.description)}\"]`
@@ -109,6 +112,10 @@ class TreeService {
     //   : '';
 
     return title + description + styleClass + link;
+  }
+
+  shouldShowJiraIcon(ticket: Ticket) {
+    return this.jiraService.isEnabled && ticket.jiraId;
   }
 
   formatText(text: string): string {

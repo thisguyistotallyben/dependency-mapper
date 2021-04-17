@@ -1,29 +1,34 @@
 <div class="popover" [style.left]="posX" [style.top]="posY" *ngIf="isDisplayed">
   <div class="gray bds-container bds-margin-1 bds-shadow-2">
-    <div class="popover-header bds-padding-1 bds-y-center">
+    <div class="popover-header bds-padding-1 bds-y-center bds-x-even_spread">
       <!-- <div class="close-button bds-x-center bds-y-center">
         <i class="fas fa-times"></i>
       </div> -->
-      <button
-        class="jira-button bds-button no-width"
-        [disabled]="!ticketHasJiraLink"
-        (click)="goToJira()">
-        <i class="fab fa-jira"></i> Jira
-      </button>
-      <button
-        class="bds-button bds-l-margin-3"
-        (click)="addChildren()">
-        Edit Children
-      </button>
-      <button
-        class="bds-button bds-l-margin-1"
-        (click)="addParents()">Edit Parents
-      </button>
-      <button
-        class="bds-button bds-button-danger bds-l-margin-1 no-width"
-        (click)="toggleDeleteTicket()">
-        <i class="far fa-trash-alt"></i>
-      </button>
+      <div>
+        <button
+          *ngIf="jiraIsEnabled"
+          class="jira-button bds-button no-width bds-r-margin-3"
+          [disabled]="!ticketHasJiraLink"
+          (click)="goToJira()">
+          <i class="fab fa-jira"></i> Jira
+        </button>
+      </div>
+      <div>
+        <button
+          class="bds-button"
+          (click)="addChildren()">
+          Edit Children
+        </button>
+        <button
+          class="bds-button bds-l-margin-1"
+          (click)="addParents()">Edit Parents
+        </button>
+        <button
+          class="bds-button bds-button-danger bds-l-margin-1 no-width"
+          (click)="toggleDeleteTicket()">
+          <i class="far fa-trash-alt"></i>
+        </button>
+      </div>
     </div>
     <div class="edit-body bds-padding-1">
       <div *ngIf="isDeleting" class="bds-x-center bds-y-center">

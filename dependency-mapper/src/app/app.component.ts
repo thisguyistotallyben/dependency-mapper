@@ -1,3 +1,4 @@
+import { JiraService } from './jira/jira.service';
 import { ConfigService } from './config.service';
 import { TreeService } from 'src/app/tree/tree.service';
 import { Component, OnInit } from '@angular/core';
@@ -24,7 +25,7 @@ export class AppComponent implements OnInit{
     // https://stackoverflow.com/questions/44864303/send-data-through-routing-paths-in-angular/44865817#44865817
     this.route.queryParams.subscribe( params => {
       if (params.data) {
-        const data = this.configService.decodeAndLoadData(params.data); // Should this live in ConfigService?
+        const data = this.configService.decodeData(params.data);
         this.dataService.import(data);
         this.treeService.loadTagStyles(data);
         this.treeService.renderTree();

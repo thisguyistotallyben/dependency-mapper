@@ -1,3 +1,4 @@
+import { JiraService } from './../../../jira/jira.service';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { DataService, Tag, Ticket } from 'src/app/data.service';
 
@@ -18,7 +19,9 @@ export class SidebarTicketsFieldsComponent implements OnInit {
   @Output() submit = new EventEmitter<Ticket>();
   @Output() cancel = new EventEmitter<void>();
 
-  constructor(private dataService: DataService) {
+  constructor(
+    private dataService: DataService,
+    private jiraService: JiraService) {
   }
 
   ngOnInit(): void {
@@ -55,6 +58,10 @@ export class SidebarTicketsFieldsComponent implements OnInit {
 
   cancelInput(): void {
     this.cancel.emit();
+  }
+
+  get jiraIsEnabled(): boolean {
+    return this.jiraService.isEnabled;
   }
 
   // ACTUALLY DO THIS BIT

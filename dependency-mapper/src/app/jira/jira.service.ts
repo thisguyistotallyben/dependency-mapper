@@ -19,6 +19,7 @@ export class JiraService {
   // state shenanigans
   baseUrl: string;
   project: string;
+  _isActive: boolean;
 
   constructor(
     private configService: ConfigService,
@@ -44,6 +45,14 @@ export class JiraService {
 
   getProject(): string {
     return this.project;
+  }
+
+  get isEnabled(): boolean {
+    return this.configService.getConfig('jira-enabled') === 'true';
+  }
+
+  set isEnabled(val: boolean) {
+    this.configService.setConfig('jira-enabled', String(val));
   }
 
   getFields(): void {

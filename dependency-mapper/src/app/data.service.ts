@@ -1,3 +1,4 @@
+import { JiraService } from './jira/jira.service';
 import { ConfigService } from './config.service';
 import { Injectable } from '@angular/core';
 import { Guid } from "guid-typescript";
@@ -32,7 +33,8 @@ class DataService {
   title: string;
 
   constructor(
-    private configService: ConfigService
+    private configService: ConfigService,
+    private jiraService: JiraService
   ) {
     this.ticketLookup = new Map<string, any>();
     this.dependencyLookup = new Array<Dependency>();
@@ -187,6 +189,7 @@ class DataService {
 
   export(): any {
     return {
+      jiraEnabled: this.configService.getConfig('jira-enabled'),
       jiraBaseUrl: this.configService.getCookie('jira-base-url'),
       jiraProject: this.configService.getCookie('jira-project'),
       title: this.title,
@@ -197,6 +200,11 @@ class DataService {
   }
 
   import(data: any): void {
+    const jiraIsEnabled = data.jiraEnabled
+      ? data.jiraEnabled === 'true'
+      : true; // this looks weird, but it should default to true for backwards compatibility
+    this.jiraService.isEnabled = jiraIsEnabled;
+
     if (data.jiraBaseUrl) {
       this.configService.setCookie('jira-base-url', data.jiraBaseUrl);
     }

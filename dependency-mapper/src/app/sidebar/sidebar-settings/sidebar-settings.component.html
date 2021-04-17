@@ -1,10 +1,21 @@
 <div class="settings-container">
-  <div class="section bds-container bds-margin-1 bds-padding-1 bds-shadow-2">
-    <div class="section-header">
-      <i class="fab fa-jira bds-r-margin-1"></i>
-      <b>Jira</b>
+  <div class="section bds-container bds-margin-1 bds-shadow-2">
+    <div class="section-header bds-container-header bds-padding-1 bds-x-even_spread bds-y-center">
+      <div>
+        <i class="fab fa-jira bds-r-margin-1"></i>
+        <b>Jira</b>
+      </div>
+      <div class="toggle-container">
+        <i
+          class="toggle fas"
+          [ngClass]="{'fa-toggle-on toggle-on': jiraIsEnabled, 'fa-toggle-off toggle-off': !jiraIsEnabled}"
+          (click)="toggleJira()"></i>
+      </div>
     </div>
-    <div class="section-content bds-t-margin-1">
+    <div *ngIf="!jiraIsEnabled" class="section-content bds-padding-1 bds-x-center bds-y-center">
+      Disabled
+    </div>
+    <div *ngIf="jiraIsEnabled" class="section-content bds-padding-1">
       <div class="bds-field-label">
         Base Url
       </div>

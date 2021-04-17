@@ -3,11 +3,27 @@
   flex-direction: column;
 }
 
-.section-header {
-
-}
-
 .section-content {
   display: flex;
   flex-direction: column;
+}
+
+.toggle-container {
+  padding-right: 0.2em;
+}
+
+.toggle {
+  transform: scale(1.5);
+}
+
+.toggle:hover {
+  cursor: pointer;
+}
+
+.toggle-on {
+  color: rgb(66, 138, 66);
+}
+
+.toggle-off {
+  color: #cacaca;
 }

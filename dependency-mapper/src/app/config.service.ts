@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
-import ConfigJson from '../assets/config.json';
 import * as pako from 'pako';
 
 
@@ -19,14 +18,13 @@ export class ConfigService {
     return btoa(compressedData);
   }
 
-  decodeAndLoadData(encodedConfig: string): void {
+  decodeData(encodedConfig: string): void {
     const compressedConfig = atob(encodedConfig);
     return JSON.parse(pako.ungzip(compressedConfig, { to: 'string' }));
   }
 
-  // probably deprecated
   getRawConfig(): any {
-    return ConfigJson;
+    return this.config;
   }
 
   setConfig(key: string, value: string): void {

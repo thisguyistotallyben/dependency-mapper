@@ -1,3 +1,4 @@
+import { JiraService } from './../../jira/jira.service';
 import { TreeService } from 'src/app/tree/tree.service';
 import { TreeEditService } from './tree-edit.service';
 import { Component, OnInit } from '@angular/core';
@@ -14,6 +15,7 @@ export class TreeEditComponent implements OnInit {
   constructor(
     private dataService: DataService,
     private treeService: TreeService,
+    private jiraService: JiraService,
     private treeEditService: TreeEditService) {
 
 
@@ -86,5 +88,9 @@ export class TreeEditComponent implements OnInit {
 
   get ticketHasJiraLink() {
     return this.treeEditService.currentTicketJiraId !== '';
+  }
+
+  get jiraIsEnabled(): boolean {
+    return this.jiraService.isEnabled;
   }
 }

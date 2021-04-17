@@ -1,3 +1,4 @@
+import { TreeService } from 'src/app/tree/tree.service';
 import { JiraService } from './../../jira/jira.service';
 import { Component, OnInit } from '@angular/core';
 
@@ -10,7 +11,9 @@ export class SidebarSettingsComponent implements OnInit {
   jiraBaseUrl: string;
   jiraProject: string;
 
-  constructor(private jiraService: JiraService) { }
+  constructor(
+    private jiraService: JiraService,
+    private treeService: TreeService) { }
 
   ngOnInit(): void {
     this.jiraBaseUrl = this.jiraService.getBaseUrl();
@@ -25,4 +28,12 @@ export class SidebarSettingsComponent implements OnInit {
     this.jiraService.setProject(this.jiraProject);
   }
 
+  get jiraIsEnabled(): boolean {
+    return this.jiraService.isEnabled;
+  }
+
+  toggleJira() {
+    this.jiraService.isEnabled = !this.jiraService.isEnabled;
+    this.treeService.renderTree();
+  }
 }
