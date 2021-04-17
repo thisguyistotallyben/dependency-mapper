@@ -54,6 +54,7 @@ export class TreeEditComponent implements OnInit {
 
   deleteTicket() {
     this.dataService.removeTicket(this.treeEditService.currentTicket.id);
+    this.isDeleting = false;
     this.treeEditService.state = undefined;
     this.treeService.renderTree();
   }
