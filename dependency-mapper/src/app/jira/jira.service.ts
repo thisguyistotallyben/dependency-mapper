@@ -24,8 +24,6 @@ export class JiraService {
     private configService: ConfigService,
     private http: HttpClient
   ) {
-    console.log('Jira Service: Initializing');
-    console.log('Jira Service: getting cookies');
     this.baseUrl = this.configService.getCookie(this.baseUrlCookie);
     this.project = this.configService.getCookie(this.projectCookie);
   }

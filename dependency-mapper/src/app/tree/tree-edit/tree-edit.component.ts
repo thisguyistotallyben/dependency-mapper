@@ -26,13 +26,11 @@ export class TreeEditComponent implements OnInit {
   }
 
   cancelEdit() {
-    console.log('yeet');
     this.isDeleting = false;
     this.treeEditService.closeEdit();
   }
 
   updateTicket(event: any) {
-    console.log('updating');
     this.dataService.addTicket(event);
     this.treeEditService.closeEdit();
     this.treeService.renderTree();
@@ -62,17 +60,14 @@ export class TreeEditComponent implements OnInit {
 
   goToJira() {
     const jiraId = this.treeEditService.currentTicketJiraId;
-    console.log(this.dataService.generateUrl(jiraId));
     window.open(this.dataService.generateUrl(jiraId), "_blank");
   }
 
   get posX():string {
-    // console.log('big stonks', window['mouse_x'] + 'px');
     return this.treeEditService.popoverPosX + 'px';
   }
 
   get posY():string {
-    // console.log('big stonks', window['mouse_x'] + 'px');
     return this.treeEditService.popoverPosY + 'px';
   }
 

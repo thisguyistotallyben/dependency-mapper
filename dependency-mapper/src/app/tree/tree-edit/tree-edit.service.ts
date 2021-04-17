@@ -51,11 +51,9 @@ export class TreeEditService {
 
   openEdit(nodeId) {
     this.currentTicket = this.dataService.getTicket(nodeId);
-    console.log(this.currentTicket);
     this.posX = window['mouse_x'];
     this.posY = window['mouse_y'];
     this.state = 'edit';
-    console.log('stonkaroonis', nodeId, this.posX, this.posY);
   }
 
   closeEdit() {

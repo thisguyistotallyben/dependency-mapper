@@ -34,8 +34,6 @@ class DataService {
   constructor(
     private configService: ConfigService
   ) {
-    console.log('Initializing Data Service');
-
     this.ticketLookup = new Map<string, any>();
     this.dependencyLookup = new Array<Dependency>();
     this.tagLookup = new Map<string, Tag>();

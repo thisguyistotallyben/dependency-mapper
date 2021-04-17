@@ -18,7 +18,6 @@ export class JiraComponent implements OnInit {
   constructor(private jiraService: JiraService) { }
 
   ngOnInit(): void {
-    console.log('yee haw');
     this.baseUrl = this.jiraService.getBaseUrl();
     this.project = this.jiraService.getProject();
   }
