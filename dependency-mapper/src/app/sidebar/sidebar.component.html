@@ -53,6 +53,16 @@
             Settings
           </div>
         </div>
+        <div class="sep-bar"></div>
+        <div
+          class="menu-item bds-x-center bds-padding-1 bds-no-highlight"
+          (click)="copyLinkToClipboard()"
+        >
+          <i class="icon-item fas fa-share-square bds-x-center bds-padding-1"></i>
+          <div class="header-subtext">
+            Share
+          </div>
+        </div>
       </div>
     </div>
     <div class="content">
@@ -70,5 +80,10 @@
   <div class="show-hide bds-y-center" (click)="toggleSidebar()">
     <i class="fas fa-chevron-left" *ngIf="!sidebarIsHidden()"></i>
     <i class="fas fa-chevron-right" *ngIf="sidebarIsHidden()"></i>
+  </div>
+</div>
+<div class="toast bds-x-center bds-y-center" [ngClass]="{ 'show-toast': toastIsDisplayed, 'bds-shadow-3': toastIsDisplayed }">
+  <div *ngIf="toastIsDisplayed">
+    Copied to clipboard!
   </div>
 </div>

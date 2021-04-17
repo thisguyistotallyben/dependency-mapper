@@ -1,5 +1,8 @@
+import { ConfigService } from './../config.service';
+import { TreeService } from 'src/app/tree/tree.service';
 import { Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
 import { DataService } from '../data.service';
+import { Clipboard } from '@angular/cdk/clipboard';
 
 
 @Component({
@@ -11,6 +14,7 @@ export class SidebarComponent implements OnInit {
   @ViewChild("titleField") titleField: ElementRef;
 
   // state shenanigans
+  toastIsDisplayed = false;
   displayedMenu = 'tickets';
   // displayedMenu = 'tags';
   isHidden = false;
@@ -19,7 +23,10 @@ export class SidebarComponent implements OnInit {
 
   constructor(
     private changeDetector: ChangeDetectorRef,
-    public dataService: DataService) { }
+    private configService: ConfigService,
+    public dataService: DataService,
+    private treeService: TreeService,
+    private clipboard: Clipboard) { }
 
   ngOnInit(): void {
     this._title = this.dataService.getTitle();
@@ -83,6 +90,22 @@ export class SidebarComponent implements OnInit {
 
   isEditingTitle(): boolean {
     return this._isEditingTitle;
+  }
+
+  // TODO: Move this to a service
+  copyLinkToClipboard(): void {
+    const data = {
+      ...this.dataService.export(),
+      ...this.treeService.export()
+    };
+    const urlParam = encodeURIComponent(this.configService.encodeData(data));
+
+    this.clipboard.copy('http://thisguyistotallyben.github.io/dependency-mapper/?data=' + urlParam);
+    // this.clipboard.copy('http://localhost:4200/?data=' + urlParam);
+
+    this.toastIsDisplayed = true;
+    const that = this;
+    setTimeout(function() { that.toastIsDisplayed = false; }, 2000);
   }
 
 }

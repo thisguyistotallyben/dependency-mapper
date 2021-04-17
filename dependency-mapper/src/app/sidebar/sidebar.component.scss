@@ -128,3 +128,37 @@
 .header-title {
   width: 100%;
 }
+
+.share {
+  width: 100%;
+  height: 100%;
+}
+
+.share-button {
+  width: 100%;
+  height: 100%;
+}
+
+.sep-bar {
+  width: 0.1em;
+  height: 40%;
+  background: lightgrey;
+}
+
+.toast {
+  position: absolute;
+  width: 100%;
+  height: 0;
+  left: 0;
+  top: 0;
+  background-color: rgb(66, 138, 66);
+  color: white;
+
+  transition: height 0.2s;
+}
+
+.show-toast {
+  height: 3em;
+
+  transition: height 0.2s;
+}

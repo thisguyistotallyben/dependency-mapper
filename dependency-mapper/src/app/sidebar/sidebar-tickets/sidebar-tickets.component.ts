@@ -14,8 +14,6 @@ export class SidebarTicketsComponent implements OnInit {
   makingNewTicket = false;
 
   constructor(
-    private clipboard: Clipboard,
-    private configService: ConfigService,
     private dataService: DataService,
     private treeService: TreeService
   ) { }
@@ -44,19 +42,4 @@ export class SidebarTicketsComponent implements OnInit {
     this.makingNewTicket = false;
     this.treeService.renderTree();
   }
-
-  // TODO: Figure out how to adjust the url automatically
-  // REASONING: I want this to be a 'save' where it just automatically updates the url
-  // TODO: Move this to a service
-  copyUrl(): void {
-    const data = {
-      ...this.dataService.export(),
-      ...this.treeService.export()
-    };
-    const urlParam = encodeURIComponent(this.configService.encodeData(data));
-
-    this.clipboard.copy('http://thisguyistotallyben.github.io/dependency-mapper/?data=' + urlParam);
-    // this.clipboard.copy('http://localhost:4200/?data=' + urlParam);
-  }
-
 }
