@@ -59,7 +59,7 @@ export class SidebarTicketsDependenciesComponent implements OnInit {
       this.parentDependencies.add(id);
     }
 
-    this.dataService.resetParentDependencies(this.ticketId, Array.from(this.parentDependencies))
+    // this.dataService.resetParentDependencies(this.ticketId, Array.from(this.parentDependencies))
     this.treeService.renderTree();
   }
 
@@ -79,7 +79,7 @@ export class SidebarTicketsDependenciesComponent implements OnInit {
       this.childDependencies.add(id);
     }
 
-    this.dataService.resetChildDependencies(this.ticketId, Array.from(this.childDependencies))
+    // this.dataService.resetChildDependencies(this.ticketId, Array.from(this.childDependencies))
     this.treeService.renderTree();
   }
 

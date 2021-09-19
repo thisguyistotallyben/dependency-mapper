@@ -1,0 +1,45 @@
+<div class="container bds-x-center">
+    <div class="modal bds-container bds-margin-3">
+        <div class="modal-body">
+            <div class="bds-container-header bds-shadow-2 bds-padding-2 bds-x-even_spread bds-y-center">
+                <h2 *ngIf="!hasTicket">New Ticket</h2>
+                <div *ngIf="hasTicket">
+                    <div class="ticket-header">
+                        <div class="action">Editing</div>
+                        <div class="title">{{ticket.title}}</div>
+                    </div>
+                </div>
+                <div>
+                    <button class="bds-button bds-button-flat bds-r-margin-1" (click)="handleCancel()">Cancel</button>
+                    <button class="bds-button bds-button-success" (click)="handleSave()">Save</button>
+                </div>
+            </div>
+            <div class="content">
+                <div class="fields bds-padding-2">
+                    <div class="bds-field-label">Title</div>
+                    <input
+                        class="bds-input-field bds-shadow-1 bds-b-margin-1"
+                        [(ngModel)]="title"
+                    >
+                    <div *ngIf="jiraIsEnabled">
+                        <div class="bds-field-label">Jira Id</div>
+                        <input
+                            class="jira bds-input-field bds-shadow-1 bds-b-margin-1"
+                            [(ngModel)]="jiraId"
+                        >
+                    </div>
+                    <div class="bds-field-label">Description</div>
+                    <textarea
+                        class="bds-input-field bds-input-field-large bds-shadow-1 bds-b-margin-1"
+                        type="text"
+                        [(ngModel)]="description"
+                    ></textarea>
+                    <div class="bds-field-label">Tag</div>
+                    <select [ngModel]="tagId" (ngModelChange)="updateTag($event)" class="bds-input-field bds-shadow-1 bds-b-margin-1">
+                        <option [ngValue]="tag.id" *ngFor="let tag of tags">{{tag.value}}</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

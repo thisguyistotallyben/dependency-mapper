@@ -11,6 +11,7 @@ import { Ticket, DataService } from 'src/app/data.service';
 })
 export class TreeEditComponent implements OnInit {
   isDeleting = false;
+  isEditTicketOpen = false;
 
   constructor(
     private dataService: DataService,
@@ -27,6 +28,11 @@ export class TreeEditComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  toggleEditTicket() {
+    this.treeEditService.closeEdit();
+    this.isEditTicketOpen = !this.isEditTicketOpen;
+  }
+
   cancelEdit() {
     this.isDeleting = false;
     this.treeEditService.closeEdit();
@@ -38,11 +44,11 @@ export class TreeEditComponent implements OnInit {
     this.treeService.renderTree();
   }
 
-  addChildren() {
+  setChildren() {
     this.treeEditService.state = 'children';
   }
 
-  addParents() {
+  setParents() {
     this.treeEditService.state = 'parents';
   }
 
@@ -51,6 +57,7 @@ export class TreeEditComponent implements OnInit {
   }
 
   toggleDeleteTicket() {
+    this.treeEditService.closeEdit();
     this.isDeleting = !this.isDeleting;
   }
 
@@ -84,6 +91,14 @@ export class TreeEditComponent implements OnInit {
 
   get dependenciesAreBeingSet() {
     return this.treeEditService.dependenciesAreBeingSet;
+  }
+
+  get editMessage() {
+    switch(this.treeEditService.state) {
+      case 'parents': return 'Setting Parents of';
+      case 'children': return 'Setting Children of';
+      default: return 'Editing';
+    }
   }
 
   get ticketHasJiraLink() {

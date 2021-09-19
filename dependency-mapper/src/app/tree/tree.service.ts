@@ -59,7 +59,7 @@ class TreeService {
     });
 
     // generate formatted dependencies
-    this.dataService.getDependencies().forEach((dep) => {
+    this.dataService.dependencies.forEach((dep) => {
       if (dep.parentId && dep.childId) {
         links.push(`${dep.parentId} --> ${dep.childId}`);
       }

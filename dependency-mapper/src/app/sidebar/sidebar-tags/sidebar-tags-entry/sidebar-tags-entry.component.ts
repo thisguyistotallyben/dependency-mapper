@@ -54,7 +54,7 @@ export class SidebarTagsEntryComponent implements OnInit {
   updateTagStyle(event: TagFieldsResponse): void {
     if (event.name !== this.tag.value) {
       this.tag.value = event.name;
-      this.dataService.insertOrUpdateTag(this.tag);
+      // this.dataService.insertOrUpdateTag(this.tag);
     }
 
     this.tagStyle.bgColor = event.bgColor;

@@ -2,12 +2,80 @@
   z-index: 1000;
   position: absolute;
   top: 0;
+  width: 10em;
 }
 
-.done-button {
+.menu {
+  padding-left: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+
+  li {
+    list-style-type: none;
+  }
+}
+
+.action-button {
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  text-align: left;
+  background-color: unset;
+  border: none;
+}
+
+.action-button:hover {
+  background-color: #eeeeee;
+}
+
+.jira-button {
+  color: #006dde;
+  border-radius: 0.2em;
+}
+
+.jira-button:hover {
+  background-color: #d4e6ff;
+}
+
+.edit-button {
+  border-top-left-radius: 0.2em;
+  border-top-right-radius: 0.2em;
+}
+
+.delete-button {
+  color: #bd0000;
+  border-bottom-left-radius: 0.2em;
+  border-bottom-right-radius: 0.2em;
+}
+
+.delete-button:hover {
+  background-color: #ffe2e2;
+}
+
+.bottom-border {
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-bottom-color: #dedede;
+}
+
+.dep-set-banner {
   position: absolute;
-  right: 0;
   top: 0;
+  left: 0;
+  right: 0;
+  height: 4em;
+  background-color: #d9f0ff;
+}
+
+.edit-message {
+  font-size: small;
+  // margin-top: -2px;
+  // margin-left: 2px;
+}
+
+.edit-title {
+  font-size: larger;
+  font-weight: bold;
 }
 
 .gray {
@@ -37,17 +105,17 @@
   width: unset;
 }
 
-.jira-button {
-  background-color: #2684ff;
-  border-color: #2067c2;
-  color: white;
-}
+// .jira-button {
+//   background-color: #2684ff;
+//   border-color: #2067c2;
+//   color: white;
+// }
 
-.jira-button:hover {
-  background-color: #4998ff;
-  border-color: #2067c2;
-  color: white;
-}
+// .jira-button:hover {
+//   background-color: #4998ff;
+//   border-color: #2067c2;
+//   color: white;
+// }
 
 .jira-button:disabled:hover {
   color: #969696;

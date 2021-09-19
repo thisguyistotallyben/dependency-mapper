@@ -1,7 +1,8 @@
 import { JiraService } from './jira/jira.service';
 import { ConfigService } from './config.service';
-import { Injectable } from '@angular/core';
+import { ChangeDetectorRef, Injectable } from '@angular/core';
 import { Guid } from "guid-typescript";
+import { Subject } from 'rxjs';
 
 
 class Ticket {
@@ -20,6 +21,10 @@ class Dependency {
 class Tag {
   id: string;
   value: string;
+
+  constructor(value: string) {
+    this.value = value;
+  }
 }
 
 
@@ -27,61 +32,68 @@ class Tag {
   providedIn: 'root'
 })
 class DataService {
-  ticketLookup: Map<string, Ticket>;
+  ticketLookup: any;
   dependencyLookup: Array<Dependency>;
-  tagLookup: Map<string, Tag>;
+  tagLookup: any;
   title: string;
+  mapId: string;
+  jiraURL: string;
+  jiraProject: string;
 
-  constructor(
-    private configService: ConfigService,
-    private jiraService: JiraService
-  ) {
-    this.ticketLookup = new Map<string, any>();
+  // async observables
+  titleObserver: Subject<void>;
+  ticketObserver: Subject<void>;
+  dependencyObserver: Subject<void>;
+  tagObserver: Subject<void>;
+  newMapObserver: Subject<void>;
+
+  constructor() {
+    console.log('constructor');
+    this.ticketLookup = {};
     this.dependencyLookup = new Array<Dependency>();
-    this.tagLookup = new Map<string, Tag>();
+    this.tagLookup = {};
+
+    this.titleObserver = new Subject<void>();
+    this.ticketObserver = new Subject<void>();
+    this.dependencyObserver = new Subject<void>();
+    this.tagObserver = new Subject<void>();
+    this.newMapObserver = new Subject<void>();
   }
 
-  /* TICKET LAND */
+  /* Tickets */
 
-
-  addTicket(ticket: Ticket): Ticket {
-    // if no id, make one (Jira might have their own ids)
+  public addTicket(ticket: Ticket): Ticket {
     if (!ticket.id) {
       ticket.id = Guid.raw();
     }
+
     // empty out any undefines
     ticket.jiraId = ticket.jiraId ? ticket.jiraId : '';
     ticket.title = ticket.title ? ticket.title : '';
-    ticket.description = ticket.description
-      ? ticket.description
-      : '';
+    ticket.description = ticket.description ? ticket.description : '';
 
-    this.ticketLookup.set(ticket.id, ticket);
+    this.ticketLookup[ticket.id] = ticket;
+
+    this.ticketObserver.next();
     return ticket;
   }
 
-  removeTicket(id: string): void {
-    let ticket: Ticket = this.getTicket(id);
+  public removeTicket(id: string): void {
     this.removeRelatedDependencies(id);
-    this.ticketLookup.delete(id);
+    delete this.ticketLookup[id];
+    this.ticketObserver.next();
   }
 
-  getTicketByTitle(title: string): Ticket {
-    return this.tickets.find((ticket) => ticket.title == title);
-  }
-
-  getTicket(id: string): Ticket {
-    return this.ticketLookup.get(id);
+  public getTicket(id: string): Ticket {
+    console.log('in get ticket for', id, this.ticketLookup);
+    return this.ticketLookup[id];
   }
 
   get tickets(): Array<Ticket> {
-    let arr = Array<Ticket>();
-    this.ticketLookup.forEach((value, key) => arr.push(value));
-    return arr;
+    return Object.values(this.ticketLookup);
   }
 
-
-  /* DEPENDENCY LAND */
+  /* Dependencies */
 
   addDependency(parentId: string, childId: string): void {
     if (parentId === childId) {
@@ -89,30 +101,21 @@ class DataService {
     }
 
     let dep = new Dependency();
-
     dep.parentId = parentId;
     dep.childId = childId;
-    this.dependencyLookup.push(dep);
-  }
 
-  getDependencies(): Array<Dependency> {
-    return this.dependencyLookup;
+    this.dependencyLookup.push(dep);
+    this.dependencyObserver.next();
   }
 
   removeDependency(parentId: string, childId: string): void {
     this.dependencyLookup = this.dependencyLookup.filter((dep) => dep.parentId != parentId || dep.childId != childId);
+    this.dependencyObserver.next();
   }
 
   removeRelatedDependencies(id: string): void {
     this.dependencyLookup = this.dependencyLookup.filter((dep) => dep.parentId !== id && dep.childId !== id);
-  }
-
-  removeChildDependencies(id: string): void {
-    this.dependencyLookup = this.dependencyLookup.filter((dep) => dep.parentId !== id);
-  }
-
-  removeParentDependencies(id: string): void {
-    this.dependencyLookup = this.dependencyLookup.filter((dep) => dep.childId !== id);
+    this.dependencyObserver.next();
   }
 
   getRelatedDependencies(id: string): Array<Dependency> {
@@ -127,113 +130,153 @@ class DataService {
     return this.dependencyLookup.filter((dep) => dep.parentId === id);
   }
 
-  resetParentDependencies(id: string, newDeps: Array<string>): void {
-    this.removeParentDependencies(id);
-    newDeps.forEach((dep) => this.addDependency(dep, id));
-  }
-
-  resetChildDependencies(id: string, newDeps: Array<string>): void {
-    this.removeChildDependencies(id);
-    newDeps.forEach((dep) => this.addDependency(id, dep));
-  }
-
   dependencyExists(parentId: string, childId: string): boolean {
     return !!this.dependencyLookup.find((link) => link.parentId == parentId && link.childId == childId);
   }
 
+  get dependencies(): Array<Dependency> {
+    return this.dependencyLookup;
+  }
 
-  /* TITLE LAND */
-
+  /* Title */
 
   setTitle(title: string): void {
     this.title = title;
+    this.titleObserver.next();
   }
 
-  getTitle(): string {
-    return this.title;
-  }
+  /* Tags */
 
+  addTag(tag: Tag): Tag {
+    if (!tag.id) {
+      tag.id = Guid.raw();
+    }
 
-  /* TAG LAND */
-
-
-  addTag(value: string): Tag {
-    const tag = new Tag();
-    tag.id = Guid.raw();
-    tag.value = value;
-
-    this.tagLookup.set(tag.id, tag);
+    this.tagLookup[tag.id] = tag;
+    this.tagObserver.next();
     return tag;
   }
 
-  insertOrUpdateTag(tag: Tag): Tag {
-    this.tagLookup.set(tag.id, tag);
-    return tag;
-  }
-
-  get tags(): Array<Tag> {
-    return Array.from(this.tagLookup.values());
+  removeTag(id: string): void {
+    this.tagLookup.delete(id);
+    this.tagObserver.next();
   }
 
   getTag(id: string): Tag {
     return this.tagLookup.get(id);
   }
 
+  get tags(): Array<Tag> {
+    return Object.values(this.tagLookup);
+  }
 
-  /* OTHER THINGS LAND */
+  /* generation utilities */
 
+  generateNewMap(title: string): void {
+    this.title = title;
+    this.newMapObserver.next();
+  }
 
   generateUrl(jiraId: string): string {
-    return `${this.configService.getCookie('jira-base-url')}/browse/${this.configService.getCookie('jira-project')}-${jiraId}`
+    return `${this.jiraURL}/browse/${this.jiraProject}-${jiraId}`;
   }
-
-  export(): any {
-    return {
-      jiraEnabled: this.configService.getConfig('jira-enabled'),
-      jiraBaseUrl: this.configService.getCookie('jira-base-url'),
-      jiraProject: this.configService.getCookie('jira-project'),
-      title: this.title,
-      tickets: this.tickets,
-      dependencies: this.dependencyLookup,
-      tags: this.tags
-    };
-  }
-
-  import(data: any): void {
-    const jiraIsEnabled = data.jiraEnabled
-      ? data.jiraEnabled === 'true'
-      : true; // this looks weird, but it should default to true for backwards compatibility
-    this.jiraService.isEnabled = jiraIsEnabled;
-
-    if (data.jiraBaseUrl) {
-      this.configService.setCookie('jira-base-url', data.jiraBaseUrl);
-    }
-
-    if (data.jiraProject) {
-      this.configService.setCookie('jira-project', data.jiraProject);
-    }
-
-    if(data.title) {
-      this.setTitle(data.title);
-    }
-
-    if (data.tickets) {
-      data.tickets.forEach((ticket: Ticket) => {
-        this.addTicket(ticket);
-      });
-    }
-
-    if (data.dependencies) {
-      data.dependencies.forEach((dep: Dependency) => {
-        this.addDependency(dep.parentId, dep.childId);
-      });
-    }
-
-    if (data.tags) {
-      data.tags.forEach((tag: Tag) => this.tagLookup.set(tag.id, tag));
-    }
-  }
-
 }
+
+
+
+
+
+
+
+
+
+
+
+// @Injectable({
+//   providedIn: 'root'
+// })
+// class DataService {
+//   ticketLookup: Map<string, Ticket>;
+//   dependencyLookup: Array<Dependency>;
+//   tagLookup: Map<string, Tag>;
+//   title: string;
+//   mapId: string;
+
+//   // async observables
+//   titleObserver: Subject<string>;
+
+//   constructor(
+//     private configService: ConfigService,
+//     private jiraService: JiraService
+//   ) {
+//     this.ticketLookup = new Map<string, any>();
+//     this.dependencyLookup = new Array<Dependency>();
+//     this.tagLookup = new Map<string, Tag>();
+
+//     this.titleObserver = new Subject<string>();
+//   }
+
+
+
+
+
+
+
+
+//   /* OTHER THINGS LAND */
+
+
+//   generateUrl(jiraId: string): string {
+//     return `${this.configService.getCookie('jira-base-url')}/browse/${this.configService.getCookie('jira-project')}-${jiraId}`
+//   }
+
+//   export(): any {
+//     return {
+//       jiraEnabled: this.configService.getConfig('jira-enabled'),
+//       jiraBaseUrl: this.configService.getCookie('jira-base-url'),
+//       jiraProject: this.configService.getCookie('jira-project'),
+//       title: this.title,
+//       tickets: this.tickets,
+//       dependencies: this.dependencyLookup,
+//       tags: this.tags
+//     };
+//   }
+
+//   import(data: any): void {
+//     const jiraIsEnabled = data.jiraEnabled
+//       ? data.jiraEnabled === 'true'
+//       : true; // this looks weird, but it should default to true for backwards compatibility
+//     this.jiraService.isEnabled = jiraIsEnabled;
+
+//     if (data.jiraBaseUrl) {
+//       this.configService.setCookie('jira-base-url', data.jiraBaseUrl);
+//     }
+
+//     if (data.jiraProject) {
+//       this.configService.setCookie('jira-project', data.jiraProject);
+//     }
+
+//     if(data.title) {
+//       this.setTitle(data.title);
+//     }
+
+//     if (data.tickets) {
+//       data.tickets.forEach((ticket: Ticket) => {
+//         this.addTicket(ticket);
+//       });
+//     }
+
+//     if (data.dependencies) {
+//       data.dependencies.forEach((dep: Dependency) => {
+//         this.addDependency(dep.parentId, dep.childId);
+//       });
+//     }
+
+//     if (data.tags) {
+//       data.tags.forEach((tag: Tag) => this.tagLookup.set(tag.id, tag));
+//     }
+//   }
+
+// }
 
 export { DataService, Ticket, Dependency, Tag };

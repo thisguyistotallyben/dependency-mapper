@@ -29,11 +29,11 @@ export class SidebarComponent implements OnInit {
     private clipboard: Clipboard) { }
 
   ngOnInit(): void {
-    this._title = this.dataService.getTitle();
+    this._title = this.dataService.title;
   }
 
   get title(): string {
-    this._title = this.dataService.getTitle();
+    this._title = this.dataService.title;
     return this._title;
   }
 
@@ -75,7 +75,7 @@ export class SidebarComponent implements OnInit {
   }
 
   editTitle(): void {
-    if (!this.dataService.getTitle()) {
+    if (!this.dataService.title) {
       this._title = '';
     }
     this._isEditingTitle = true;
@@ -95,7 +95,7 @@ export class SidebarComponent implements OnInit {
   // TODO: Move this to a service
   copyLinkToClipboard(): void {
     const data = {
-      ...this.dataService.export(),
+      // ...this.dataService.export(),
       ...this.treeService.export()
     };
     const urlParam = encodeURIComponent(this.configService.encodeData(data));

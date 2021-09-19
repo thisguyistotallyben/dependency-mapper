@@ -1,0 +1,38 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+}
+
+.container-top {
+    color: white;
+    background-color: #3a6780;
+
+    h1 {
+        font-size: 10vw;
+    }
+}
+
+ol {
+    li {
+        p {
+            margin-bottom: 0.3em;
+            font-weight: bold;
+        }
+    }
+}
+
+.container-bottom {
+    flex-grow: 1;
+}
+
+.title {
+    margin-top: 0;
+    font-weight: bold;
+    font-size: 4vw;
+}
+
+.get-started {
+    font-size: 2em;
+}

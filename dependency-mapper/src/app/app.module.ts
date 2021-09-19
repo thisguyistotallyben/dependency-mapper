@@ -19,15 +19,21 @@ import { SidebarTagsEntryComponent } from './sidebar/sidebar-tags/sidebar-tags-e
 import { SidebarTagsFieldsComponent } from './sidebar/sidebar-tags/sidebar-tags-fields/sidebar-tags-fields.component';
 import { ColorPickerModule } from 'ngx-color-picker';
 import { TreeEditComponent } from './tree/tree-edit/tree-edit.component';
+import { TopbarComponent } from './topbar/topbar.component';
+import { MapperComponent } from './mapper/mapper.component';
+import { SplashComponent } from './splash/splash.component';
+import { TopbarTagsComponent } from './topbar/topbar-tags/topbar-tags.component';
+import { TicketComponent } from './ticket/ticket.component';
+import { TicketDeleteComponent } from './ticket/ticket-delete/ticket-delete.component';
 
 const routes: Routes = [
   {
-    path: '',
-    component: AppComponent
+    path: ':mapId',
+    component: MapperComponent
   },
   {
-    path: 'data/:stonks',
-    component: TreeComponent
+    path: '',
+    component: SplashComponent
   }
 ];
 
@@ -46,6 +52,12 @@ const routes: Routes = [
     SidebarTagsEntryComponent,
     SidebarTagsFieldsComponent,
     TreeEditComponent,
+    TopbarComponent,
+    MapperComponent,
+    SplashComponent,
+    TopbarTagsComponent,
+    TicketComponent,
+    TicketDeleteComponent,
   ],
   imports: [
     BrowserModule,

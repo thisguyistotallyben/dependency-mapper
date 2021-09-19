@@ -1,0 +1,16 @@
+<div class="container bds-x-center bds-y-center">
+    <div class="modal bds-container bds-margin-3">
+        <div class="modal-body">
+            <div class="bds-container-header bds-padding-2 bds-x-even_spread bds-y-center">
+                <div class="ticket-header">
+                    <div class="action">Deleting</div>
+                    <div class="title">{{ticket.title}}</div>
+                </div>
+                <div>
+                    <button class="bds-button bds-button-flat bds-r-margin-1" (click)="handleCancel()">Cancel</button>
+                    <button class="bds-button bds-button-danger" (click)="handleDelete()">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -31,7 +31,7 @@ export class SidebarTagsComponent implements OnInit {
   addNewTag(event: TagFieldsResponse): void {
     const tagStyle = new TagStyle();
 
-    tagStyle.tagId = this.dataService.addTag(event.name).id;
+    tagStyle.tagId = this.dataService.addTag(new Tag(event.name)).id;
     tagStyle.bgColor = event.bgColor;
     tagStyle.borderColor = event.borderColor;
     tagStyle.borderWidth = event.borderWidth;

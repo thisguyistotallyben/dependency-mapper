@@ -1,0 +1,23 @@
+<div class="container">
+    <div class="modal bds-container bds-margin-3">
+        <div class="modal-body">
+            <div class="bds-container-header bds-shadow-2 bds-padding-2 bds-x-even_spread bds-y-center">
+                <h2>Tags</h2>
+                <button class="close-button bds-button bds-x-center bds-y-center" (click)="handleClose()"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="content">
+                <div class="tag-list-container">
+                    <div class="new-section bds-padding-2 bds-x-center bds-y-center">
+                        <input class="new-tag-name bds-input-field bds-r-margin-2" type="text" placeholder="New Tag Name" [(ngModel)]="newTagName">
+                        <button class="bds-button bds-button-success new-tag" (click)="handleAddNewTag()">Add</button>
+                    </div>
+                    <ul class="tag-list">
+                        <li *ngFor="let tag of tags" class="tag-list-item bds-y-center">
+                            <button class="tag-list-item-button bds-button" (click)="handleTagSelect(tag.id)">{{tag.value}}</button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

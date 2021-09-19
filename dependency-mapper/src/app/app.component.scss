@@ -3,6 +3,18 @@
   height: 100%;
 }
 
+.container-2 {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: #e6e6e6;
+}
+
+.topbar {
+  height: 3em;
+  background-color: pink;
+}
+
 .sidebar {
   height: 100%;
 }
