@@ -49,5 +49,19 @@
     .fields {
         display: flex;
         flex-direction: column;
+        width: 100%;
+
+        .big-input {
+            font-size: x-large;
+            border-radius: 0;
+            border-top: none;
+            border-left: none;
+            border-right: none;
+            width: 100%;
+        }
+
+        .description {
+            resize: none;
+        }
     }
 }

@@ -3,12 +3,7 @@
         <div class="modal-body">
             <div class="bds-container-header bds-shadow-2 bds-padding-2 bds-x-even_spread bds-y-center">
                 <h2 *ngIf="!hasTicket">New Ticket</h2>
-                <div *ngIf="hasTicket">
-                    <div class="ticket-header">
-                        <div class="action">Editing</div>
-                        <div class="title">{{ticket.title}}</div>
-                    </div>
-                </div>
+                <h2 *ngIf="hasTicket">Edit Ticket</h2>
                 <div>
                     <button class="bds-button bds-button-flat bds-r-margin-1" (click)="handleCancel()">Cancel</button>
                     <button class="bds-button bds-button-success" (click)="handleSave()">Save</button>
@@ -18,24 +13,27 @@
                 <div class="fields bds-padding-2">
                     <div class="bds-field-label">Title</div>
                     <input
-                        class="bds-input-field bds-shadow-1 bds-b-margin-1"
+                        class="bds-input-field big-input bds-b-margin-1"
+                        placeholder="Title"
                         [(ngModel)]="title"
                     >
                     <div *ngIf="jiraIsEnabled">
                         <div class="bds-field-label">Jira Id</div>
                         <input
-                            class="jira bds-input-field bds-shadow-1 bds-b-margin-1"
+                            class="jira bds-input-field big-input bds-b-margin-1"
+                            placeholder="Jira Id"
                             [(ngModel)]="jiraId"
                         >
                     </div>
                     <div class="bds-field-label">Description</div>
                     <textarea
-                        class="bds-input-field bds-input-field-large bds-shadow-1 bds-b-margin-1"
+                        class="bds-input-field big-input description bds-input-field-large bds-b-margin-1"
+                        placeholder="Description"
                         type="text"
                         [(ngModel)]="description"
                     ></textarea>
                     <div class="bds-field-label">Tag</div>
-                    <select [ngModel]="tagId" (ngModelChange)="updateTag($event)" class="bds-input-field bds-shadow-1 bds-b-margin-1">
+                    <select [ngModel]="tagId" (ngModelChange)="updateTag($event)" class="bds-input-field big-input bds-b-margin-1">
                         <option [ngValue]="tag.id" *ngFor="let tag of tags">{{tag.value}}</option>
                     </select>
                 </div>

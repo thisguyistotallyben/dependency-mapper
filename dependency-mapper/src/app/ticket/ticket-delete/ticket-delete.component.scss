@@ -25,6 +25,7 @@
     .ticket-header {
         display: flex;
         flex-direction: column;
+        width: 60%;
 
         .action {
             font-size: small;
@@ -33,6 +34,8 @@
         .title {
             font-size: larger;
             font-weight: bold;
+            overflow: hidden;
+            text-overflow: ellipsis;
           }
     }
 }
