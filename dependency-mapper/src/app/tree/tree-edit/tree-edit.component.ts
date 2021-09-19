@@ -1,7 +1,7 @@
 import { JiraService } from './../../jira/jira.service';
 import { TreeService } from 'src/app/tree/tree.service';
 import { TreeEditService } from './tree-edit.service';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Ticket, DataService } from 'src/app/data.service';
 
 @Component({
@@ -14,6 +14,7 @@ export class TreeEditComponent implements OnInit {
   isEditTicketOpen = false;
 
   constructor(
+    private changeDetector: ChangeDetectorRef,
     private dataService: DataService,
     private treeService: TreeService,
     private jiraService: JiraService,
@@ -25,12 +26,25 @@ export class TreeEditComponent implements OnInit {
     }
   }
 
+  // temp land
+
+  closePopover() {
+    console.log('wow a thing');
+    this.treeEditService.closeEdit();
+  }
+
   ngOnInit(): void {
+    this.treeEditService.stateObserver.subscribe(
+      x => this.changeDetector.detectChanges(),
+      err => console.error(err),
+      () => console.warn('tree state observer done')
+    );
   }
 
   toggleEditTicket() {
     this.treeEditService.closeEdit();
     this.isEditTicketOpen = !this.isEditTicketOpen;
+    this.changeDetector.detectChanges();
   }
 
   cancelEdit() {
@@ -46,19 +60,23 @@ export class TreeEditComponent implements OnInit {
 
   setChildren() {
     this.treeEditService.state = 'children';
+    this.changeDetector.detectChanges();
   }
 
   setParents() {
     this.treeEditService.state = 'parents';
+    this.changeDetector.detectChanges();
   }
 
   endDependencyEdit() {
     this.treeEditService.state = undefined;
+    this.changeDetector.detectChanges();
   }
 
   toggleDeleteTicket() {
     this.treeEditService.closeEdit();
     this.isDeleting = !this.isDeleting;
+    this.changeDetector.detectChanges();
   }
 
   deleteTicket() {
@@ -87,6 +105,10 @@ export class TreeEditComponent implements OnInit {
 
   get isDisplayed() {
     return this.treeEditService.editIsOpen;
+  }
+
+  get isClickOutsideToCloseEnabled() {
+    return this.treeEditService.state === 'edit'; // might be a function for this
   }
 
   get dependenciesAreBeingSet() {

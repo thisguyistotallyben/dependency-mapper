@@ -1,5 +1,6 @@
 .container {
     position: fixed;
+    display: flex;
     top: 0;
     bottom: 0;
     left: 0;
@@ -8,11 +9,11 @@
 }
 
 .modal {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
+    width: 50em;
+}
+
+.modal-header {
+    z-index: 1;
 }
 
 .modal-body {
@@ -41,7 +42,7 @@
 }
 
 .tag-list-container {
-    width: 30%;
+    width: 20em;
     height: 100%;
     border-right-style: solid;
     border-right-width: 1px;
@@ -76,6 +77,14 @@
     height: 3em;
 }
 
+.tag-list-item-selected {
+    background-color: #e0edff;
+}
+
+.tag-list-item-selected:hover {
+    background-color: #c5ddff;
+}
+
 .tag-list-item-button {
     width: 100%;
     height: 100%;
@@ -84,13 +93,86 @@
     border-left-style: none;
     border-right-style: none;
     text-align: left;
-}
 
-.tag-list-item-button:hover {
-    border-color: #dedede;
-    background-color: #e9e9e9;
+    &:hover {
+        border-color: #dedede;
+        background-color: #e9e9e9;
+    }
+    &:active {
+        background-color: #d3d3d3;
+    }
 }
 
 .new-tag {
     width: 60%;
+}
+
+.settings {
+    flex-grow: 1;
+
+    .no-tag-message {
+        height: 100%;
+    }
+}
+
+.big-input {
+    font-size: large;
+    border-radius: 0;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    width: 100%;
+}
+
+.tab-container {
+    position: relative;
+    background-color: #f3f3f3;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    border-bottom-color: #afafaf;
+    // border-top-left-radius: 0.2em;
+    // border-top-right-radius: 0.2em;
+  }
+
+  .tab {
+    font-size: small;
+    position: relative;
+  }
+
+  .tab:hover {
+    color: #007bab;
+    cursor: pointer;
+  }
+
+  .selected-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+  }
+
+  .tab > .selected-bar {
+    background-color: unset;
+    height: 0;
+  }
+
+  .tab-selected {
+    font-weight: bold;
+    color: #007bab;
+  }
+
+  .tab-selected > .selected-bar {
+    background-color: #007bab;
+    height: 0.2em;
+    transition: height 0.2s;
+  }
+
+// shenanigans below
+
+[hidden] {
+    display:none!important;
+}
+
+color-picker::ng-deep div {
+    background-color: green;
 }

@@ -15,20 +15,55 @@
     border-radius: 0.2em;
 }
 
+.title-container {
+    width: 100%;
+}
+
 .left-side {
     display: flex;
+    width: 100%;
 }
 
 .page-title {
     font-size: small;
     margin-top: -2px;
-    margin-left: 2px;
+    // margin-left: 2px;
 }
 
-.map-title {
+.map-title-edit {
+    width: 100%;
     font-size: larger;
     font-weight: bold;
     border: none;
+}
+
+.map-title {
+    width: 100%;
+    font-size: larger;
+    font-weight: bold;
+    background-color: unset;
+    border: unset;
+    cursor: pointer;
+    text-align: left;
+
+    // .map-title {
+    //     width: 80%;
+    //     overflow: hidden;
+    //     text-overflow: ellipsis;
+    //     white-space: nowrap;
+    // }
+
+    .pencil {
+        opacity: 0;
+    }
+
+    &:hover {
+        color: #5a8da1;
+
+        .pencil {
+            opacity: 1;
+        }
+    }
 }
 
 .button-cluster {
@@ -77,4 +112,16 @@
 .tags-toggled:hover {
     background-color: #626262;
     border-color: black;
+}
+
+.title-edit {
+    position: absolute;
+    display: flex;
+    top: 4.5em;
+    left: 0.5em;
+    width: 40em;
+}
+
+.title-input {
+    flex-grow: 1;
 }

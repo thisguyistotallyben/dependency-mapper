@@ -22,6 +22,12 @@ class Tag {
   id: string;
   value: string;
 
+  bgColor: string;
+  borderColor: string;
+  borderWidth: number;
+  borderStyle: string;
+  textColor: string;
+
   constructor(value: string) {
     this.value = value;
   }
@@ -163,7 +169,7 @@ class DataService {
   }
 
   getTag(id: string): Tag {
-    return this.tagLookup.get(id);
+    return this.tagLookup[id];
   }
 
   get tags(): Array<Tag> {

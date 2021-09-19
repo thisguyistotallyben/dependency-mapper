@@ -1,86 +1,41 @@
-<div class="popover" [style.left]="posX" [style.top]="posY" *ngIf="isDisplayed">
-  <div *ngIf="ticketHasJiraLink" class="bds-container bds-b-margin-1 bds-shadow-3">
-    <ul class="menu">
-      <li>
-        <button class="action-button jira-button bds-padding-2" (click)="toggleEditTicket()">
-          <i class="fab fa-jira bds-r-margin-1"></i>Jira
-        </button>
-      </li>
-    </ul>
-  </div>
-  <div class="bds-container bds-shadow-3">
-    <ul class="menu">
-      <li>
-        <button class="action-button edit-button bottom-border bds-padding-2" (click)="toggleEditTicket()">
-          <i class="fas fa-edit bds-r-margin-1"></i>Edit Ticket
-        </button>
-      </li>
-      <li>
-        <button class="action-button bottom-border bds-padding-2" (click)="setParents()">
-          <i class="fas fa-chevron-up bds-r-margin-1"></i>Set Parents
-        </button>
-      </li>
-      <li>
-        <button class="action-button bottom-border bds-padding-2" (click)="setChildren()">
-          <i class="fas fa-chevron-down bds-r-margin-1"></i>Set Children
-        </button>
-      </li>
-      <li>
-        <button class="action-button delete-button bds-padding-2" (click)="toggleDeleteTicket()">
-          <i class="far fa-trash-alt bds-r-margin-1"></i>Delete Ticket
-        </button>
-      </li>
-    </ul>
-    <!-- <button class="bds-button bds-b-margin-1">Edit Ticket</button>
-    <button class="bds-button bds-b-margin-1">Edit Parents</button>
-    <button class="bds-button bds-b-margin-1">Edit Children</button>
-    <button class="bds-button bds-button-danger">Delete Ticket</button> -->
-  </div>
-  <!-- <div class="gray bds-container bds-margin-1 bds-shadow-2">
-    <div class="popover-header bds-padding-1 bds-y-center bds-x-even_spread">
-      <div>
-        <button
-          *ngIf="jiraIsEnabled"
-          class="jira-button bds-button no-width bds-r-margin-3"
-          [disabled]="!ticketHasJiraLink"
-          (click)="goToJira()">
-          <i class="fab fa-jira"></i> Jira
-        </button>
-      </div>
-      <div>
-        <button class="bds-button" (click)="addParents()">Edit Parents</button>
-        <button class="bds-button bds-l-margin-1" (click)="addChildren()">Edit Children</button>
-        <button
-          class="bds-button bds-button-danger bds-l-margin-1 no-width"
-          (click)="toggleDeleteTicket()">
-          <i class="far fa-trash-alt"></i>
-        </button>
-      </div>
+<div *ngIf="isClickOutsideToCloseEnabled" class="container bds-blur-bg" (click)="closePopover()">
+  <div class="popover" [style.left]="posX" [style.top]="posY" *ngIf="isDisplayed">
+    <div *ngIf="ticketHasJiraLink" class="bds-container bds-b-margin-1 bds-shadow-3">
+      <ul class="menu">
+        <li>
+          <button class="action-button jira-button bds-padding-2" (click)="toggleEditTicket()">
+            <i class="fab fa-jira bds-r-margin-1"></i>Jira
+          </button>
+        </li>
+      </ul>
     </div>
-    <div class="edit-body bds-padding-1">
-      <div *ngIf="isDeleting" class="bds-x-center bds-y-center">
-        <button
-          class="bds-button bds-button-flat"
-          (click)="cancelEdit()">
-          Cancel
-        </button>
-        <button
-          class="bds-button bds-button-danger bds-l-margin-1"
-          (click)="deleteTicket()">
-          Delete
-        </button>
-      </div>
-      <app-sidebar-tickets-fields
-        *ngIf="!isDeleting"
-        [ticket]="ticketToEdit"
-        (cancel)="cancelEdit()"
-        (submit)="updateTicket($event)"
-      ></app-sidebar-tickets-fields>
+    <div class="bds-container bds-shadow-3">
+      <ul class="menu">
+        <li>
+          <button class="action-button edit-button bottom-border bds-padding-2" (click)="toggleEditTicket()">
+            <i class="fas fa-edit bds-r-margin-1"></i>Edit Ticket
+          </button>
+        </li>
+        <li>
+          <button class="action-button bottom-border bds-padding-2" (click)="setParents()">
+            <i class="fas fa-chevron-up bds-r-margin-1"></i>Set Parents
+          </button>
+        </li>
+        <li>
+          <button class="action-button bottom-border bds-padding-2" (click)="setChildren()">
+            <i class="fas fa-chevron-down bds-r-margin-1"></i>Set Children
+          </button>
+        </li>
+        <li>
+          <button class="action-button delete-button bds-padding-2" (click)="toggleDeleteTicket()">
+            <i class="far fa-trash-alt bds-r-margin-1"></i>Delete Ticket
+          </button>
+        </li>
+      </ul>
     </div>
-
-
-  </div> -->
+  </div>
 </div>
+
 
 <div class="dep-set-banner bds-y-center bds-x-even_spread" *ngIf="dependenciesAreBeingSet">
   <div class="bds-l-margin-2">

@@ -1,6 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { DataService, Ticket } from '../data.service';
-import { FirebaseService } from '../firebase.service';
 
 @Component({
   selector: 'app-topbar',
@@ -8,12 +7,20 @@ import { FirebaseService } from '../firebase.service';
   styleUrls: ['./topbar.component.scss']
 })
 export class TopbarComponent implements OnInit {
-  tagsMenuOpen = false;
-  newTicketOpen = false;
+  @ViewChild("titleField") titleField: ElementRef;
 
-  constructor(private dataService: DataService) { }
+  tagsMenuOpen = true;
+  newTicketOpen = false;
+  isEditingTitle = false;
+
+  constructor(private changeDetector: ChangeDetectorRef, private dataService: DataService) { }
 
   ngOnInit(): void {
+    this.dataService.titleObserver.subscribe(
+      x => this.changeDetector.detectChanges(),
+      err => console.error('oopsie poopsie', err),
+      () => console.warn('title observer finished')
+    );
   }
 
   // temporary
@@ -31,6 +38,15 @@ export class TopbarComponent implements OnInit {
 
   toggleTagsMenu() {
     this.tagsMenuOpen = !this.tagsMenuOpen;
+  }
+
+  toggleEditTitle() {
+    this.isEditingTitle = !this.isEditingTitle;
+
+    if (this.isEditingTitle) {
+      this.changeDetector.detectChanges(); // required for focusing
+      this.titleField.nativeElement.focus();
+    }
   }
 
   get hasDBEntry(): boolean {

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { DataService, Ticket } from '../data.service';
 
 @Component({
@@ -7,6 +7,8 @@ import { DataService, Ticket } from '../data.service';
   styleUrls: ['./ticket.component.scss']
 })
 export class TicketComponent implements OnInit {
+  @ViewChild("inputField") inputField: ElementRef;
+
   @Input()
   ticket: Ticket;
 
@@ -19,7 +21,7 @@ export class TicketComponent implements OnInit {
   @Output()
   close = new EventEmitter<void>();
 
-  constructor(private dataService: DataService) { }
+  constructor(private changeDetector: ChangeDetectorRef, private dataService: DataService) { }
 
   ngOnInit(): void {
     if (this.hasTicket) {
@@ -28,6 +30,9 @@ export class TicketComponent implements OnInit {
       this.description = this.ticket.description;
       this.tagId = this.ticket.tagId;
     }
+
+    this.changeDetector.detectChanges();
+    this.inputField.nativeElement.focus();
   }
 
   // editing

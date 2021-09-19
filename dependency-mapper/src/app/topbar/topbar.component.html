@@ -1,29 +1,32 @@
 <div class="container bds-y-center bds-x-even_spread">
     <div class="bds-margin-2 left-side bds-y-top">
         <i class="main-icon fas fa-project-diagram bds-r-margin-1 bds-padding-1 bds-x-center bds-y-center bds-shadow-2"></i>
-        <div>
+        <div class="title-container">
             <div class="page-title">Dependency Mapper</div>
-            <input class="map-title" [(ngModel)]="title">
+            <div *ngIf="!isEditingTitle" class="map-title" (click)="toggleEditTitle()">
+                {{title}}<i class="pencil fas fa-pen bds-l-margin-1"></i>
+            </div>
+            <input
+                #titleField
+                *ngIf="isEditingTitle"
+                class="bds-input-field bds-no-highlight bds-shadow-1"
+                [(ngModel)]="title"
+                (blur)="toggleEditTitle()"
+                (keyup.enter)="toggleEditTitle()">
         </div>
     </div>
     <div class="button-cluster bds-margin-2 bds-y-center">
-        <button *ngIf="hasDBEntry" class="new-button bds-button bds-button-success bds-r-margin-2" (click)="toggleNewTicket()">
+        <button *ngIf="hasDBEntry" class="new-button bds-button bds-button-success bds-r-margin-2 bds-shadow-1" (click)="toggleNewTicket()">
             <i class="fas fa-plus bds-r-margin-1"></i>Ticket
         </button>
-        <button *ngIf="hasDBEntry" class="new-button bds-button bds-r-margin-2" (click)="toggleTagsMenu()">
+        <button *ngIf="hasDBEntry" class="new-button bds-button bds-r-margin-2 bds-shadow-1" (click)="toggleTagsMenu()">
             <i class="fas fa-tags bds-r-margin-1"></i>Tags
         </button>
-        <div class="sep-line"></div>
-        <button *ngIf="hasDBEntry" class="settings-button bds-button bds-l-margin-2">
+        <!-- <div class="sep-line"></div> -->
+        <button *ngIf="hasDBEntry" class="settings-button bds-button bds-shadow-1">
             <i class="fas fa-cog"></i>
         </button>
-        <!-- <button *ngIf="!hasDBEntry" class="bds-button bds-button-success" (click)="createNewMap()">
-            <i class="bds-r-margin-1 far fa-file"></i>New
-        </button> -->
     </div>
 </div>
-<div *ngIf="tagsMenuOpen">
-    <app-topbar-tags
-        (close)="toggleTagsMenu()"></app-topbar-tags>
-</div>
+<app-topbar-tags *ngIf="tagsMenuOpen" (close)="toggleTagsMenu()"></app-topbar-tags>
 <app-ticket *ngIf="newTicketOpen" (close)="toggleNewTicket()"></app-ticket>

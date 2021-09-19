@@ -19,7 +19,7 @@ class TagStyle {
 class TreeService {
   component; // this is the unethical way to do this. I should probably do a pub-sub thing
   tagStyles: Map<string, TagStyle>;
-  defaultTagStyle: TagStyle;
+  defaultTag: Tag;
   classPrefix = 'class_'; // this is needed because the class needs to start with letters
   /*
     INFO FOR ME (ds) => data service
@@ -36,9 +36,9 @@ class TreeService {
 
     // TODO: expose the default so it can be changed
     //   Problem: The fields component has the name field that cannot be changed for this.
-    this.defaultTagStyle = new TagStyle();
-    this.defaultTagStyle.bgColor = '#eae8e8';
-    this.defaultTagStyle.borderColor = '#000000';
+    this.defaultTag = new Tag('');
+    this.defaultTag.bgColor = '#ffffff';
+    this.defaultTag.borderColor = '#a0a0a0';
   }
 
   generateSyntax(): string {
@@ -48,9 +48,9 @@ class TreeService {
     const links = new Array<string>();
 
     // generate formatted style classes
-    styleClasses.push(this.formatClass(this.defaultTagStyle));
-    Array.from(this.tagStyles.values()).forEach((ts: TagStyle) => {
-      styleClasses.push(this.formatClass(ts));
+    styleClasses.push(this.formatClass(this.defaultTag));
+    this.dataService.tags.forEach((tag: Tag) => {
+      styleClasses.push(this.formatClass(tag));
     });
 
     // generate formatted tickets
@@ -76,19 +76,19 @@ class TreeService {
     return outputString;
   }
 
-  formatClass(ts: TagStyle): string {
+  formatClass(tag: Tag): string {
     let output = '';
 
-    output += ts.tagId
-      ? 'classDef ' + this.classPrefix + ts.tagId
+    output += tag.id
+      ? 'classDef ' + this.classPrefix + tag.id
       : 'classDef node';
-    output += ' fill:' + ts.bgColor;
-    output += ',stroke:' + ts.borderColor;
-    output += ',stroke-width:' + ts.borderWidth;
-    output += ts.borderStyle === 'dashed'
+    output += ' fill:' + tag.bgColor;
+    output += ',stroke:' + tag.borderColor;
+    output += ',stroke-width:' + tag.borderWidth;
+    output += tag.borderStyle === 'dashed'
       ? ',stroke-dasharray:5 4'
       : '';
-    output += ',color:' + ts.textColor;
+    output += ',color:' + tag.textColor;
 
     return output;
   }
@@ -153,37 +153,37 @@ class TreeService {
     this.component.renderTree();
   }
 
-  export(): any {
-    const tagStyles = Array.from(this.tagStyles.values());
-    return {
-      tagStyles,
-      defaultTagStyle: this.defaultTagStyle
-    };
-  }
+  // export(): any {
+  //   const tagStyles = Array.from(this.tagStyles.values());
+  //   return {
+  //     tagStyles,
+  //     defaultTagStyle: this.defaultTagStyle
+  //   };
+  // }
 
 
   /* TAG STYLES LAND */
 
 
-  loadTagStyles(data: any): void {
-    if (data.tagStyles.length) {
-      data.tagStyles.forEach((ts: TagStyle) => this.tagStyles.set(ts.tagId, ts));
-    }
+  // loadTagStyles(data: any): void {
+  //   if (data.tagStyles.length) {
+  //     data.tagStyles.forEach((ts: TagStyle) => this.tagStyles.set(ts.tagId, ts));
+  //   }
 
-    if (data.defaultTagStyle) {
-      this.defaultTagStyle = data.defaultTagStyle;
-    }
-  }
+  //   if (data.defaultTagStyle) {
+  //     this.defaultTagStyle = data.defaultTagStyle;
+  //   }
+  // }
 
-  addTagStyle(tagStyle: TagStyle): void {
-    this.tagStyles.set(tagStyle.tagId, tagStyle);
-  }
+  // addTagStyle(tagStyle: TagStyle): void {
+  //   this.tagStyles.set(tagStyle.tagId, tagStyle);
+  // }
 
-  getTagStyles(): Array<TagStyle> {
-    let arr = Array<TagStyle>();
-    this.tagStyles.forEach((value, key) => arr.push(value));
-    return arr;
-  }
+  // getTagStyles(): Array<TagStyle> {
+  //   let arr = Array<TagStyle>();
+  //   this.tagStyles.forEach((value, key) => arr.push(value));
+  //   return arr;
+  // }
 }
 
 export { TreeService, TagStyle };

@@ -38,6 +38,12 @@ export class TreeComponent implements AfterViewInit {
       err => console.error('oopsie poopsie', err),
       () => console.warn('tree rendering subscription for dependencies finished')
     );
+
+    this.dataService.tagObserver.subscribe(
+      x => this.renderTree(),
+      err => console.error('oopsie poopsie', err),
+      () => console.warn('tree rendering subscription for dependencies finished')
+    );
   }
 
   renderTree(): void {

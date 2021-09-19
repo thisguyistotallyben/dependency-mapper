@@ -1,6 +1,7 @@
 import { TreeService } from 'src/app/tree/tree.service';
 import { DataService, Ticket } from 'src/app/data.service';
 import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -13,12 +14,14 @@ export class TreeEditService {
 
   // state: undefined, edit, children, parents
   state = undefined;
+  stateObserver: Subject<string>
 
   constructor(
     private dataService: DataService,
     private treeService: TreeService
   ) {
     window['treeEditService'] = this;
+    this.stateObserver = new Subject<string>();
 
     document.onmousemove = (ev) => {
       window['mouse_x'] = ev.pageX;
@@ -56,10 +59,12 @@ export class TreeEditService {
     this.posX = window['mouse_x'];
     this.posY = window['mouse_y'];
     this.state = 'edit';
+    this.stateObserver.next('edit');
   }
 
   closeEdit() {
     this.state = undefined;
+    this.stateObserver.next('');
   }
 
   get editIsOpen() {

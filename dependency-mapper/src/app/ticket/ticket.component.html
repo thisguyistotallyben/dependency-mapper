@@ -1,18 +1,19 @@
-<div class="container bds-x-center">
-    <div class="modal bds-container bds-margin-3">
+<div class="container bds-x-center bds-y-center bds-blur-bg">
+    <div class="modal bds-container bds-shadow-3 bds-margin-3">
         <div class="modal-body">
             <div class="bds-container-header bds-shadow-2 bds-padding-2 bds-x-even_spread bds-y-center">
                 <h2 *ngIf="!hasTicket">New Ticket</h2>
                 <h2 *ngIf="hasTicket">Edit Ticket</h2>
                 <div>
                     <button class="bds-button bds-button-flat bds-r-margin-1" (click)="handleCancel()">Cancel</button>
-                    <button class="bds-button bds-button-success" (click)="handleSave()">Save</button>
+                    <button class="bds-button bds-button-success bds-shadow-1" (click)="handleSave()">Save</button>
                 </div>
             </div>
             <div class="content">
                 <div class="fields bds-padding-2">
                     <div class="bds-field-label">Title</div>
                     <input
+                        #inputField
                         class="bds-input-field big-input bds-b-margin-1"
                         placeholder="Title"
                         [(ngModel)]="title"
