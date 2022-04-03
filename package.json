@@ -2,6 +2,8 @@
   "name": "dependency-mapper",
   "version": "0.0.0",
   "scripts": {
+    "all": "npm run init:submodules && npm i",
+    "init:submodules": "git submodule update --init --recursive",
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
