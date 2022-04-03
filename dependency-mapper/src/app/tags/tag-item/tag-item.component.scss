@@ -1,0 +1,70 @@
+.container {
+    position: relative;
+    width: 10em;
+    height: 5em;
+    // background-color: green;
+}
+
+.clickable {
+    cursor: pointer;
+}
+
+.new-tag-container {
+    background-color: #e8e8e8;
+    transition: background-color 200ms;
+}
+
+.new-tag-container:hover {
+    background-color: white;
+    transition: background-color 200ms;
+}
+
+.new-tag-container:active {
+    background-color: #cacaca;
+}
+
+.add-button {
+    color: #626262;
+}
+
+.action-hover {
+    position: absolute;
+    display: flex;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #00000080;
+    opacity: 0;
+    transition: opacity 200ms;
+}
+
+.action-hover:hover {
+    opacity: 1;
+    transition: opacity 200ms;
+}
+
+.edit-container {
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.big-input {
+    font-size: large;
+    border-radius: 0;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    width: 100%;
+}
+
+.name-area {
+    position: relative;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    border-bottom-color: #a0a0a0;
+}

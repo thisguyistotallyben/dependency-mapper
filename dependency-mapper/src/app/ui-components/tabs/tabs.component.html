@@ -1,0 +1,9 @@
+<div class="tab-container">
+    <div
+        *ngFor="let tab of tabs"
+        class="tab"
+        [ngClass]="{'active': tab.id == currentTab}">
+        <button class="tab-button bds-padding-1" (click)="handleTabChange(tab.id)">{{tab.label}}</button>
+        <div class="tab-bar"></div>
+    </div>
+</div>

@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { JiraComponent } from './jira.component';
+import { TagItemDetailsComponent } from './tag-item-details.component';
 
-describe('JiraComponent', () => {
-  let component: JiraComponent;
-  let fixture: ComponentFixture<JiraComponent>;
+describe('TagItemDetailsComponent', () => {
+  let component: TagItemDetailsComponent;
+  let fixture: ComponentFixture<TagItemDetailsComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ JiraComponent ]
+      declarations: [ TagItemDetailsComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(JiraComponent);
+    fixture = TestBed.createComponent(TagItemDetailsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,27 +1,40 @@
-import { TreeService } from 'src/app/tree/tree.service';
 import { DataService, Ticket } from 'src/app/data.service';
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+
+enum State {
+  View,
+  Menu,
+  EditNode,
+  EditGroup
+}
 
 @Injectable({
   providedIn: 'root'
 })
-export class TreeEditService {
-  currentTicket: Ticket;
-  _ticketEditIsOpen = false;
+class TreeEditService {
+  currentNodeId: string; // id of either a ticket or a group
+  selections: Set<string>;
+  preAddedSelections: Array<string>;
+  stagedAddedSelections: Array<string>;
+  stagedRemovedSelections: Array<string>;
   posX = 0;
   posY = 0;
 
-  // state: undefined, edit, children, parents
-  state = undefined;
-  stateObserver: Subject<string>
+  state: State;
+  stateObserver: Subject<State>
 
   constructor(
     private dataService: DataService,
-    private treeService: TreeService
+    private http: HttpClient
   ) {
     window['treeEditService'] = this;
-    this.stateObserver = new Subject<string>();
+    this.stateObserver = new Subject<State>();
+    this.state = State.View;
+    this.selections = new Set<string>();
+    this.stagedAddedSelections = new Array<string>();
+    this.stagedRemovedSelections = new Array<string>();
 
     document.onmousemove = (ev) => {
       window['mouse_x'] = ev.pageX;
@@ -29,54 +42,78 @@ export class TreeEditService {
     }
   }
 
-  handleTreeClick(nodeId) {
-    // check state
-    // if undefined, you are editing
-    if (!this.state) {
-      this.openEdit(nodeId);
-    } else if (this.state === 'edit') {
-      this.closeEdit();
-    } else if (this.state === 'children') {
-      this.toggleDependency(this.currentTicket.id, nodeId);
-    } else if (this.state === 'parents') {
-      this.toggleDependency(nodeId, this.currentTicket.id);
+  handleTreeClick(nodeId: string) {
+
+    switch (this.state) {
+      case State.View:
+        this.currentNodeId = nodeId;
+        this.openMenu();
+        break;
+      case State.EditNode:
+      case State.EditGroup:
+        this.handleSelection(nodeId);
+        break;
+      default:
+        this.closeMenu();
     }
   }
 
-  toggleDependency(parentId, childId) {
-    if (this.dataService.dependencyExists(parentId, childId)) {
-      this.dataService.removeDependency(parentId, childId);
+  handleSelection(nodeId: string) {
+    if (nodeId === this.currentNodeId) {
+      return;
+    }
+
+    if (this.selections.has(nodeId)) {
+      this.selections.delete(nodeId);
     } else {
-      this.dataService.addDependency(parentId, childId);
+      this.selections.add(nodeId);
     }
-    this.treeService.renderTree();
+
+    this.stateObserver.next(this.state);
   }
 
-  openEdit(nodeId) {
-    console.log('node id', nodeId);
-    this.currentTicket = this.dataService.getTicket(nodeId);
-    console.log('current ticket', this.currentTicket);
+  clearSelections() {
+    this.selections.clear();
+    this.preAddedSelections = [];
+    this.stagedAddedSelections = [];
+    this.stagedRemovedSelections = [];
+  }
+
+  openMenu() {
+    // this.currentTicket = this.dataService.getTicket(nodeId);
+    // this.currentNodeId = nodeId;
     this.posX = window['mouse_x'];
     this.posY = window['mouse_y'];
-    this.state = 'edit';
-    this.stateObserver.next('edit');
+    this.state = State.Menu;
+    this.stateObserver.next(this.state);
   }
 
-  closeEdit() {
-    this.state = undefined;
-    this.stateObserver.next('');
+  closeMenu() {
+    this.state = State.View;
+    this.stateObserver.next(this.state);
   }
 
-  get editIsOpen() {
-    return this.state === 'edit';
+  getUrlOrigin(url: string): string {
+    return new URL(this.formatUrl(url)).origin;
+  }
+
+  getURLHostname(url: string): string {
+    return new URL(this.formatUrl(url)).hostname;
+  }
+
+  formatUrl(url): string {
+    return url.includes('//')
+      ? url
+      : 'https://' + url;
+  }
+
+  get menuIsOpen() {
+    return this.state === State.Menu;
   }
 
   get dependenciesAreBeingSet() {
-    return this.state === 'parents' || this.state === 'children';
-  }
-
-  get currentTicketJiraId(): string {
-    return this.currentTicket.jiraId;
+    // return this.state === 'parents' || this.state === 'children';
+    return false;
   }
 
   get popoverPosX() {
@@ -87,3 +124,5 @@ export class TreeEditService {
     return this.posY;
   }
 }
+
+export {TreeEditService, State};

@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TopbarTagsComponent } from './topbar-tags.component';
+import { MapperEmbedHeaderComponent } from './mapper-embed-header.component';
 
-describe('TopbarTagsComponent', () => {
-  let component: TopbarTagsComponent;
-  let fixture: ComponentFixture<TopbarTagsComponent>;
+describe('MapperEmbedHeaderComponent', () => {
+  let component: MapperEmbedHeaderComponent;
+  let fixture: ComponentFixture<MapperEmbedHeaderComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TopbarTagsComponent ]
+      declarations: [ MapperEmbedHeaderComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TopbarTagsComponent);
+    fixture = TestBed.createComponent(MapperEmbedHeaderComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

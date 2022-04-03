@@ -1,13 +1,21 @@
 import { Injectable } from '@angular/core';
-import { Guid } from "guid-typescript";
-import { initializeApp } from 'firebase/app'
-import { getDatabase, ref, onValue, get, child, update, Database } from 'firebase/database'
+import { Guid } from 'guid-typescript';
+import { initializeApp } from 'firebase/app';
+import {
+  getDatabase,
+  ref,
+  onValue,
+  get,
+  child,
+  update,
+  Database,
+} from 'firebase/database';
 import { Subscription } from 'rxjs';
 import { DataService, Ticket } from './data.service';
 import { Router } from '@angular/router';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class FirebaseService {
   db: Database;
@@ -18,12 +26,14 @@ export class FirebaseService {
   basePath: string;
   titlePath: string;
   ticketPath: string;
+  groupPath: string;
   dependencyPath: string;
   tagPath: string;
 
   // subscriptions
   titleSubscription: Subscription;
   ticketSubscription: Subscription;
+  groupSubscription: Subscription;
   dependencySubscription: Subscription;
   tagSubscription: Subscription;
 
@@ -38,8 +48,8 @@ export class FirebaseService {
     this.db = getDatabase();
 
     this.dataService.newMapObserver.subscribe(
-      x => this.createNewMap(),
-      err => console.error('oopsie poopsie', err),
+      (x) => this.createNewMap(),
+      (err) => console.error('oopsie poopsie', err),
       () => console.warn('title observer finished')
     );
   }
@@ -52,6 +62,7 @@ export class FirebaseService {
       this.dataService.mapId = id;
       this.setTitleWatchers();
       this.setTicketWatchers();
+      this.setGroupWatchers();
       this.setDependencyWatchers();
       this.setTagWatchers();
     } else {
@@ -67,13 +78,14 @@ export class FirebaseService {
     this.basePath = `maps/${this.mapId}`;
     this.titlePath = `${this.basePath}/title`;
     this.ticketPath = `${this.basePath}/tickets`;
+    this.groupPath = `${this.basePath}/groups`;
     this.dependencyPath = `${this.basePath}/dependencies`;
     this.tagPath = `${this.basePath}/tags`;
   }
 
   private async checkExistence() {
     const existsRef = ref(this.db);
-    const init = await get(child(existsRef, `${this.basePath}/init`));
+    const init = await get(child(existsRef, `maps/${this.mapId}/init`));
     this.exists = init.val();
   }
 
@@ -81,13 +93,12 @@ export class FirebaseService {
     const nameRef = ref(this.db, this.titlePath);
     onValue(nameRef, (snapshot) => {
       const data = snapshot.val();
-      console.log('wow data', data);
       this.dataService.setTitle(data);
     });
 
     this.titleSubscription = this.dataService.titleObserver.subscribe(
-      x => this.updateTitle(),
-      err => console.error('oopsie poopsie', err),
+      (x) => this.updateDB(this.titlePath, this.dataService.title),
+      (err) => console.error('oopsie poopsie', err),
       () => console.warn('title observer finished')
     );
   }
@@ -96,14 +107,28 @@ export class FirebaseService {
     const ticketRef = ref(this.db, this.ticketPath);
     onValue(ticketRef, (snapshot) => {
       const data = snapshot.val();
-      console.log('ticket data', data);
       this.dataService.ticketLookup = data ? data : {};
       this.dataService.ticketObserver.next();
     });
 
     this.ticketSubscription = this.dataService.ticketObserver.subscribe(
-      x => this.updateTickets(),
-      err => console.error('oopsie poopsie', err),
+      (x) => this.updateDB(this.ticketPath, this.dataService.ticketLookup),
+      (err) => console.error('oopsie poopsie', err),
+      () => console.warn('title observer finished')
+    );
+  }
+
+  private setGroupWatchers() {
+    const groupRef = ref(this.db, this.groupPath);
+    onValue(groupRef, (snapshot) => {
+      const data = snapshot.val();
+      this.dataService.groupLookup = data ? data : {};
+      this.dataService.groupObserver.next();
+    });
+
+    this.groupSubscription = this.dataService.groupObserver.subscribe(
+      (x) => this.updateDB(this.groupPath, this.dataService.groupLookup),
+      (err) => console.error('oopsie poopsie', err),
       () => console.warn('title observer finished')
     );
   }
@@ -112,14 +137,13 @@ export class FirebaseService {
     const depRef = ref(this.db, this.dependencyPath);
     onValue(depRef, (snapshot) => {
       const data = snapshot.val();
-      console.log('dependency data', data);
       this.dataService.dependencyLookup = data ? data : [];
       this.dataService.dependencyObserver.next();
     });
 
     this.ticketSubscription = this.dataService.dependencyObserver.subscribe(
-      x => this.updateDependencies(),
-      err => console.error('oopsie poopsie', err),
+      (x) => this.updateDB(this.dependencyPath, this.dataService.dependencies),
+      (err) => console.error('oopsie poopsie', err),
       () => console.warn('title observer finished')
     );
   }
@@ -128,14 +152,13 @@ export class FirebaseService {
     const depRef = ref(this.db, this.tagPath);
     onValue(depRef, (snapshot) => {
       const data = snapshot.val();
-      console.log('tag data', data);
       this.dataService.tagLookup = data ? data : {};
       this.dataService.tagObserver.next();
     });
 
     this.tagSubscription = this.dataService.tagObserver.subscribe(
-      x => this.updateTags(),
-      err => console.error('oopsie poopsie', err),
+      (x) => this.updateDB(this.tagPath, this.dataService.tagLookup),
+      (err) => console.error('oopsie poopsie', err),
       () => console.warn('title observer finished')
     );
   }
@@ -143,46 +166,90 @@ export class FirebaseService {
   private unsubscribeToObservers() {
     this.titleSubscription?.unsubscribe();
     this.ticketSubscription?.unsubscribe();
+    this.groupSubscription?.unsubscribe();
     this.dependencySubscription?.unsubscribe();
     this.tagSubscription?.unsubscribe();
   }
 
-  public createNewMap(): void {
-    const id = Guid.raw();
+  public async createNewMap() {
+    while (true) {
+      this.mapId = this.generateName();
+      await this.checkExistence();
+      if (!this.exists) {
+        break;
+      }
+    }
+
     const updateFields = {};
-    updateFields[`maps/${id}`] = {};
-    updateFields[`maps/${id}`]['init'] = true;
-    updateFields[`maps/${id}`]['title'] = this.dataService.title;
+    updateFields[`maps/${this.mapId}`] = {};
+    updateFields[`maps/${this.mapId}`]['init'] = true;
+    updateFields[`maps/${this.mapId}`]['title'] = this.dataService.title;
 
     update(ref(this.db), updateFields);
-    this.router.navigateByUrl(`/${id}`);
+    this.router.navigateByUrl(`/${this.mapId}`);
   }
 
-  public updateTitle(): void {
-    const updateFields = {};
-    updateFields[this.titlePath] = this.dataService.title;
+  private generateName(): string {
+    const index1 = Math.ceil(
+      ((Math.random() * 100000) % this.names.length) - 1
+    );
+    const index2 = Math.ceil(
+      ((Math.random() * 100000) % this.names.length) - 1
+    );
 
+    const num1 = Math.ceil((Math.random() * 100000) % 9);
+    const num2 = Math.ceil((Math.random() * 100000) % 9);
+    const num3 = Math.ceil((Math.random() * 100000) % 9);
+
+    return `${this.names[index1]}-${this.names[index2]}-${num1}${num2}${num3}`;
+  }
+
+  private updateDB(path: string, value: any) {
+    const updateFields = {};
+    updateFields[path] = value;
     update(ref(this.db), updateFields);
   }
 
-  private updateTickets() {
-    console.log('updating tickets');
-    const updateFields = {};
-    updateFields[this.ticketPath] = this.dataService.ticketLookup;
-    update(ref(this.db), updateFields);
-  }
+  /* SHENANIGANS LANDIGANS */
 
-  private updateDependencies() {
-    console.log('updating dependencies');
-    const updateFields = {};
-    updateFields[this.dependencyPath] = this.dataService.dependencies;
-    update(ref(this.db), updateFields);
-  }
-
-  private updateTags() {
-    console.log('updating tags');
-    const updateFields = {};
-    updateFields[this.tagPath] = this.dataService.tagLookup;
-    update(ref(this.db), updateFields);
-  }
+  names = [
+    'taco',
+    'bike',
+    'cheese',
+    'apple',
+    'corn',
+    'dog',
+    'cat',
+    'tea',
+    'burger',
+    'piano',
+    'cloth',
+    'plant',
+    'glue',
+    'wrench',
+    'horse',
+    'fun',
+    'cow',
+    'basket',
+    'mint',
+    'flower',
+    'water',
+    'coffee',
+    'oat',
+    'paper',
+    'shoe',
+    'hat',
+    'shirt',
+    'milk',
+    'child',
+    'parent',
+    'clock',
+    'man',
+    'woman',
+    'thing',
+    'time',
+    'goose',
+    'goat',
+    'clown',
+  ];
 }

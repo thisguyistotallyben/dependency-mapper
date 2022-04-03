@@ -15,7 +15,6 @@ export class SplashComponent implements OnInit {
   }
 
   createMap() {
-    console.log('yeet');
     this.dataService.generateNewMap(this.title);
   }
 

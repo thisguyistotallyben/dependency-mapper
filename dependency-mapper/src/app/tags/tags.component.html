@@ -1,0 +1,18 @@
+<app-modal
+    [title]="'Tags'"
+    (close)="closeModal()">
+    <div actions>
+        <button class="close-button bds-button bds-shadow-1" (click)="closeModal()"><i class="fas fa-times"></i></button>
+    </div>
+    <div content class="content bds-padding-1">
+        <!-- <p>Hover to edit or delete</p> -->
+        <div class="tag-buttons">
+            <app-tag-item
+                *ngFor="let tag of tags"
+                [tag]="tag"
+                (delete)="deleteTag($event)"
+            ></app-tag-item>
+            <app-tag-item></app-tag-item>
+        </div>
+    </div>
+</app-modal>

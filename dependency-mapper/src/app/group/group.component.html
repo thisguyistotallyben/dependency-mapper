@@ -1,0 +1,54 @@
+<div [hidden]="!shouldShowModal" class="container bds-x-center bds-blur-bg">
+    <div class="modal bds-container bds-shadow-3 bds-margin-3">
+        <div class="modal-body">
+            <div class="modal-header bds-container-header bds-shadow-2 bds-padding-2 bds-x-even_spread bds-y-center">
+                <h2>Groups</h2>
+                <button class="close-button bds-button bds-x-center bds-y-center" (click)="handleClose()"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="content">
+                <div class="group-list-container">
+                    <div class="new-section bds-padding-2 bds-x-center bds-y-center">
+                        <input class="new-group-name bds-input-field bds-r-margin-2" type="text" placeholder="New Group Name" [(ngModel)]="newGroupName">
+                        <button class="bds-button bds-button-success new-group" (click)="handleAddNewGroup()">Add</button>
+                    </div>
+                    <ul class="group-list">
+                        <li *ngFor="let group of groups" class="group-list-item bds-y-center">
+                            <button
+                              class="group-list-item-button bds-button bds-r-padding-2 bds-l-padding-2"
+                              [ngClass]="{'group-list-item-selected': groupItemIsSelected(group.id)}"
+                              (click)="handleGroupSelect(group.id)">
+                              {{group.value}}
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+                <div class="settings">
+                  <div *ngIf="!groupIsSelected" class="no-tag-message bds-x-center bds-y-center">
+                    Select or create a group to edit
+                  </div>
+                  <div *ngIf="groupIsSelected">
+                    <div class="new-section bds-x-even_space">
+                        <button class="group-edit-button bds-button bds-button-danger bds-margin-2" (click)="deleteticket()">Delete</button>
+                        <button class="group-edit-button bds-button bds-margin-2" (click)="setTickets()">Set Tickets</button>
+                    </div>
+                    <div class="bds-margin-2">
+                        <div class="bds-field-label">Name</div>
+                        <input
+                            #inputField
+                            class="bds-input-field big-input bds-b-margin-2"
+                            placeholder="Name"
+                            [(ngModel)]="editGroupName"
+                            (keyup)="updateName()"
+                        >
+                        <div class="bds-field-label">Tag</div>
+                        <select [ngModel]="currentGroup.tagId" (ngModelChange)="updateTag($event)" class="bds-input-field big-input">
+                            <option [ngValue]="tag.id" *ngFor="let tag of tags">{{tag.value}}</option>
+                        </select>
+                    </div>
+
+                  </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

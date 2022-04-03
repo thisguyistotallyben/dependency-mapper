@@ -1,0 +1,24 @@
+.container {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #00000080;
+}
+
+.modal {
+    z-index: 1;
+}
+
+.modal-header {
+    position: relative;
+}
+
+.bds-container-header {
+    border-bottom-color: #a0a0a0;
+    h2 {
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+}

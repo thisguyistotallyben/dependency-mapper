@@ -1,121 +1,206 @@
-import { JiraService } from './../jira/jira.service';
+import { noop } from '@angular/compiler/src/render3/view/util';
 import { Injectable } from '@angular/core';
-import { DataService, Ticket, Tag } from '../data.service';
+import { DataService, Ticket, Tag, Group } from '../data.service';
+import { State, TreeEditService } from './tree-edit/tree-edit.service';
 
-
-class TagStyle {
-  tagId: string;
-  bgColor: string;
-  borderColor: string;
-  borderWidth: number;
-  borderStyle: string;
-  textColor: string;
-}
-
+/* IDEAS
+  - Store the different parts of the tree and react to different items changing, like dependencies and tickets
+    This way, I won't need to re-generate ALL the syntax, just the parts that changed.
+*/
 
 @Injectable({
   providedIn: 'root'
 })
 class TreeService {
-  component; // this is the unethical way to do this. I should probably do a pub-sub thing
-  tagStyles: Map<string, TagStyle>;
   defaultTag: Tag;
+  defaultSelectingTag: Tag;
+  defaultGroupTag: Tag;
+  editingTicketTag: Tag;
+  selectedTag: Tag;
+  unselectedTag: Tag;
   classPrefix = 'class_'; // this is needed because the class needs to start with letters
-  /*
-    INFO FOR ME (ds) => data service
 
-    tagStyles is a map of (ds)tag to the corresponding tag style
-
-  */
+  subgraphContents: any;
 
   constructor(
     private dataService: DataService,
-    private jiraService: JiraService) {
+    private treeEditService: TreeEditService) {
     window['treeService'] = this;
-    this.tagStyles = new Map<string, TagStyle>();
 
     // TODO: expose the default so it can be changed
     //   Problem: The fields component has the name field that cannot be changed for this.
     this.defaultTag = new Tag('');
     this.defaultTag.bgColor = '#ffffff';
     this.defaultTag.borderColor = '#a0a0a0';
+
+    this.defaultSelectingTag = new Tag('');
+    this.defaultSelectingTag.bgColor = '#e6e6e6';
+    this.defaultSelectingTag.borderColor = '#a0a0a0';
+
+    this.defaultGroupTag = new Tag('');
+    this.defaultGroupTag.id = 'GROUP_TAG'
+    this.defaultGroupTag.bgColor = '#d9d9d9';
+    this.defaultGroupTag.borderColor = '#909090';
+
+    this.editingTicketTag = new Tag('');
+    this.editingTicketTag.id = 'EDITING_TAG'
+    this.editingTicketTag.bgColor = '#d9f0ff';
+    this.editingTicketTag.borderColor = '#008aa6';
+
+    this.selectedTag = new Tag('');
+    this.selectedTag.id = 'SELECTED_TAG'
+    this.selectedTag.bgColor = '#5fff7d';
+    this.selectedTag.borderColor = '#009809';
+
+    this.unselectedTag = new Tag('');
+    this.unselectedTag.id = 'UNSELECTED_TAG';
+    this.unselectedTag.bgColor = '#ff6161'
+    this.unselectedTag.borderColor = '#a60000'
   }
 
   generateSyntax(): string {
-    let outputString = '';
-    const styleClasses = new Array<string>();
-    const tickets = new Array<string>();
-    const links = new Array<string>();
+    // reset state
+    this.subgraphContents = {};
 
-    // generate formatted style classes
-    styleClasses.push(this.formatClass(this.defaultTag));
-    this.dataService.tags.forEach((tag: Tag) => {
-      styleClasses.push(this.formatClass(tag));
+    let syntax = 'flowchart TD\n';
+
+    // classes
+    syntax += this.generateClasses() + '\n';
+    syntax += this.generateNodes() + '\n';
+    syntax += this.generateDependencies() + '\n';
+    syntax += this.generateSubgraphs();
+
+    return syntax;
+  }
+
+  generateClasses(): string {
+    const currentState = this.treeEditService.state;
+    let classes = '';
+
+    if (currentState == State.EditNode || currentState == State.EditGroup) {
+      classes += this.generateClassSyntax(this.defaultSelectingTag) + '\n';
+    } else {
+      classes += this.generateClassSyntax(this.defaultTag) + '\n';
+    }
+
+    classes += this.generateClassSyntax(this.defaultGroupTag) + '\n';
+    classes += this.generateClassSyntax(this.editingTicketTag) + '\n';
+    classes += this.generateClassSyntax(this.selectedTag) + '\n';
+    classes += this.generateClassSyntax(this.unselectedTag) + '\n';
+
+    this.dataService.tags.forEach(tag => classes += this.generateClassSyntax(tag) + '\n');
+
+    return classes;
+  }
+
+  generateClassSyntax(tag: Tag): string {
+    let classSyntax = 'classDef';
+
+    classSyntax += tag.id ? ` ${this.classPrefix}${tag.id}` : ' node';
+    classSyntax += ` fill:${tag.bgColor}`;
+    classSyntax += `,stroke:${tag.borderColor}`;
+    classSyntax += `,stroke-width:${tag.borderWidth}`;
+    classSyntax += tag.borderStyle === 'dashed' ? ',stroke-dasharray:5 4' : '';
+    classSyntax += `,color:${tag.textColor}`;
+
+    return classSyntax;
+  }
+
+  generateNodes(): string {
+    let nodes = '';
+
+    this.dataService.tickets.forEach(ticket => {
+      this.addToSubgraph(ticket);
+      nodes += this.generateNodeSyntax(ticket) + '\n'
+      nodes += `click ${ticket.id} treeClick\n`;
+    });
+    return nodes;
+  }
+
+  generateNodeSyntax(ticket: Ticket): string {
+    /* FORMAT:
+      id["<b>title</b><hr>description"]:::className
+    */
+
+    const title = this.formatText(ticket.title);
+    const icon = this.shouldShowLinkIcon(ticket) ? '*' : '';
+    const description = ticket.description ? '<hr>' + this.formatText(ticket.description) : '';
+    let style = this.generateNodeStyleSyntax(ticket);
+
+    return `${ticket.id}("<b>${title}${icon}</b>${description}")${style}`;
+  }
+
+  generateNodeStyleSyntax(ticket: Ticket): string {
+    switch(this.treeEditService.state) {
+      case State.EditNode:
+      case State.EditGroup:
+        if (this.treeEditService.stagedRemovedSelections.includes(ticket.id)) {
+          return `:::${this.classPrefix}${this.unselectedTag.id}`
+        } else if (this.treeEditService.stagedAddedSelections.includes(ticket.id)) {
+          return `:::${this.classPrefix}${this.selectedTag.id}`
+        } else if (this.treeEditService.preAddedSelections.includes(ticket.id)) {
+          return `:::${this.classPrefix}${this.selectedTag.id}`
+        } else if (this.treeEditService.currentNodeId === ticket.id) {
+          return `:::${this.classPrefix}${this.editingTicketTag.id}`
+        }
+        return '';
+      default:
+        return ticket.tagId ? ':::' + this.classPrefix + ticket.tagId : '';
+    }
+  }
+
+  generateDependencies(): string {
+    let depenencies = '';
+
+    this.dataService.dependencies.forEach(dependency => {
+      depenencies += `${dependency.parentId} --> ${dependency.childId}\n`;
     });
 
-    // generate formatted tickets
-    this.dataService.tickets.forEach((value, key) => {
-      tickets.push(this.formatTicket(value));
-    });
+    return depenencies;
+  }
 
-    // generate formatted dependencies
-    this.dataService.dependencies.forEach((dep) => {
-      if (dep.parentId && dep.childId) {
-        links.push(`${dep.parentId} --> ${dep.childId}`);
+  addToSubgraph(ticket: Ticket) {
+    if (!ticket.groupId) {
+      return;
+    }
+
+    if (!this.subgraphContents[ticket.groupId]) {
+      this.subgraphContents[ticket.groupId] = [];
+    }
+    this.subgraphContents[ticket.groupId].push(ticket.id);
+  }
+
+  generateSubgraphs(): string {
+    let subgraphs = '';
+
+
+    Object.keys(this.subgraphContents).forEach(groupId => {
+      const group = this.dataService.getGroup(groupId);
+      if (group) {
+        subgraphs += this.generateSubgraphSyntax(group);
       }
     });
-
-    outputString = 'graph TD\n';
-    styleClasses.forEach((val) => outputString += val + '\n');
-    outputString += '\n';
-    tickets.forEach((val) => outputString += val + '\n');
-    outputString += '\n';
-    links.forEach((val) => outputString += val + '\n');
-
-    // console.log(outputString);
-    return outputString;
+    return subgraphs;
   }
 
-  formatClass(tag: Tag): string {
-    let output = '';
+  generateSubgraphSyntax(group: Group) {
+    let subgraphSyntax = 'subgraph';
 
-    output += tag.id
-      ? 'classDef ' + this.classPrefix + tag.id
-      : 'classDef node';
-    output += ' fill:' + tag.bgColor;
-    output += ',stroke:' + tag.borderColor;
-    output += ',stroke-width:' + tag.borderWidth;
-    output += tag.borderStyle === 'dashed'
-      ? ',stroke-dasharray:5 4'
-      : '';
-    output += ',color:' + tag.textColor;
+    subgraphSyntax += ` ${group.id}[<b>${group.value}</b>]\n`;
+    this.subgraphContents[group.id].forEach(ticketId => subgraphSyntax += ticketId + '\n');
+    subgraphSyntax += 'end\n';
 
-    return output;
+    // add the class
+    subgraphSyntax += group.tagId
+      ? `${group.id}:::${this.classPrefix}${group.tagId}`
+      : `${group.id}:::${this.classPrefix}${this.defaultGroupTag.id}`
+    subgraphSyntax += '\n';
+
+    return subgraphSyntax;
   }
 
-  formatTicket(ticket: Ticket): string {
-    /* FORMAT:
-      id[<b>id - title</b><br/><br/>description]:::className
-    */
-    const title = `${ticket.id}[\"<b>${this.formatText(ticket.title)} ${this.shouldShowJiraIcon(ticket) ? 'fab:fa-jira' : ''}</b>`;
-    this.formatText(ticket.description);
-    const description = ticket.description !== '' ?
-      `<hr>${this.formatText(ticket.description)}\"]`
-      : '\"]';
-    // TODO: Check for more things, eg. url even exists and whatnot
-    const styleClass = ticket.tagId
-      ? ':::' + this.classPrefix + ticket.tagId
-      : '';
-    const link = `\nclick ${ticket.id} treeClick`;
-    // const link = ticket.jiraId
-    //   ? `\nclick ${ticket.id} "${this.dataService.generateUrl(ticket.jiraId)}" _blank`
-    //   : '';
-
-    return title + description + styleClass + link;
-  }
-
-  shouldShowJiraIcon(ticket: Ticket) {
-    return this.jiraService.isEnabled && ticket.jiraId;
+  shouldShowLinkIcon(ticket: Ticket): boolean {
+    return !!ticket.url;
   }
 
   formatText(text: string): string {
@@ -144,46 +229,6 @@ class TreeService {
 
     return output;
   }
-
-  linkComponent(component: any): void {
-    this.component = component;
-  }
-
-  renderTree(): void {
-    this.component.renderTree();
-  }
-
-  // export(): any {
-  //   const tagStyles = Array.from(this.tagStyles.values());
-  //   return {
-  //     tagStyles,
-  //     defaultTagStyle: this.defaultTagStyle
-  //   };
-  // }
-
-
-  /* TAG STYLES LAND */
-
-
-  // loadTagStyles(data: any): void {
-  //   if (data.tagStyles.length) {
-  //     data.tagStyles.forEach((ts: TagStyle) => this.tagStyles.set(ts.tagId, ts));
-  //   }
-
-  //   if (data.defaultTagStyle) {
-  //     this.defaultTagStyle = data.defaultTagStyle;
-  //   }
-  // }
-
-  // addTagStyle(tagStyle: TagStyle): void {
-  //   this.tagStyles.set(tagStyle.tagId, tagStyle);
-  // }
-
-  // getTagStyles(): Array<TagStyle> {
-  //   let arr = Array<TagStyle>();
-  //   this.tagStyles.forEach((value, key) => arr.push(value));
-  //   return arr;
-  // }
 }
 
-export { TreeService, TagStyle };
+export { TreeService };

@@ -10,7 +10,7 @@
   z-index: 1000;
   position: absolute;
   top: 0;
-  width: 10em;
+  width: 12em;
 }
 
 .menu {
@@ -36,12 +36,12 @@
   background-color: #eeeeee;
 }
 
-.jira-button {
+.link-button {
   color: #006dde;
   border-radius: 0.2em;
 }
 
-.jira-button:hover {
+.link-button:hover {
   background-color: #d4e6ff;
 }
 
@@ -66,6 +66,16 @@
   border-bottom-color: #dedede;
 }
 
+.bottom-radius {
+  border-bottom-left-radius: 0.2em;
+  border-bottom-right-radius: 0.2em;
+}
+
+.top-radius {
+  border-top-left-radius: 0.2em;
+  border-top-right-radius: 0.2em;
+}
+
 .dep-set-banner {
   position: absolute;
   top: 0;
@@ -73,6 +83,9 @@
   right: 0;
   height: 4em;
   background-color: #d9f0ff;
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-bottom-color: #3ea9bf;
 }
 
 .edit-message {
@@ -113,20 +126,20 @@
   width: unset;
 }
 
-// .jira-button {
-//   background-color: #2684ff;
-//   border-color: #2067c2;
-//   color: white;
-// }
-
-// .jira-button:hover {
-//   background-color: #4998ff;
-//   border-color: #2067c2;
-//   color: white;
-// }
-
-.jira-button:disabled:hover {
-  color: #969696;
-  background: whitesmoke;
-  border-color: #dedede;
+.url-link {
+  text-decoration: none;
 }
+
+.url-hostname {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+// .submenu {
+//   z-index: 2;
+// }
+
+// .create-submenu {
+//   width: 5em;
+//   height: 5em;
+// }

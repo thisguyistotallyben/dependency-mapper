@@ -1,0 +1,42 @@
+.tab-container {
+    display: flex;
+    border-bottom-style: solid;
+    background-color: #dcdcdc;
+    border-bottom-width: 1px;
+    border-bottom-color: #a0a0a0;
+
+    .tab {
+        position: relative;
+
+        .tab-button {
+            background-color: unset;
+            border: none;
+            cursor: pointer;
+            font-size: unset;
+        }
+
+        .tab-bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 0;
+            transition: height 200ms;
+        }
+    }
+
+    .active {
+        .tab-button {
+            color: #0095ff;
+        }
+        .tab-bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 0.1em;
+            background-color: #0095ff;
+            transition: height 200ms;
+        }
+    }
+}

@@ -3,7 +3,7 @@
         <i class="main-icon fas fa-project-diagram bds-r-margin-1 bds-padding-1 bds-x-center bds-y-center bds-shadow-2"></i>
         <div class="title-container">
             <div class="page-title">Dependency Mapper</div>
-            <div *ngIf="!isEditingTitle" class="map-title" (click)="toggleEditTitle()">
+            <div *ngIf="!isEditingTitle" class="map-title" (click)="startTitleEdit()">
                 {{title}}<i class="pencil fas fa-pen bds-l-margin-1"></i>
             </div>
             <input
@@ -11,8 +11,8 @@
                 *ngIf="isEditingTitle"
                 class="bds-input-field bds-no-highlight bds-shadow-1"
                 [(ngModel)]="title"
-                (blur)="toggleEditTitle()"
-                (keyup.enter)="toggleEditTitle()">
+                (blur)="stopTitleEdit()"
+                (keyup.enter)="stopTitleEdit()">
         </div>
     </div>
     <div class="button-cluster bds-margin-2 bds-y-center">
@@ -22,11 +22,16 @@
         <button *ngIf="hasDBEntry" class="new-button bds-button bds-r-margin-2 bds-shadow-1" (click)="toggleTagsMenu()">
             <i class="fas fa-tags bds-r-margin-1"></i>Tags
         </button>
-        <!-- <div class="sep-line"></div> -->
-        <button *ngIf="hasDBEntry" class="settings-button bds-button bds-shadow-1">
-            <i class="fas fa-cog"></i>
+        <button *ngIf="hasDBEntry" class="new-button bds-button bds-shadow-1" (click)="toggleGroupMenu()">
+            <i class="fas fa-layer-group bds-r-margin-1"></i>Groups
         </button>
+        <!-- <div class="sep-line"></div> -->
+        <!-- <button *ngIf="hasDBEntry" class="settings-button bds-button bds-shadow-1">
+            <i class="fas fa-cog"></i>
+        </button> -->
     </div>
 </div>
-<app-topbar-tags *ngIf="tagsMenuOpen" (close)="toggleTagsMenu()"></app-topbar-tags>
+
+<app-tags *ngIf="tagsMenuOpen" (close)="toggleTagsMenu()"></app-tags>
 <app-ticket *ngIf="newTicketOpen" (close)="toggleNewTicket()"></app-ticket>
+<app-group *ngIf="groupMenuOpen" (close)="toggleGroupMenu()"></app-group>

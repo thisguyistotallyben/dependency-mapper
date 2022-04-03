@@ -1,0 +1,54 @@
+<div
+    class="container bds-container bds-margin-2 bds-x-center bds-y-center bds-shadow-3"
+    [ngClass]="{'clickable new-tag-container': !tag}"
+    [style.backgroundColor]="bgColor"
+    [style.borderColor]="borderColor"
+    [style.color]="textColor"
+    (click)="handleButtonClick()">
+    <div *ngIf="tag" class="action-hover bds-x-even_space bds-blur-bg">
+        <button
+            class="bds-button bds-shadow-2 bds-margin-2"
+            (click)="editTag()">
+            <i class="fas fa-pen"></i>
+        </button>
+        <button
+            class="bds-button bds-button-danger bds-shadow-2 bds-margin-2"
+            (click)="deleteTag()">
+            <i class="far fa-trash-alt"></i>
+        </button>
+    </div>
+    <h2 *ngIf="tag">
+        {{tag.value}}
+    </h2>
+    <h2 *ngIf="!tag">
+        <h2><i class="add-button fas fa-plus-circle"></i></h2>
+    </h2>
+</div>
+<!-- <div *ngIf="isEditing" class="edit-container bds-blur-bg">WAT</div> -->
+<app-modal
+    *ngIf="isEditing"
+    class="edit-container bds-blur-bg"
+    [title]="modalTitle">
+    <div actions>
+        <button class="bds-button bds-button-flat bds-l-margin-1 bds-r-margin-1" (click)="cancelEdit()">Cancel</button>
+        <button class="bds-button bds-button-success" (click)="endEdit()">Save</button>
+    </div>
+    <div content class="edit-content">
+        <div class="name-area bds-padding-2 bds-shadow-2">
+            <div class="bds-field-label">Name</div>
+            <input class="bds-input-field big-input" type="text" [(ngModel)]="tagToEdit.value">
+        </div>
+        <app-tabs [tabs]="tabs" (tabChange)="handleTabChange($event)"></app-tabs>
+        <div class="bds-padding-2 bds-x-center">
+            <div
+                [(colorPicker)]="currentColorField"
+                [cpOutputFormat]="'hex'"
+                [cpDialogDisplay]="'inline'"
+                [cpToggle]="true">
+            </div>
+            <!-- <div *ngIf="currentTab === 'background'">Background things</div>
+            <div *ngIf="currentTab === 'border'">Border things</div>
+            <div *ngIf="currentTab === 'text'">Text things</div> -->
+        </div>
+    </div>
+</app-modal>

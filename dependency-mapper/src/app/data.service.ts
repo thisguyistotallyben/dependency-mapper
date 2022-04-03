@@ -1,16 +1,15 @@
-import { JiraService } from './jira/jira.service';
-import { ConfigService } from './config.service';
-import { ChangeDetectorRef, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Guid } from "guid-typescript";
 import { Subject } from 'rxjs';
 
 
 class Ticket {
   id: string;
-  jiraId: string;
+  url: string;
   title: string;
   description: string;
   tagId: string;
+  groupId: string;
 }
 
 class Dependency {
@@ -28,9 +27,16 @@ class Tag {
   borderStyle: string;
   textColor: string;
 
-  constructor(value: string) {
+  constructor(value: string = '') {
     this.value = value;
   }
+}
+
+class Group {
+  id: string;
+  value: string;
+  tagId: string;
+  groupId: string; // not yet used
 }
 
 
@@ -39,28 +45,31 @@ class Tag {
 })
 class DataService {
   ticketLookup: any;
+  groupLookup: any;
   dependencyLookup: Array<Dependency>;
   tagLookup: any;
   title: string;
   mapId: string;
-  jiraURL: string;
-  jiraProject: string;
 
   // async observables
+  genericObserver: Subject<void>; // for re-rendering and no data grabbing
   titleObserver: Subject<void>;
   ticketObserver: Subject<void>;
+  groupObserver: Subject<void>;
   dependencyObserver: Subject<void>;
   tagObserver: Subject<void>;
   newMapObserver: Subject<void>;
 
   constructor() {
-    console.log('constructor');
     this.ticketLookup = {};
+    this.groupLookup = {};
     this.dependencyLookup = new Array<Dependency>();
     this.tagLookup = {};
 
+    this.genericObserver = new Subject<void>();
     this.titleObserver = new Subject<void>();
     this.ticketObserver = new Subject<void>();
+    this.groupObserver = new Subject<void>();
     this.dependencyObserver = new Subject<void>();
     this.tagObserver = new Subject<void>();
     this.newMapObserver = new Subject<void>();
@@ -69,14 +78,13 @@ class DataService {
   /* Tickets */
 
   public addTicket(ticket: Ticket): Ticket {
-    if (!ticket.id) {
-      ticket.id = Guid.raw();
-    }
-
-    // empty out any undefines
-    ticket.jiraId = ticket.jiraId ? ticket.jiraId : '';
-    ticket.title = ticket.title ? ticket.title : '';
-    ticket.description = ticket.description ? ticket.description : '';
+    // set variables
+    ticket.id = ticket.id || Guid.raw();
+    ticket.url = ticket.url || '';
+    ticket.title = ticket.title || '';
+    ticket.description = ticket.description || '';
+    ticket.tagId = ticket.tagId || '';
+    ticket.groupId = ticket.groupId || '';
 
     this.ticketLookup[ticket.id] = ticket;
 
@@ -91,12 +99,54 @@ class DataService {
   }
 
   public getTicket(id: string): Ticket {
-    console.log('in get ticket for', id, this.ticketLookup);
     return this.ticketLookup[id];
   }
 
   get tickets(): Array<Ticket> {
     return Object.values(this.ticketLookup);
+  }
+
+  /* Groups */
+
+  addGroup(group: Group): Group {
+    group.id = group.id || Guid.raw();
+
+    // validate data
+    group.value = group.value || '';
+    group.tagId = group.tagId || '';
+    group.groupId = group.groupId || '';
+
+    this.groupLookup[group.id] = group;
+    this.groupObserver.next();
+
+    return group;
+  }
+
+  removeGroup(id: string) {
+    this.removeGroupReferences(id);
+    delete this.groupLookup[id];
+    this.groupObserver.next();
+  }
+
+  removeGroupReferences(id: string) {
+    this.tickets.forEach(ticket => {
+      if (ticket.groupId === id) {
+        ticket.groupId = '';
+      }
+    });
+    this.ticketObserver.next();
+  }
+
+  getGroup(id: string): Group {
+    return this.groupLookup[id];
+  }
+
+  getGroupTickets(id: string): Array<Ticket> {
+    return this.tickets.filter(ticket => ticket.groupId === id);
+  }
+
+  get groups(): Array<Group> {
+    return Object.values(this.groupLookup);
   }
 
   /* Dependencies */
@@ -158,14 +208,36 @@ class DataService {
       tag.id = Guid.raw();
     }
 
+    // validate fields
+    tag.bgColor = tag.bgColor || '';
+    tag.borderColor = tag.borderColor || '';
+    tag.textColor = tag.textColor || '';
+    tag.borderStyle = tag.borderStyle || '';
+    // tag.borderWidth = tag.borderWidth || '';
+
     this.tagLookup[tag.id] = tag;
     this.tagObserver.next();
     return tag;
   }
 
   removeTag(id: string): void {
-    this.tagLookup.delete(id);
+    this.removeTagReferences(id);
+    delete this.tagLookup[id];
     this.tagObserver.next();
+  }
+
+  removeTagReferences(id: string) {
+    this.tickets.forEach(ticket => {
+      if (ticket.tagId === id) {
+        ticket.tagId = '';
+      }
+    });
+
+    this.groups.forEach(group => {
+      if (group.tagId === id) {
+        group.tagId = '';
+      }
+    });
   }
 
   getTag(id: string): Tag {
@@ -182,107 +254,6 @@ class DataService {
     this.title = title;
     this.newMapObserver.next();
   }
-
-  generateUrl(jiraId: string): string {
-    return `${this.jiraURL}/browse/${this.jiraProject}-${jiraId}`;
-  }
 }
 
-
-
-
-
-
-
-
-
-
-
-// @Injectable({
-//   providedIn: 'root'
-// })
-// class DataService {
-//   ticketLookup: Map<string, Ticket>;
-//   dependencyLookup: Array<Dependency>;
-//   tagLookup: Map<string, Tag>;
-//   title: string;
-//   mapId: string;
-
-//   // async observables
-//   titleObserver: Subject<string>;
-
-//   constructor(
-//     private configService: ConfigService,
-//     private jiraService: JiraService
-//   ) {
-//     this.ticketLookup = new Map<string, any>();
-//     this.dependencyLookup = new Array<Dependency>();
-//     this.tagLookup = new Map<string, Tag>();
-
-//     this.titleObserver = new Subject<string>();
-//   }
-
-
-
-
-
-
-
-
-//   /* OTHER THINGS LAND */
-
-
-//   generateUrl(jiraId: string): string {
-//     return `${this.configService.getCookie('jira-base-url')}/browse/${this.configService.getCookie('jira-project')}-${jiraId}`
-//   }
-
-//   export(): any {
-//     return {
-//       jiraEnabled: this.configService.getConfig('jira-enabled'),
-//       jiraBaseUrl: this.configService.getCookie('jira-base-url'),
-//       jiraProject: this.configService.getCookie('jira-project'),
-//       title: this.title,
-//       tickets: this.tickets,
-//       dependencies: this.dependencyLookup,
-//       tags: this.tags
-//     };
-//   }
-
-//   import(data: any): void {
-//     const jiraIsEnabled = data.jiraEnabled
-//       ? data.jiraEnabled === 'true'
-//       : true; // this looks weird, but it should default to true for backwards compatibility
-//     this.jiraService.isEnabled = jiraIsEnabled;
-
-//     if (data.jiraBaseUrl) {
-//       this.configService.setCookie('jira-base-url', data.jiraBaseUrl);
-//     }
-
-//     if (data.jiraProject) {
-//       this.configService.setCookie('jira-project', data.jiraProject);
-//     }
-
-//     if(data.title) {
-//       this.setTitle(data.title);
-//     }
-
-//     if (data.tickets) {
-//       data.tickets.forEach((ticket: Ticket) => {
-//         this.addTicket(ticket);
-//       });
-//     }
-
-//     if (data.dependencies) {
-//       data.dependencies.forEach((dep: Dependency) => {
-//         this.addDependency(dep.parentId, dep.childId);
-//       });
-//     }
-
-//     if (data.tags) {
-//       data.tags.forEach((tag: Tag) => this.tagLookup.set(tag.id, tag));
-//     }
-//   }
-
-// }
-
-export { DataService, Ticket, Dependency, Tag };
+export { DataService, Ticket, Dependency, Tag, Group };

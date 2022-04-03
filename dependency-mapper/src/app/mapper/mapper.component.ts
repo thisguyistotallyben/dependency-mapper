@@ -15,7 +15,6 @@ export class MapperComponent implements OnInit {
   ngOnInit(): void {
     this.route.params.subscribe( params => {
       if (params.mapId) {
-        console.log('wowzas', params.mapId);
         this.firebaseService.loadMap(params.mapId);
       }
     });

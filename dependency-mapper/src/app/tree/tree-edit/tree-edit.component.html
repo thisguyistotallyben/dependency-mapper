@@ -1,11 +1,29 @@
 <div *ngIf="isClickOutsideToCloseEnabled" class="container bds-blur-bg" (click)="closePopover()">
-  <div class="popover" [style.left]="posX" [style.top]="posY" *ngIf="isDisplayed">
-    <div *ngIf="ticketHasJiraLink" class="bds-container bds-b-margin-1 bds-shadow-3">
+  <app-tree-edit-popover
+    *ngIf="isDisplayed"
+    class="popover"
+    [style.left]="posX"
+    [style.top]="posY"
+    (size)="handlePosition($event)">
+  <!-- <div #popover class="popover" [style.left]="posX" [style.top]="posY" *ngIf="isDisplayed"> -->
+    <div *ngIf="ticketHasURL" class="bds-container bds-b-margin-1 bds-shadow-3">
       <ul class="menu">
         <li>
-          <button class="action-button jira-button bds-padding-2" (click)="toggleEditTicket()">
-            <i class="fab fa-jira bds-r-margin-1"></i>Jira
-          </button>
+          <a [href]="formattedUrl" target="_blank" class="url-link">
+            <button class="action-button link-button bds-padding-2 bds-y-center">
+              <img
+                *ngIf="hasValidUrl"
+                [src]="faviconURL"
+                class="bds-r-margin-2"
+                width="20px"
+                (error)="handleIconLoadError()">
+                <i *ngIf="!hasValidUrl" class="fas fa-link bds-r-margin-2"></i>
+                <div class="url-hostname">
+                  {{UrlHostname}}
+                </div>
+                <i class="fas fa-external-link-alt bds-l-margin-1"></i>
+            </button>
+          </a>
         </li>
       </ul>
     </div>
@@ -13,43 +31,71 @@
       <ul class="menu">
         <li>
           <button class="action-button edit-button bottom-border bds-padding-2" (click)="toggleEditTicket()">
-            <i class="fas fa-edit bds-r-margin-1"></i>Edit Ticket
+            <i class="fas fa-pen bds-r-margin-2"></i>Edit Ticket
+          </button>
+        </li>
+        <li>
+          <button class="action-button bottom-border bds-padding-2" (click)="openSubmenu()">
+            <i class="fas fa-plus bds-r-margin-2"></i>Create
           </button>
         </li>
         <li>
           <button class="action-button bottom-border bds-padding-2" (click)="setParents()">
-            <i class="fas fa-chevron-up bds-r-margin-1"></i>Set Parents
+            <i class="fas fa-chevron-up bds-r-margin-2"></i>Set Parents
           </button>
         </li>
         <li>
           <button class="action-button bottom-border bds-padding-2" (click)="setChildren()">
-            <i class="fas fa-chevron-down bds-r-margin-1"></i>Set Children
+            <i class="fas fa-chevron-down bds-r-margin-2"></i>Set Children
           </button>
         </li>
         <li>
           <button class="action-button delete-button bds-padding-2" (click)="toggleDeleteTicket()">
-            <i class="far fa-trash-alt bds-r-margin-1"></i>Delete Ticket
+            <i class="far fa-trash-alt bds-r-margin-2"></i>Delete Ticket
           </button>
         </li>
       </ul>
     </div>
+  </app-tree-edit-popover>
+  <!-- </div> -->
+</div>
+
+<div *ngIf="isSubmenuOpen" class="submenu container bds-blur-bg" (click)="closeSubmenu()">
+  <div class="create-submenu popover bds-container bds-shadow-3" [style.left]="submenuPosX" [style.top]="submenuPosY" >
+    <ul class="menu">
+      <li>
+        <button class="action-button top-radius bottom-border bds-padding-2" (click)="createParentTicket()">
+          <i class="fas fa-chevron-up bds-r-margin-2"></i>New Parent
+        </button>
+      </li>
+      <li>
+        <button class="action-button bottom-radius bds-padding-2" (click)="createChildTicket()">
+          <i class="fas fa-chevron-down bds-r-margin-2"></i>New Child
+        </button>
+      </li>
+    </ul>
   </div>
 </div>
 
 
-<div class="dep-set-banner bds-y-center bds-x-even_spread" *ngIf="dependenciesAreBeingSet">
+<div class="dep-set-banner bds-y-center bds-x-even_spread" *ngIf="isEditing">
   <div class="bds-l-margin-2">
     <div class="edit-message">{{editMessage}}</div>
-    <div class="edit-title">{{ticketToEdit.title}}</div>
+    <div class="edit-title">{{editTitle}}</div>
   </div>
   <div class="bds-r-margin-2">
     <button
+      class="bds-button bds-button-flat bds-r-margin-1"
+      (click)="cancelEdit()">
+      Cancel
+    </button>
+    <button
       class="bds-button bds-button-success"
-      (click)="endDependencyEdit()">
+      (click)="endEdit()">
       Done
     </button>
   </div>
 
 </div>
-<app-ticket *ngIf="isEditTicketOpen" [ticket]="ticketToEdit" (close)="toggleEditTicket()"></app-ticket>
+<app-ticket *ngIf="isEditTicketOpen" [ticket]="ticketToEdit" (close)="handlePostEditTicket($event)"></app-ticket>
 <app-ticket-delete *ngIf="isDeleting" [ticket]="ticketToEdit" (close)="toggleDeleteTicket()"></app-ticket-delete>

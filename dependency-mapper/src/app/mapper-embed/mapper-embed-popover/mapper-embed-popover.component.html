@@ -1,0 +1,30 @@
+<div *ngIf="isPopoverOpen" class="container bds-blur-bg" (click)="closePopover()">
+</div>
+<app-tree-edit-popover
+    *ngIf="isPopoverOpen"
+    class="popover"
+    [style.left]="posX"
+    [style.top]="posY"
+    (size)="handlePosition($event)">
+    <div *ngIf="ticketHasURL" class="bds-container bds-b-margin-1 bds-shadow-3">
+        <ul class="menu">
+          <li>
+            <a [href]="formattedURL" target="_blank" class="url-link" (click)="closePopover()">
+              <button class="action-button link-button bds-padding-2 bds-y-center">
+                <img
+                  *ngIf="hasValidUrl"
+                  [src]="faviconURL"
+                  class="bds-r-margin-2"
+                  width="20px"
+                  (error)="handleIconLoadError()">
+                  <i *ngIf="!hasValidUrl" class="fas fa-link bds-r-margin-2"></i>
+                  <div class="url-hostname">
+                    {{UrlHostname}}
+                  </div>
+                  <i class="fas fa-external-link-alt bds-l-margin-1"></i>
+              </button>
+            </a>
+          </li>
+        </ul>
+      </div>
+</app-tree-edit-popover>

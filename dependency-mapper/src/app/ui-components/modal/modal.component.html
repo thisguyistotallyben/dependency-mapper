@@ -1,0 +1,12 @@
+<!-- <div class="container bds-blur-bg bds-x-center bds-y-center" (click)="handleBackgroundClick()"> -->
+<div class="container bds-blur-bg bds-x-center bds-y-center">
+    <div class="bds-container bds-margin-2 bds-shadow-3">
+        <div class="modal-header bds-container-header bds-padding-2 bds-x-even_spread bds-y-center bds-shadow-2">
+            <h2 *ngIf="title">{{title}}</h2>
+            <div class="bds-y-center">
+                <ng-content select="[actions]"></ng-content>
+            </div>
+        </div>
+        <ng-content select="[content]"></ng-content>
+    </div>
+</div>

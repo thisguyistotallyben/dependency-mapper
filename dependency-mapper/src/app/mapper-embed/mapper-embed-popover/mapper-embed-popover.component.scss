@@ -1,0 +1,56 @@
+.container {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    // background-color: rgba(0, 128, 0, 0.342);
+}
+
+.popover {
+    z-index: 1000;
+    position: fixed;
+    top: 0;
+    width: 12em;
+}
+
+.menu {
+    padding-left: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+
+    li {
+        list-style-type: none;
+    }
+}
+
+.action-button {
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    text-align: left;
+    background-color: unset;
+    border: none;
+}
+
+.action-button:hover {
+    background-color: #eeeeee;
+}
+
+.link-button {
+    color: #006dde;
+    border-radius: 0.2em;
+}
+
+.link-button:hover {
+    background-color: #d4e6ff;
+}
+
+.url-link {
+    text-decoration: none;
+}
+
+.url-hostname {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

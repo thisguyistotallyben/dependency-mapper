@@ -1,6 +1,11 @@
 import { ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { DataService, Ticket } from '../data.service';
 
+/*
+  Re-do the data stuff like the tag item class where there is a second Ticket that holds the state
+  so there's no setting and resetting stuff constantly.
+*/
+
 @Component({
   selector: 'app-ticket',
   templateUrl: './ticket.component.html',
@@ -14,21 +19,23 @@ export class TicketComponent implements OnInit {
 
   // state stuff
   title: string;
-  jiraId: string;
+  url: string;
   description: string;
   tagId: string;
+  groupId: string;
 
   @Output()
-  close = new EventEmitter<void>();
+  close = new EventEmitter<Ticket>();
 
   constructor(private changeDetector: ChangeDetectorRef, private dataService: DataService) { }
 
   ngOnInit(): void {
     if (this.hasTicket) {
       this.title = this.ticket.title;
-      this.jiraId = this.ticket.jiraId;
+      this.url = this.ticket.url;
       this.description = this.ticket.description;
       this.tagId = this.ticket.tagId;
+      this.groupId = this.ticket.groupId;
     }
 
     this.changeDetector.detectChanges();
@@ -41,6 +48,10 @@ export class TicketComponent implements OnInit {
     this.tagId = event;
   }
 
+  updateGroup(event: any) {
+    this.groupId = event;
+  }
+
   // saving and closing
 
   handleSave() {
@@ -49,9 +60,10 @@ export class TicketComponent implements OnInit {
     }
 
     this.ticket.title = this.title || '';
-    this.ticket.jiraId = this.jiraId || '';
+    this.ticket.url = this.url || '';
     this.ticket.description = this.description || '';
     this.ticket.tagId = this.tagId || '';
+    this.ticket.groupId = this.groupId || '';
     this.dataService.addTicket(this.ticket);
 
     this.closeModal();
@@ -62,7 +74,7 @@ export class TicketComponent implements OnInit {
   }
 
   closeModal() {
-    this.close.emit();
+    this.close.emit(this.ticket);
   }
 
   // getters
@@ -71,11 +83,11 @@ export class TicketComponent implements OnInit {
     return !!this.ticket;
   }
 
-  get jiraIsEnabled(): boolean {
-    return true; // lol
+  get tags() {
+    return [{id: '', value: '--None--'}].concat(this.dataService.tags);
   }
 
-  get tags() {
-    return [{id: undefined, value: '--None--'}].concat(this.dataService.tags);
+  get groups() {
+    return [{id: '', value: '--None--'}].concat(this.dataService.groups);
   }
 }

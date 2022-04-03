@@ -12,25 +12,38 @@ export class TreeComponent implements AfterViewInit {
   @ViewChild('mermaidDiv') mermaidDiv: ElementRef;
   color = 'blue';
 
-  constructor(private treeService: TreeService, private dataService: DataService) {
-    this.treeService.component = this;
-  }
+  constructor(private treeService: TreeService, private dataService: DataService) { }
 
   public ngAfterViewInit(): void {
-    console.log('jfklajsflkjdslkfd');
     mermaid.initialize({
       flowchart:{
         useMaxWidth:false,
         curve:'basis',
       },
-      securityLevel: 'loose'
+      securityLevel: 'loose',
+      themeVariables: {
+        fontFamily: "Varela Round",
+        borderRadius: "2px"
+      }
     });
     mermaid.init();
+
+    this.dataService.genericObserver.subscribe(
+      x => this.renderTree(),
+      err => console.error('oopsie poopsie', err),
+      () => console.warn('generic tree rendering subscription finished')
+    );
 
     this.dataService.ticketObserver.subscribe(
       x => this.renderTree(),
       err => console.error('oopsie poopsie', err),
       () => console.warn('tree rendering subscription for tickets finished')
+    );
+
+    this.dataService.groupObserver.subscribe(
+      x => this.renderTree(),
+      err => console.error('oopsie poopsie', err),
+      () => console.warn('tree rendering subscription for dependencies finished')
     );
 
     this.dataService.dependencyObserver.subscribe(
@@ -47,13 +60,12 @@ export class TreeComponent implements AfterViewInit {
   }
 
   renderTree(): void {
-    console.log('wow i am here');
     const element: any = this.mermaidDiv.nativeElement;
     const graphDefinition = this.treeService.generateSyntax();
-    // const graphDefinition = 'graph TD\nA';
+    // console.log(graphDefinition);
     mermaid.render('graphDiv', graphDefinition, (svgCode, bindFunctions) => {
-        element.innerHTML = svgCode;
-        bindFunctions(element);
+      element.innerHTML = svgCode;
+      bindFunctions(element);
     });
   }
 

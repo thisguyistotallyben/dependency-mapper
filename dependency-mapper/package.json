@@ -22,7 +22,7 @@
     "@angular/router": "~9.1.0",
     "firebase": "^9.0.2",
     "guid-typescript": "^1.0.9",
-    "mermaid": "^8.8.2",
+    "mermaid": "^8.12.1",
     "ngx-color-picker": "^10.1.0",
     "ngx-cookie-service": "^10.1.1",
     "pako": "^1.0.11",

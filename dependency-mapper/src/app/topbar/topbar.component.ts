@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { DataService, Ticket } from '../data.service';
+import { DataService, Group, Ticket } from '../data.service';
 
 @Component({
   selector: 'app-topbar',
@@ -9,9 +9,10 @@ import { DataService, Ticket } from '../data.service';
 export class TopbarComponent implements OnInit {
   @ViewChild("titleField") titleField: ElementRef;
 
-  tagsMenuOpen = true;
+  tagsMenuOpen = false;
   newTicketOpen = false;
   isEditingTitle = false;
+  groupMenuOpen = false;
 
   constructor(private changeDetector: ChangeDetectorRef, private dataService: DataService) { }
 
@@ -23,30 +24,28 @@ export class TopbarComponent implements OnInit {
     );
   }
 
-  // temporary
-  toggleNewTicket() {
-    this.newTicketOpen = !this.newTicketOpen;
-    // const ticket = new Ticket();
-    // ticket.title = 'Wow a Ticket';
-    // ticket.description = 'Yes, a ticket this is';
-    // this.dataService.addTicket(ticket);
-  }
-
-  createNewMap() {
-    console.warn('navigate to home page???')
-  }
-
   toggleTagsMenu() {
     this.tagsMenuOpen = !this.tagsMenuOpen;
   }
 
-  toggleEditTitle() {
-    this.isEditingTitle = !this.isEditingTitle;
+  startTitleEdit() {
+    this.isEditingTitle = true;
 
-    if (this.isEditingTitle) {
-      this.changeDetector.detectChanges(); // required for focusing
-      this.titleField.nativeElement.focus();
-    }
+    this.changeDetector.detectChanges(); // required for focusing
+    this.titleField.nativeElement.focus();
+  }
+
+  stopTitleEdit() {
+    this.isEditingTitle = false;
+  }
+
+  toggleGroupMenu() {
+    this.groupMenuOpen = !this.groupMenuOpen;
+    this.changeDetector.detectChanges();
+  }
+
+  toggleNewTicket() {
+    this.newTicketOpen = !this.newTicketOpen;
   }
 
   get hasDBEntry(): boolean {

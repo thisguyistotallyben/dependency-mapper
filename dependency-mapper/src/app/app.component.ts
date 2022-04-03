@@ -1,10 +1,7 @@
-import { JiraService } from './jira/jira.service';
-import { ConfigService } from './config.service';
-import { TreeService } from 'src/app/tree/tree.service';
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { DataService } from './data.service';
-import { ActivatedRoute } from '@angular/router';
 import { FirebaseService } from './firebase.service';
+import { TreeEditService } from './tree/tree-edit/tree-edit.service';
 
 
 @Component({
@@ -13,5 +10,8 @@ import { FirebaseService } from './firebase.service';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  constructor(private dataService: DataService, private firebaseService: FirebaseService) { }
+  constructor(
+    private dataService: DataService,
+    private treeEditService: TreeEditService,
+    private firebaseService: FirebaseService) { }
 }
