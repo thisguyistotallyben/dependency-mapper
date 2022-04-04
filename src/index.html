@@ -10,5 +10,23 @@
 </head>
 <body>
   <app-root></app-root>
+  <!-- Maybe there is a better way to do this? Importing maybe? -->
+  <style>
+    svg g > rect.label-container {
+      filter: drop-shadow( 0px 1px 2px rgba(0, 0, 0, 0.2))
+    }
+
+    svg g .desc {
+      text-align: left;
+      border-top-style: solid;
+      border-top-width: 1px;
+      padding-top: 0.5em;
+    }
+
+    svg g .title {
+      text-align: left;
+      font-size: large;
+    }
+</style>
 </body>
 </html>

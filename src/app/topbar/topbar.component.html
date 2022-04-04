@@ -22,16 +22,17 @@
         <button *ngIf="hasDBEntry" class="new-button bds-button bds-r-margin-2 bds-shadow-1" (click)="toggleTagsMenu()">
             <i class="fas fa-tags bds-r-margin-1"></i>Tags
         </button>
-        <button *ngIf="hasDBEntry" class="new-button bds-button bds-shadow-1" (click)="toggleGroupMenu()">
+        <button *ngIf="hasDBEntry" class="new-button bds-button bds-r-margin-2 bds-shadow-1" (click)="toggleGroupMenu()">
             <i class="fas fa-layer-group bds-r-margin-1"></i>Groups
         </button>
-        <!-- <div class="sep-line"></div> -->
-        <!-- <button *ngIf="hasDBEntry" class="settings-button bds-button bds-shadow-1">
+        <button *ngIf="hasDBEntry" class="filter-button bds-button bds-shadow-1" (click)="toggleFilterMenu()">
+            <!-- <i class="fas fa-share-square bds-r-margin-1"></i>Share -->
             <i class="fas fa-cog"></i>
-        </button> -->
+        </button>
     </div>
 </div>
 
 <app-tags *ngIf="tagsMenuOpen" (close)="toggleTagsMenu()"></app-tags>
 <app-ticket *ngIf="newTicketOpen" (close)="toggleNewTicket()"></app-ticket>
 <app-group *ngIf="groupMenuOpen" (close)="toggleGroupMenu()"></app-group>
+<!-- <app-tree-filter *ngIf="filterMenuOpen" (close)="toggleFilterMenu()"></app-tree-filter> -->

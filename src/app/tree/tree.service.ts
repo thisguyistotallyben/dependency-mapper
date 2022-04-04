@@ -114,20 +114,26 @@ class TreeService {
       nodes += this.generateNodeSyntax(ticket) + '\n'
       nodes += `click ${ticket.id} treeClick\n`;
     });
+
+    // nodes += 'athing(<h3 id=header class=yes-no>WOW EVEN ANOTHER TICKET</h3><div id=description>This one is designed to stretch a good <br/>bit.<br/>The page must be longer and longer and <br/>longer and longer</div>):::thing\n';
+    // nodes += `click athing treeClick\n`;
+    
+    // nodes += 'anotherthing(<h3 id=header>Link text</h3><div id=description>A Definite Description</div>):::thing\n';
+    // nodes += `click anotherthing treeClick\n`;
     return nodes;
   }
 
   generateNodeSyntax(ticket: Ticket): string {
     /* FORMAT:
-      id["<b>title</b><hr>description"]:::className
+      id("<b>title</b><hr>description"):::className
     */
 
     const title = this.formatText(ticket.title);
     const icon = this.shouldShowLinkIcon(ticket) ? '*' : '';
-    const description = ticket.description ? '<hr>' + this.formatText(ticket.description) : '';
+    const description = ticket.description ? '<div class=desc><div></div>' + this.formatText(ticket.description) + '</div>' : '';
     let style = this.generateNodeStyleSyntax(ticket);
 
-    return `${ticket.id}("<b>${title}${icon}</b>${description}")${style}`;
+    return `${ticket.id}("<div class=title><b>${title}${icon}</b></div>${description}")${style}`;
   }
 
   generateNodeStyleSyntax(ticket: Ticket): string {
@@ -205,7 +211,7 @@ class TreeService {
 
   formatText(text: string): string {
     // sanitize characters
-    text = text.replace(/\n/g, '<br>');
+    text = text.replace(/\n/g, '<br/>');
     text = text.replace(/\"/g, '#quot;');
 
     const numChars = 50;
@@ -220,7 +226,7 @@ class TreeService {
     const words = text.split(' ');
     words.forEach(word => {
       if ((line + ' ' + word).length > numChars) {
-        output += line + '<br>';
+        output += line + '<br/>';
         line = '';
       }
       line += word + ' ';

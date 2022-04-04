@@ -24,8 +24,15 @@
         <h2><i class="add-button fas fa-plus-circle"></i></h2>
     </h2>
 </div>
-<!-- <div *ngIf="isEditing" class="edit-container bds-blur-bg">WAT</div> -->
-<app-modal
+
+<app-tag-item-details
+    *ngIf="isEditing"
+    [tag]="tag"
+    (save)="handleDetailsSave($event)"
+    (cancel)="handleDetailsCancel()">
+</app-tag-item-details>
+
+<!-- <app-modal
     *ngIf="isEditing"
     class="edit-container bds-blur-bg"
     [title]="modalTitle">
@@ -46,9 +53,6 @@
                 [cpDialogDisplay]="'inline'"
                 [cpToggle]="true">
             </div>
-            <!-- <div *ngIf="currentTab === 'background'">Background things</div>
-            <div *ngIf="currentTab === 'border'">Border things</div>
-            <div *ngIf="currentTab === 'text'">Text things</div> -->
         </div>
     </div>
-</app-modal>
+</app-modal> -->

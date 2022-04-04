@@ -19,6 +19,7 @@ export class TreeComponent implements AfterViewInit {
       flowchart:{
         useMaxWidth:false,
         curve:'basis',
+        htmlLabels: true
       },
       securityLevel: 'loose',
       themeVariables: {
@@ -62,11 +63,29 @@ export class TreeComponent implements AfterViewInit {
   renderTree(): void {
     const element: any = this.mermaidDiv.nativeElement;
     const graphDefinition = this.treeService.generateSyntax();
-    // console.log(graphDefinition);
+    console.log(graphDefinition);
     mermaid.render('graphDiv', graphDefinition, (svgCode, bindFunctions) => {
       element.innerHTML = svgCode;
       bindFunctions(element);
     });
+
+    // this.saveTree();
+    this.doThing();
   }
 
+  doThing() {
+    console.log('thing?', this.mermaidDiv.nativeElement.innerHTML);
+  }
+
+  saveTree(): void {
+    console.log('thing?', this.mermaidDiv.nativeElement.innerHTML);
+    const blob = new Blob([this.mermaidDiv.nativeElement.innerHTML], {type:"image/svg+xml;charset=utf-8"});
+    var svgUrl = URL.createObjectURL(blob);
+    var downloadLink = document.createElement("a");
+    downloadLink.href = svgUrl;
+    downloadLink.download = "newesttree.svg";
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+  }
 }

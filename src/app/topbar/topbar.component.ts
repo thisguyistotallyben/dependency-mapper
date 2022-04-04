@@ -13,6 +13,7 @@ export class TopbarComponent implements OnInit {
   newTicketOpen = false;
   isEditingTitle = false;
   groupMenuOpen = false;
+  filterMenuOpen = false;
 
   constructor(private changeDetector: ChangeDetectorRef, private dataService: DataService) { }
 
@@ -46,6 +47,10 @@ export class TopbarComponent implements OnInit {
 
   toggleNewTicket() {
     this.newTicketOpen = !this.newTicketOpen;
+  }
+
+  toggleFilterMenu() {
+    this.filterMenuOpen = !this.filterMenuOpen;
   }
 
   get hasDBEntry(): boolean {

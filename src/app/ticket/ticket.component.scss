@@ -1,3 +1,18 @@
+.thing {
+    background-color: #e6e6e6;
+}
+
+.unset-input {
+    background-color: unset;
+}
+
+h2 {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+
+
 .container {
     position: fixed;
     top: 0;
@@ -5,6 +20,7 @@
     left: 0;
     right: 0;
     background-color: rgba(0, 0, 0, 0.7);
+    flex-direction: column;
 }
 
 .modal {
@@ -18,14 +34,6 @@
     flex-direction: column;
     width: 100%;
     height: 100%;
-}
-
-.thing {
-    background-color: green;
-    border-radius: 0.2em;
-    border-style: solid;
-    border-width: 1px;
-    border-color: pink;
 }
 
 .bds-container-header {

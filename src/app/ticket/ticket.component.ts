@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { DataService, Ticket } from '../data.service';
+import { DataService, Tag, Ticket } from '../data.service';
 
 /*
   Re-do the data stuff like the tag item class where there is a second Ticket that holds the state
@@ -23,6 +23,8 @@ export class TicketComponent implements OnInit {
   description: string;
   tagId: string;
   groupId: string;
+
+  isCreatingTag = false;
 
   @Output()
   close = new EventEmitter<Ticket>();
@@ -75,6 +77,22 @@ export class TicketComponent implements OnInit {
 
   closeModal() {
     this.close.emit(this.ticket);
+  }
+
+  // new tag stuff
+
+  handleCreateNewTag(): void {
+    this.isCreatingTag = true;
+  }
+  
+  handleSaveNewTag(tag: Tag): void {
+    const newTag: Tag = this.dataService.addTag(tag);
+    this.tagId = newTag.id;
+    this.isCreatingTag = false;
+  }
+  
+  handleCancelNewTag(): void {
+    this.isCreatingTag = false;
   }
 
   // getters

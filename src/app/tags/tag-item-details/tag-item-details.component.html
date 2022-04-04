@@ -1,1 +1,44 @@
-<p>tag-item-details works!</p>
+<app-modal [title]="modalTitle">
+    <div actions>
+        <button class="bds-button bds-button-flat bds-l-margin-1 bds-r-margin-1" (click)="handleCancel()">Cancel</button>
+        <button class="bds-button bds-button-success" (click)="handleSave()">Save</button>
+    </div>
+    <div content class="edit-content">
+        <div class="name-area bds-padding-2 bds-shadow-2">
+            <div class="bds-field-label">Name</div>
+            <input class="bds-input-field big-input" type="text" [(ngModel)]="tagName">
+        </div>
+        <app-tabs [tabs]="tabs" (tabChange)="handleTabChange($event)"></app-tabs>
+        <div class="bds-padding-2 bds-x-center">
+            <div
+                [(colorPicker)]="currentColorField"
+                [cpOutputFormat]="'hex'"
+                [cpDialogDisplay]="'inline'"
+                [cpToggle]="true">
+            </div>
+        </div>
+    </div>
+</app-modal>
+<!-- <app-modal
+    class="edit-container bds-blur-bg"
+    [title]="title">
+    <div actions>
+        <button class="bds-button bds-button-flat bds-l-margin-1 bds-r-margin-1" (click)="cancelEdit()">Cancel</button>
+        <button class="bds-button bds-button-success" (click)="endEdit()">Save</button>
+    </div>
+    <div content class="edit-content">
+        <div class="name-area bds-padding-2 bds-shadow-2">
+            <div class="bds-field-label">Name</div>
+            <input class="bds-input-field big-input" type="text" [(ngModel)]="tagToEdit.value">
+        </div>
+        <app-tabs [tabs]="tabs" (tabChange)="handleTabChange($event)"></app-tabs>
+        <div class="bds-padding-2 bds-x-center">
+            <div
+                [(colorPicker)]="currentColorField"
+                [cpOutputFormat]="'hex'"
+                [cpDialogDisplay]="'inline'"
+                [cpToggle]="true">
+            </div>
+        </div>
+    </div>
+</app-modal> -->
